@@ -1,0 +1,320 @@
+.section {
+  position: relative;
+  padding-top: 60px;
+}
+
+/* Sticky side label */
+.stickyLabel {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 28px 60px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  pointer-events: none;
+}
+
+.stickyLabelText {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.stickyCounter {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: rgba(62, 99, 126, 0.55);
+}
+
+/* Each company slide — matches ElicaCards .elica__slide */
+.slide {
+  position: relative;
+  width: 94%;
+  height: 97vh;
+  margin-bottom: 10em;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+/* GSAP pins this — perspective matches ElicaCards' 250vw */
+.wrap {
+  perspective: 250vw;
+  width: 100%;
+  height: 100%;
+}
+
+/* The card — position:absolute inset:0, matches ElicaCards .elica__content */
+.content {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5em;
+  overflow: hidden;
+  cursor: default;
+  transform-style: preserve-3d;
+  transform-origin: 50% 10%;
+  will-change: transform, opacity;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background: linear-gradient(140deg, #042E52 0%, #0A63A8 55%, #1288CB 100%);
+  box-shadow: 0 24px 64px rgba(4,46,82,.45), 0 6px 16px rgba(4,46,82,.28);
+}
+
+/* Subtle noise overlay */
+.content::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: .04;
+}
+
+/* Top zone — eyebrow → [logo + title inline] */
+.contentTop {
+  position: relative;
+  z-index: 1;
+  padding: 3em 3em 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.logoTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: nowrap;
+}
+
+.logoPlate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 14px;
+}
+
+.companyLogo {
+  display: block;
+  max-height: 68px;
+  max-width: 210px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(80, 207, 254, 0.85);
+  margin: 0;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 4.2rem);
+  font-weight: 400;
+  line-height: 1.04;
+  color: #fff;
+  margin: 0;
+  max-width: 15em;
+}
+
+/* Bottom zone — absolute overlay, full card height, content anchored to bottom */
+.contentBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 3em 3em;
+  gap: 28px;
+}
+
+/* ── Media cluster ── */
+/* .contentImages is position:relative so secondary/tertiary can absolute-position off it */
+.contentImages {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.imageWrap {
+  overflow: hidden;
+  border-radius: 1em;
+  flex-shrink: 0;
+}
+
+/* Primary: static in flex flow — tall square rising from bottom */
+.imageWrapMain {
+  position: static;
+  height: 46vh;
+  aspect-ratio: 1 / 1;
+  /* flat bottom so it bleeds to card edge */
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Secondary: floats up and to the right of primary */
+.imageWrapSecondary {
+  position: absolute;
+  width: 37vh;
+  height: 45vh;
+  top: -11.7vh;
+  right: -27vh;
+}
+
+/* Tertiary: floats further right and higher */
+.imageWrapTertiary {
+  position: absolute;
+  width: 30vh;
+  height: 37vh;
+  top: -22vh;
+  right: -50.1vh;
+}
+
+.cardVideo,
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Placeholder when no photo/video — gradient matches card palette */
+.cardPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(80, 207, 254, 0.14) 0%, rgba(4, 46, 82, 0.55) 100%);
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: rgba(80, 207, 254, 0.35);
+  letter-spacing: 0.15em;
+  user-select: none;
+}
+
+.cardPlaceholderB {
+  background: radial-gradient(circle at 30% 70%, rgba(18, 136, 203, 0.22) 0%, rgba(4, 46, 82, 0.65) 100%);
+}
+
+.cardPlaceholderC {
+  background: radial-gradient(circle at 70% 30%, rgba(80, 207, 254, 0.1) 0%, rgba(10, 99, 168, 0.7) 100%);
+}
+
+/* ── Right side — info panel ── */
+.contentRight {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 460px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(80, 207, 254, 0.9);
+  background: rgba(80, 207, 254, 0.10);
+  border: 1px solid rgba(80, 207, 254, 0.22);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+.tagType {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.body {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.10em;
+  color: #fff;
+  text-decoration: none;
+  padding: 11px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+  transition: background 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+}
+.link:active {
+  transform: scale(0.97);
+}
+
+.cardNumber {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.30);
+}
+
+@media (max-width: 991px) {
+  .imageWrapSecondary { width: 30vh; height: 37vh; top: -11.2vh; right: -18.2vh }
+  .imageWrapTertiary  { width: 28vh; height: 34vh; top: -23.4vh; right: -33.2vh }
+  .imageWrapMain { height: 28vh }
+}
+
+@media (max-width: 768px) {
+  .slide { height: 98vh; margin-bottom: 5em }
+  .stickyLabel { padding: 20px 24px }
+  .contentTop { padding: 2em 1.25em 0; gap: 12px }
+  .companyLogo { max-height: 48px }
+  .logoPlate { padding: 9px 13px }
+  .contentBottom { flex-direction: column; padding: 0 1.25em 1.25em; align-items: flex-start }
+  .heading { font-size: clamp(1.6rem, 5vw, 2.4rem) }
+  .imageWrapSecondary { display: none }
+  .imageWrapTertiary  { display: none }
+}
