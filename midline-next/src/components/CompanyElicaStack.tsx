@@ -44,6 +44,12 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
       const allContents = section.querySelectorAll<HTMLElement>(`.${styles.content}`)
       gsap.set(allContents, { autoAlpha: 1, clearProps: 'transform' })
 
+      // Same defensive reset for the photo wraps. A previous mount's
+      // mid-animation state (opacity:0 + translation from gsap.from)
+      // can persist if ctx.revert lands during the framer-motion fade.
+      const allWraps = section.querySelectorAll<HTMLElement>(`.${styles.imageWrap}`)
+      gsap.set(allWraps, { clearProps: 'opacity,transform,xPercent,yPercent' })
+
       slides.forEach((slide, idx) => {
         const wrap    = slide.querySelector<HTMLElement>(`.${styles.wrap}`)
         const content = slide.querySelector<HTMLElement>(`.${styles.content}`)
@@ -112,8 +118,17 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
           // fires earlier than `top center` so the animation completes
           // before the slide reaches its pin position — no flash of
           // empty card.
+          //
+          // immediateRender:false defers the from-state (opacity:0 +
+          // translation) until the trigger actually fires. On back-nav
+          // from a company detail page, framer-motion's fade window can
+          // cause the once-trigger to miss its onEnter — without this
+          // flag, the wraps would be stuck at opacity:0 forever. With
+          // it, wraps stay at their natural visible state if the
+          // trigger never fires.
           gsap.from(wraps, {
             ...tweenConfig,
+            immediateRender: false,
             scrollTrigger: { trigger: slide, start: 'top 80%', once: true },
           })
         }
@@ -154,8 +169,35 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
     // 1 on back-navigation (cards stuck invisible). Refresh once after
     // the fade has resolved AND after browser scroll restoration has
     // settled, so the triggers re-measure with stable coordinates.
+    // After the refresh, run a failsafe pass: any element currently in
+    // the viewport that is somehow still invisible gets force-reset to
+    // visible. This catches any once-trigger that missed its onEnter.
     const refreshId = window.setTimeout(() => {
       ScrollTrigger.refresh()
+
+      const section = sectionRef.current
+      if (!section) return
+      const contents = section.querySelectorAll<HTMLElement>(`.${styles.content}`)
+      const wraps = section.querySelectorAll<HTMLElement>(`.${styles.imageWrap}`)
+      const vh = window.innerHeight
+
+      contents.forEach((el) => {
+        const r = el.getBoundingClientRect()
+        const inView = r.bottom > 0 && r.top < vh
+        if (!inView) return
+        if (parseFloat(getComputedStyle(el).opacity) < 0.95) {
+          gsap.set(el, { autoAlpha: 1 })
+        }
+      })
+
+      wraps.forEach((el) => {
+        const r = el.getBoundingClientRect()
+        const inView = r.bottom > 0 && r.top < vh
+        if (!inView) return
+        if (parseFloat(getComputedStyle(el).opacity) < 0.95) {
+          gsap.set(el, { opacity: 1, xPercent: 0, yPercent: 0, clearProps: 'transform' })
+        }
+      })
     }, 350)
 
     return () => {

@@ -121,10 +121,10 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
       },
       {
         name: 'Shahd Al Madina',
-        tags: ['Libya'],
-        type: 'Food Production',
+        tags: ['UAE', 'FMCG'],
+        type: 'Food & Beverage Manufacturing',
         logo: '/assets/logos/shahd.png',
-        desc: 'Deals in: Consumer food products production.',
+        desc: 'UAE-based food and beverage manufacturer producing fruit juices, flavored milk, evaporated milk, and canned tuna for regional and international FMCG markets — built on strict hygiene protocols, standardised production lines, and international food-safety compliance, serving retail, wholesale, export, and institutional buyers.',
         link: null,
       },
       {
