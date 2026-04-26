@@ -323,6 +323,13 @@
   font-size: clamp(13px, 1vw, 18px);
   letter-spacing: 0.14em;
   color: rgba(255, 255, 255, 0.32);
+  /* Pulled out of the .contentRight flex flow and pinned to the
+     bottom-right corner of the card itself, so it stays at its original
+     visual position regardless of where the tags/body/link sit. The
+     right/bottom inset matches `.contentBottom` padding for alignment. */
+  position: absolute;
+  right: clamp(1.5em, 3vw, 3em);
+  bottom: clamp(1.5em, 3vw, 3em);
 }
 
 /* All sizing uses clamp() with vh/vw inputs above, so the layout scales
