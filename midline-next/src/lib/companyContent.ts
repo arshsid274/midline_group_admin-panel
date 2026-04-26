@@ -18,12 +18,19 @@ export interface CompanyContent {
   tagline?: string
   /** Two paragraphs that fill the right column of `sec_enc`. */
   overview: [string, string?]
+  /** Italic subtitle under the "For The Best Quality" heading (defaults
+   *  to the Ssangyong placeholder "With more masterpieces of Ssangyong…"). */
+  qualitySubtitle?: string
   /** sec_quality clip_wrap headline (defaults to Ssangyong copy). */
   missionHeading?: string
   /** sec_quality clip_wrap body. */
   missionBody?: string
   /** Up to five cards in `sec_portfolio` (stat + title + body). */
   facts?: PortfolioFact[]
+  /** Body copy under the "Do You Know That?" heading. Overrides the
+   *  Ssangyong placeholder ("Based on creative passion and challenges
+   *  for beauty…") so it can read in the company's own voice. */
+  knowThatBody?: string
   /** Vision quote shown in `sec_wonder` instead of the default tagline. */
   visionQuote?: string
 }
@@ -35,6 +42,8 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'Midline Aviation is a Dubai-based, award-winning private aviation company specialising in luxury private jet services, aircraft management, and aviation solutions. Headquartered in Dubai South Business Park, the company operates at the heart of one of the world\'s fastest-growing aviation hubs.',
       'We combine operational precision with personalised luxury — delivering seamless, safe, and efficient journeys tailored to elite clients and global businesses. Every flight is designed to exceed expectations, transforming travel into a bespoke experience.',
     ],
+    qualitySubtitle:
+      'Every aircraft, every crew, every flight — engineered to the highest international standards of safety, comfort, and operational precision.',
     missionHeading: 'Aviation as a refined experience.',
     missionBody:
       'More than transportation — we deliver luxury without compromise, absolute reliability, personalised client-centric solutions, and complete operational discretion. From private jet charter to MRO and global cargo logistics, every detail is engineered around the passenger.',
@@ -72,6 +81,8 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
     ],
     visionQuote:
       'To become a globally recognised leader in private aviation, setting new standards in luxury, safety, and personalised air travel.',
+    knowThatBody:
+      'Built on operational precision and uncompromising luxury, Midline Aviation transforms every journey into a bespoke experience — engineered for executives, governments, and global businesses who demand absolute reliability in the skies.',
   },
 
   'arco-oil-and-gas': {

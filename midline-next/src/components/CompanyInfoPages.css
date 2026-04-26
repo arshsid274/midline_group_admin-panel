@@ -60,3 +60,23 @@ button.cip-back:active{transform:scale(0.97)}
 #wrap.intro.company.about .sec_quality .first_wrap .img_cont .right .item.item4 {
   display: block;
 }
+
+
+/* ── Quality section: shift heading + subtitle 120 px up.
+ *
+ * Original `.first_wrap .top { padding-top: 160px }` leaves a large
+ * empty band above the "For The Best Quality" headline. Pulling the
+ * top padding down to 40 px shifts both the heading AND the italic
+ * subtitle paragraph 120 px upward (160 - 120 = 40), without touching
+ * the side photos, center video, layout, or animations. */
+#wrap.intro.company.about .sec_quality .first_wrap .top {
+  padding-top: 40px;
+}
+
+
+/* ── 20px margin-bottom on the two text elements (heading + subtitle)
+ * inside the "For The Best Quality" top block. */
+#wrap.intro.company.about .sec_quality .first_wrap .top strong.gilda,
+#wrap.intro.company.about .sec_quality .first_wrap .top p.suit {
+  margin-bottom: 20px;
+}

@@ -592,7 +592,11 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                     <div className="first_wrap">
                       <div className="top">
                         <strong className="gilda">For The<span className="m_on"></span> Best Quality</strong>
-                        <p className="suit">With more masterpieces of Ssangyong,<br />the world becomes more beautiful.</p>
+                        <p className="suit">
+                          {content?.qualitySubtitle ?? (
+                            <>With more masterpieces of Ssangyong,<br />the world becomes more beautiful.</>
+                          )}
+                        </p>
                       </div>
 
                       <div className="img_cont">
@@ -691,9 +695,13 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                           <span className="gilda">Know That?</span>
                         </div>
                         <p className="desc">
-                          Based on creative passion and challenges for beauty, <br className="m_none" />
-                          Ssangyong E &amp; C is creating a more beautiful <br className="tablet_on" />
-                          tomorrow than yesterday.
+                          {content?.knowThatBody ?? (
+                            <>
+                              Based on creative passion and challenges for beauty, <br className="m_none" />
+                              Ssangyong E &amp; C is creating a more beautiful <br className="tablet_on" />
+                              tomorrow than yesterday.
+                            </>
+                          )}
                         </p>
                       </div>
 
