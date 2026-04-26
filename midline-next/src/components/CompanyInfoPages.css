@@ -80,3 +80,18 @@ button.cip-back:active{transform:scale(0.97)}
 #wrap.intro.company.about .sec_quality .first_wrap .top p.suit {
   margin-bottom: 20px;
 }
+
+
+/* ── Hide the brand-logo plate at the top of `sec_enc` on every company
+ *    info page. The company name heading and the two description
+ *    paragraphs below it remain unchanged.                              */
+#wrap.intro.company.about .sec_enc .flex-item.right .cip-brand-logo {
+  display: none;
+}
+
+
+/* ── "Overview" eyebrow heading: switch from Ssangyong red (#a8001a)
+ *    to the Midline brand navy on every company info page.            */
+#wrap.intro.company.about .sub_visual .title h2 {
+  color: #053F6E;
+}
