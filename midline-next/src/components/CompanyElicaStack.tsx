@@ -50,67 +50,60 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
       const allWraps = section.querySelectorAll<HTMLElement>(`.${styles.imageWrap}`)
       gsap.set(allWraps, { clearProps: 'opacity,transform,xPercent,yPercent' })
 
-      // ── Single-timeline pin + fade per card ──
-      // Each non-last card gets ONE ScrollTrigger driving a timeline
-      // that runs pin/rotation/scale during the pin period, then a
-      // fade-out at the end. Why one trigger instead of two:
-      //
-      //   The previous design had a separate fade-out trigger that used
-      //   `content` as its trigger and `start: 'top -80%'`. Pin spacers
-      //   are not added until ScrollTrigger.refresh(). On back-navigation
-      //   with restored scroll (e.g. user was viewing card N pinned),
-      //   the fade-out trigger is created BEFORE pin spacers exist —
-      //   so it reads content's un-spaced document position and
-      //   evaluates "already past fade-end → progress=1 → autoAlpha:0"
-      //   for the card the user was viewing. That wrong state sticks
-      //   because invalidateOnRefresh re-reads autoAlpha:0 as the new
-      //   tween start value, producing "fade from 0 to 0".
-      //
-      //   With a single timeline keyed off the SLIDE (which never gets
-      //   pinned), there's nothing position-dependent to mis-evaluate
-      //   at creation, and the fade is just the last segment of the
-      //   pin's own scrub progress.
-      const vh = window.innerHeight
+      // ── PHASE 1: Pin triggers only ──
+      // Pin triggers must be created FIRST and ScrollTrigger.refresh()
+      // must run BEFORE the fade-out triggers, so that the fade-out
+      // triggers read post-pin-spacer layout when calculating their
+      // start/end positions. Without this two-phase split, the fade-out
+      // for the card the user was viewing pinned (on back-nav) reads
+      // un-spaced positions, evaluates as "past fade end → progress=1
+      // → autoAlpha:0", and that wrong state then sticks because
+      // invalidateOnRefresh re-reads autoAlpha:0 as the new start value.
       slides.forEach((slide, idx) => {
         const wrap    = slide.querySelector<HTMLElement>(`.${styles.wrap}`)
         const content = slide.querySelector<HTMLElement>(`.${styles.content}`)
         if (!wrap || !content) return
         if (idx === total - 1) return // last card: no pin, no fade
 
-        // Total scrub distance: 100vh pin + 80vh post-pin wait + 20vh
-        // fade. After pin ends (scroll +100vh), content begins to
-        // scroll naturally; another 80vh later (content top = -80vh
-        // from viewport top) the fade begins, completing at +20vh more.
-        const pinEnd = vh
-        const fadeStart = pinEnd + 0.8 * vh
-        const fadeEnd = fadeStart + 0.2 * vh
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            pin: wrap,
-            trigger: slide,
-            start: 'top 0%',
-            end: `+=${fadeEnd}`,
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
-        })
-
-        // 0 → pinEnd: rotate/scale during pin
-        tl.to(content, {
+        gsap.to(content, {
           rotationZ: 10 * (Math.random() - 0.1),
           scale: 0.9,
           rotationX: 40,
           ease: 'power1.in',
-          duration: pinEnd,
-        }, 0)
+          scrollTrigger: {
+            pin: wrap,
+            trigger: slide,
+            start: 'top 0%',
+            end: `+=${window.innerHeight}`,
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        })
+      })
 
-        // fadeStart → fadeEnd: fade out as next card takes over
-        tl.to(content, {
+      // Materialise pin spacers so subsequent triggers see stable layout.
+      ScrollTrigger.refresh()
+
+      // ── PHASE 2: Fade-out triggers ──
+      // Now `content.getBoundingClientRect().top` reads correct
+      // post-spacer positions for every card — no false "past fade end"
+      // evaluations on back-nav.
+      slides.forEach((slide, idx) => {
+        const content = slide.querySelector<HTMLElement>(`.${styles.content}`)
+        if (!content) return
+        if (idx === total - 1) return
+
+        gsap.to(content, {
           autoAlpha: 0,
           ease: 'power1.in',
-          duration: fadeEnd - fadeStart,
-        }, fadeStart)
+          scrollTrigger: {
+            trigger: content,
+            start: 'top -80%',
+            end: `+=${0.2 * window.innerHeight}`,
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        })
       })
 
       // ── Image/video parallax reveal ──
