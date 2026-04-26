@@ -106,6 +106,27 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
         })
       })
 
+      // ── PHASE 3: Final reset + refresh ──
+      // Force autoAlpha:1 across every card AFTER all triggers exist,
+      // then refresh once more so each scrub re-evaluates against a
+      // known-good baseline. invalidateOnRefresh causes scrubs to
+      // re-read start values: with all cards at autoAlpha:1, every
+      // tween captures "fade from 1 to 0". The refresh then applies
+      // each scrub's correct scroll-driven progress — pinned/visible
+      // cards get autoAlpha:1, cards mid-fade get the proper lerp,
+      // cards fully scrolled past get autoAlpha:0. This step is
+      // idempotent so it can't disturb correct state.
+      //
+      // Capture scroll BEFORE refresh and restore AFTER so layout
+      // shifts (pin spacer recalculation, font load, etc.) can't push
+      // the user's view away from the section they were viewing.
+      const savedScrollY = window.scrollY
+      gsap.set(allContents, { autoAlpha: 1 })
+      ScrollTrigger.refresh()
+      if (window.scrollY !== savedScrollY) {
+        window.scrollTo(0, savedScrollY)
+      }
+
       // ── Image/video parallax reveal ──
       // `once: true` so the entrance plays exactly once — without it, fast-scrolling
       // past a slide could leave its wraps stuck at the gsap.from start state
@@ -188,11 +209,50 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
     // resolved AND after browser scroll restoration has settled, so
     // triggers re-measure with stable coordinates.
     const refreshId = window.setTimeout(() => {
+      const savedY = window.scrollY
       ScrollTrigger.refresh()
+      if (window.scrollY !== savedY) window.scrollTo(0, savedY)
     }, 350)
+
+    // ── Scroll-position preservation across browser refresh / hard reload ──
+    // Save the user's scroll position to sessionStorage as they scroll.
+    // On mount, if a saved position exists for this exact pathname,
+    // restore it AFTER triggers + pin spacers have settled so the user
+    // lands back on the same card they were viewing.
+    const storageKey = `midline:scroll:${window.location.pathname}`
+
+    let saveTimer: number | null = null
+    const onScroll = () => {
+      if (saveTimer) window.clearTimeout(saveTimer)
+      saveTimer = window.setTimeout(() => {
+        try {
+          window.sessionStorage.setItem(storageKey, String(window.scrollY))
+        } catch {
+          // Ignore storage failures (private mode, quota, etc.)
+        }
+      }, 150)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    let restoreId: number | null = null
+    try {
+      const saved = window.sessionStorage.getItem(storageKey)
+      const savedY = saved ? parseInt(saved, 10) : NaN
+      if (Number.isFinite(savedY) && savedY > 0 && Math.abs(window.scrollY - savedY) > 4) {
+        restoreId = window.setTimeout(() => {
+          window.scrollTo(0, savedY)
+          ScrollTrigger.refresh()
+        }, 380)
+      }
+    } catch {
+      // Ignore storage failures
+    }
 
     return () => {
       window.clearTimeout(refreshId)
+      if (restoreId) window.clearTimeout(restoreId)
+      if (saveTimer) window.clearTimeout(saveTimer)
+      window.removeEventListener('scroll', onScroll)
       ctx.revert()
     }
   }, [])
