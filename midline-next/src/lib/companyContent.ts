@@ -1027,13 +1027,45 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
   'al-shifa': {
     tagline: 'Libya\'s registered pharmaceutical importer and distributor.',
     overview: [
-      'Al-Shiffa Pharma is a registered Libyan pharmaceutical company specialising in the import and distribution of medicines and medical supplies sourced from leading international and regional manufacturers — officially registered with the Ministry of Health and Medical Supply.',
-      'Headquartered in Benghazi with branches in Tripoli and Misrata plus authorised distributors nationwide, Al-Shiffa supports Libya\'s healthcare infrastructure with reliable supply, certified cold-chain warehousing, and a professional field team serving hospitals, clinics, and pharmacies.',
+      'Al-Shiffa Pharma is a registered Libyan pharmaceutical company specialising in the import and distribution of medicines and medical supplies sourced from leading international and regional manufacturers — officially registered with the Ministry of Health and Medical Supply, ensuring full compliance with national healthcare regulations.',
+      'Headquartered in Benghazi (Pharmaceutical Market, near Al-Ahly Club) with branches in Tripoli and Misrata plus authorised distributors across most regions of Libya, Al-Shiffa supports the country\'s healthcare infrastructure with reliable supply, certified warehousing, and a professional field team serving hospitals, clinics, and pharmacies.',
     ],
     qualitySubtitle:
-      'Every medicine, every shipment, every storage cycle — certified cold-chain warehousing, regulatory compliance, and trusted distribution serving Libyan hospitals, clinics, and pharmacies.',
+      'Every medicine, every shipment, every storage cycle — Food and Drug Control Center certified warehousing, regulatory compliance, and trusted distribution serving Libyan hospitals, clinics, and pharmacies.',
+    missionHeading: 'Reliable medicines for Libyan healthcare.',
+    missionBody:
+      'Al-Shiffa Pharma supplies safe, high-quality pharmaceutical products while supporting healthcare providers, ensuring consistent medicine availability, maintaining strict quality standards, and contributing to improved public health — backed by global pharma partnerships, nationwide distribution, and efficient logistics across the country.',
+    facts: [
+      {
+        stat: 'MOH',
+        title: 'Officially registered',
+        body: 'Registered with the Libyan Ministry of Health and Medical Supply — full compliance with national healthcare regulations and certified-manufacturer sourcing across every product line.',
+      },
+      {
+        stat: '3 branches',
+        title: 'Nationwide reach',
+        body: 'Headquartered in Benghazi (Pharmaceutical Market, near Al-Ahly Club) with branches in Tripoli and Misrata — plus authorised distributors covering most regions of Libya.',
+      },
+      {
+        stat: 'Certified',
+        title: 'Warehousing & cold chain',
+        body: 'Advanced storage facilities certified by the Food and Drug Control Center — controlled temperature, safety systems, and efficient stock management for product integrity.',
+      },
+      {
+        stat: 'Multi-line',
+        title: 'Product portfolio',
+        body: 'Prescription medicines, over-the-counter (OTC) products, medical consumables, healthcare essentials, and specialised pharmaceutical products — all meeting strict quality, safety, and regulatory requirements.',
+      },
+      {
+        stat: 'Field team',
+        title: 'Healthcare partnerships',
+        body: 'Qualified professionals engaging hospitals, clinics, physicians, pharmacies, and distributors — covering product promotion, medical information support, and long-term relationship building across public and private healthcare.',
+      },
+    ],
     knowThatBody:
       'From prescription medicines and OTC products to specialised pharmaceuticals and medical consumables, Al-Shiffa Pharma supplies hospitals, clinics, and pharmacies across Libya — three regional branches and authorised distributors backed by certified warehousing and a skilled field team.',
+    visionQuote:
+      'To become a leading pharmaceutical distribution company in Libya and the region — recognised for reliability, quality, and excellence in supporting healthcare across the country.',
   },
 }
 
