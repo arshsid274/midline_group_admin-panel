@@ -883,13 +883,45 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
   'acacus-juice-and-milk-factory': {
     tagline: 'Libya\'s next-generation food and beverage manufacturer.',
     overview: [
-      'Inaugurated in February 2024 in Benghazi, Acacus Juice & Milk Factory is one of Libya\'s most advanced industrial food manufacturing projects — built to strengthen local food security, reduce import dependence, and deliver high-quality locally produced beverages, dairy, oils, and canned goods.',
-      'Operating under the Shahd Al-Madina Food Industries Group with ISO 22000 and ISO 9001 certifications, Acacus combines UHT pasteurisation, automated filling lines, and a science-driven production approach — supporting Libya\'s industrial growth and consumer self-sufficiency.',
+      'Officially inaugurated on February 4, 2024 in Al-Talhiyah, Benghazi, Acacus Juice & Milk Factory is one of Libya\'s most advanced industrial food manufacturing projects — built to strengthen local food security, reduce import dependence, and deliver high-quality locally produced beverages, dairy, oils, and canned goods.',
+      'Operating under the Shahd Al-Madina Food Industries Group with ISO 22000:2018 and ISO 9001:2015 certifications, Acacus combines UHT pasteurisation, high-efficiency filling lines, and fully automated production — supporting Libya\'s industrial growth, employment, and consumer self-sufficiency.',
     ],
     qualitySubtitle:
       'Every juice, every dairy carton, every can — UHT pasteurisation, automated filling, and ISO 22000-certified safety across orange, mango, dairy, oils, and tuna.',
+    missionHeading: 'High-quality food, locally produced.',
+    missionBody:
+      'Acacus delivers internationally certified food and beverages from Benghazi — UHT-pasteurised dairy, multi-flavour juices, edible oils, and canned tuna — strengthening Libyan food security, reducing import dependence, and producing safe, nutritious products built on quality, innovation, sustainability, and operational efficiency.',
+    facts: [
+      {
+        stat: '2024',
+        title: 'Founded in Benghazi',
+        body: 'Officially inaugurated on February 4, 2024 in Al-Talhiyah, Benghazi — one of Libya\'s most advanced food manufacturing projects, backed by the Shahd Al-Madina Food Industries Group.',
+      },
+      {
+        stat: 'ISO 22000 / 9001',
+        title: 'Certified safety & quality',
+        body: 'ISO 22000:2018 Food Safety Management and ISO 9001:2015 Quality Management — covering hazard control, product consistency, and standardised processes across every line.',
+      },
+      {
+        stat: '7 flavours',
+        title: 'Juice production',
+        body: 'Orange, mango, guava, grape, pineapple, apple, and cocktail blends — produced through high-efficiency filling lines and UHT pasteurisation for extended shelf life.',
+      },
+      {
+        stat: 'UHT',
+        title: 'Advanced manufacturing',
+        body: 'Ultra-high-temperature pasteurisation extends shelf life while preserving nutritional value — paired with automated production lines that minimise human intervention for consistent, safe output.',
+      },
+      {
+        stat: 'Multi-category',
+        title: 'Food portfolio',
+        body: 'Beyond juices and dairy: full-cream, semi-skimmed and skimmed milk; flavored milk (chocolate, strawberry, banana); evaporated milk; sunflower and corn oil; plus tuna and chili tuna — all from one factory.',
+      },
+    ],
     knowThatBody:
       'From seven juice flavours and full-cream-to-skimmed dairy to flavored milks, evaporated milk, edible oils, and canned tuna, Acacus delivers a multi-category Libyan food portfolio — built on UHT, automation, and international food-safety standards since 2024.',
+    visionQuote:
+      'To become a leading food manufacturing company in Libya and North Africa — recognised for delivering high-quality products that meet international standards while strengthening consumer confidence in locally produced goods.',
   },
 
   'elbasateen-food-industries': {
