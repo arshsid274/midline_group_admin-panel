@@ -22,6 +22,7 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { SplitText } from 'gsap/SplitText'
 import type { CompanyContent } from '@/lib/companyContent'
 import { useMediaOverrides } from '@/components/MediaOverrideProvider'
+import LazyVideo, { deriveVideoAlternates } from '@/components/LazyVideo'
 import './CompanyInfoPages.css'
 
 const IMG = 'https://www.ssyenc.com/resources/en/images'
@@ -520,8 +521,10 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                                     style={overriddenLogo ? { backgroundImage: `url('${overriddenLogo}')`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' } : undefined}
                                   ></div>
                                   <div className="clip_mask">
-                                    <video key={logoCircleVideo} className="bg_video" autoPlay muted loop playsInline>
-                                      <source src={logoCircleVideo} type="video/mp4" />
+                                    <video key={logoCircleVideo} className="bg_video" autoPlay muted loop playsInline preload="metadata">
+                                      {deriveVideoAlternates(logoCircleVideo).sources.map((s) => (
+                                        <source key={s.src} src={s.src} type={s.type} />
+                                      ))}
                                     </video>
                                   </div>
                                 </div>
@@ -533,12 +536,12 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                             {overriddenLogo ? (
                               <div className="cip-brand">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img className="cip-brand-logo" src={overriddenLogo} alt={companyName ?? ''} />
+                                <img className="cip-brand-logo" src={overriddenLogo} alt={companyName ?? ''} loading="lazy" />
                                 {companyName && <h3 className="cip-brand-name">{companyName}</h3>}
                               </div>
                             ) : (
                               /* eslint-disable-next-line @next/next/no-img-element */
-                              <img src={`${IMG}/company/about/enc_logo.svg`} alt="SSANGYONG E&C" />
+                              <img src={`${IMG}/company/about/enc_logo.svg`} alt="SSANGYONG E&C" loading="lazy" />
                             )}
                             <div className="text_box">
                               <span className="line"></span>
@@ -586,7 +589,7 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                               <div key={n} className={`item item${n}`}>
                                 <div className={`img_wrap img${n}`}>
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img src={ov(`quality-left-${n}`) ?? `${IMG}/company/about/quality_left0${n}.jpg`} alt="" />
+                                  <img src={ov(`quality-left-${n}`) ?? `${IMG}/company/about/quality_left0${n}.jpg`} alt="" loading="lazy" />
                                 </div>
                               </div>
                             ))}
@@ -601,7 +604,7 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                               <div key={n} className={`item item${n}`}>
                                 <div className={`img_wrap img${n}`}>
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img src={ov(`quality-right-${n}`) ?? `${IMG}/company/about/quality_right0${n}.jpg`} alt="" />
+                                  <img src={ov(`quality-right-${n}`) ?? `${IMG}/company/about/quality_right0${n}.jpg`} alt="" loading="lazy" />
                                 </div>
                               </div>
                             ))}
@@ -613,9 +616,15 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                     <div className="clip_wrap">
                       <div className="clip_mask">
                         <div className="bg">
-                          <video key={qualityVideoSrc} loop muted playsInline poster={qualityPosterSrc}>
-                            <source src={qualityVideoSrc} type="video/mp4" />
-                          </video>
+                          <LazyVideo
+                            key={qualityVideoSrc}
+                            src={qualityVideoSrc}
+                            poster={qualityPosterSrc}
+                            loop
+                            muted
+                            autoPlay
+                            playsInline
+                          />
                         </div>
                       </div>
                       <div className="txt_box">
@@ -660,7 +669,7 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                                 {[1, 2, 3].map(n => (
                                   <div key={n} className="swiper-slide">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={ov(`rolling-${n}`) ?? `${IMG}/company/about/rolling0${n}.png`} alt="" />
+                                    <img src={ov(`rolling-${n}`) ?? `${IMG}/company/about/rolling0${n}.png`} alt="" loading="lazy" />
                                   </div>
                                 ))}
                               </div>
@@ -693,7 +702,7 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                               <div className="thumb">
                                 <div className="img_wrap">
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img src={ov(`portfolio-${i + 1}`) ?? `${IMG}/company/about/${card.img}`} alt="" />
+                                  <img src={ov(`portfolio-${i + 1}`) ?? `${IMG}/company/about/${card.img}`} alt="" loading="lazy" />
                                 </div>
                               </div>
                               <div className="text_wrap">

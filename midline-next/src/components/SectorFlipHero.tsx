@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useRef, useEffect, useLayoutEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { consumeFlipOrigin, type FlipOrigin } from '@/lib/flipState'
 import { useMediaSrc } from '@/components/MediaOverrideProvider'
+import { deriveVideoAlternates } from '@/components/LazyVideo'
 
 type Props = {
   slug: string
@@ -24,6 +25,7 @@ type Props = {
 export default function SectorFlipHero({ slug, plainTitle, blurb, companiesCount, icon, fallbackVideo, fallbackPoster }: Props) {
   const overriddenPoster = useMediaSrc(`sector:${slug}:photo`, fallbackPoster)
   const overriddenVideo  = useMediaSrc(`sector:${slug}:video`, fallbackVideo)
+
   const router   = useRouter()
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -31,6 +33,17 @@ export default function SectorFlipHero({ slug, plainTitle, blurb, companiesCount
   const [active,       setActive]       = useState(false)
   const [landed,       setLanded]       = useState(false)
   const [videoVisible, setVideoVisible] = useState(false)
+
+  // Build (lazy-friendly) WebM + MP4 source pairs for both render paths.
+  const staticVideo = useMemo(
+    () => (overriddenVideo ? deriveVideoAlternates(overriddenVideo) : null),
+    [overriddenVideo],
+  )
+  const flipVideoUrl = overriddenVideo ?? origin?.video
+  const flipVideo = useMemo(
+    () => (flipVideoUrl ? deriveVideoAlternates(flipVideoUrl) : null),
+    [flipVideoUrl],
+  )
 
   // Scroll to top BEFORE the browser paints — fires synchronously during commit,
   // so the user never sees the inherited scroll position from { scroll: false }.
@@ -74,8 +87,7 @@ export default function SectorFlipHero({ slug, plainTitle, blurb, companiesCount
 
   // Photo → video crossfade after FLIP lands
   useEffect(() => {
-    if (!active) return
-    if (!(overriddenVideo ?? origin?.video)) return
+    if (!active || !flipVideo) return
     const video = videoRef.current
     if (!video) return
     video.currentTime = 0
@@ -88,7 +100,7 @@ export default function SectorFlipHero({ slug, plainTitle, blurb, companiesCount
       clearTimeout(timer)
       video.removeEventListener('canplay', show)
     }
-  }, [active, origin, overriddenVideo])
+  }, [active, flipVideo])
 
   // ── Static fallback for direct URL navigation / back-navigation ───────────
   // Renders the same hero composition as the post-FLIP state: full-bleed
@@ -113,19 +125,22 @@ export default function SectorFlipHero({ slug, plainTitle, blurb, companiesCount
 
         {overriddenPoster && (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img className="sh-static-media" src={overriddenPoster} alt="" />
+          <img className="sh-static-media" src={overriddenPoster} alt="" loading="lazy" />
         )}
-        {overriddenVideo && (
+        {staticVideo && (
           <video
             className="sh-static-media sh-static-video"
-            src={overriddenVideo}
-            poster={overriddenPoster}
+            poster={overriddenPoster ?? staticVideo.poster}
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-          />
+          >
+            {staticVideo.sources.map((s) => (
+              <source key={s.src} src={s.src} type={s.type} />
+            ))}
+          </video>
         )}
       </div>
     )
@@ -208,17 +223,21 @@ export default function SectorFlipHero({ slug, plainTitle, blurb, companiesCount
         }}
       />
 
-      {(overriddenVideo ?? origin.video) && (
+      {flipVideo && (
         <video
           ref={videoRef}
           className="sh-video"
-          src={overriddenVideo ?? origin.video}
           preload="auto"
           muted
           playsInline
           loop
+          poster={flipVideo.poster}
           style={{ opacity: videoVisible ? 1 : 0 }}
-        />
+        >
+          {flipVideo.sources.map((s) => (
+            <source key={s.src} src={s.src} type={s.type} />
+          ))}
+        </video>
       )}
     </div>
   )

@@ -59,6 +59,22 @@ export async function clearAll(): Promise<Manifest> {
 async function unlinkPublicFile(publicUrl: string): Promise<void> {
   if (!publicUrl.startsWith('/uploads/')) return
   const abs = path.join(process.cwd(), 'public', publicUrl.replace(/^\//, ''))
+  await unlinkOne(abs)
+
+  // For transcoded videos the manifest stores the .webm and the .mp4 / .jpg
+  // siblings live next to it under the same basename. Sweep them on delete.
+  const m = abs.match(/^(.*)\.([^./]+)$/)
+  if (m) {
+    const [, base, ext] = m
+    const e = ext.toLowerCase()
+    const siblings: string[] = []
+    if (e === 'webm') siblings.push(`${base}.mp4`, `${base}.jpg`)
+    else if (e === 'mp4') siblings.push(`${base}.webm`, `${base}.jpg`)
+    await Promise.all(siblings.map(unlinkOne))
+  }
+}
+
+async function unlinkOne(abs: string): Promise<void> {
   try {
     await fs.unlink(abs)
   } catch (err: unknown) {
@@ -68,17 +84,40 @@ async function unlinkPublicFile(publicUrl: string): Promise<void> {
   }
 }
 
-export async function saveUpload(slotId: string, file: File): Promise<string> {
+export interface SavedUpload {
+  /** Public URL of the saved file, e.g. /uploads/sector/foo/photo/foo-1-1234.png */
+  url: string
+  /** Absolute filesystem path to the saved file. */
+  absPath: string
+  /** Public folder URL prefix (no trailing slash), e.g. /uploads/sector/foo/photo */
+  publicDir: string
+  /** Absolute folder path containing the file. */
+  absDir: string
+  /** Filename without extension, e.g. "foo-1-1234". */
+  basename: string
+  /** Extension including the dot, e.g. ".png" / ".mov". */
+  ext: string
+}
+
+export async function saveUpload(slotId: string, file: File): Promise<SavedUpload> {
   const { dir, filenameBase } = getSlotStoragePath(slotId)
-  const targetDir = dir ? path.join(UPLOADS_DIR, dir) : UPLOADS_DIR
-  await fs.mkdir(targetDir, { recursive: true })
+  const absDir = dir ? path.join(UPLOADS_DIR, dir) : UPLOADS_DIR
+  await fs.mkdir(absDir, { recursive: true })
   const ext = inferExt(file)
-  const filename = `${filenameBase}-${Date.now()}${ext}`
-  const abs = path.join(targetDir, filename)
+  const basename = `${filenameBase}-${Date.now()}`
+  const filename = `${basename}${ext}`
+  const absPath = path.join(absDir, filename)
   const buffer = Buffer.from(await file.arrayBuffer())
-  await fs.writeFile(abs, buffer)
-  const publicPath = dir ? `${dir}/${filename}` : filename
-  return `/uploads/${publicPath}`
+  await fs.writeFile(absPath, buffer)
+  const publicDir = dir ? `/uploads/${dir}` : '/uploads'
+  return {
+    url: `${publicDir}/${filename}`,
+    absPath,
+    publicDir,
+    absDir,
+    basename,
+    ext,
+  }
 }
 
 function inferExt(file: File): string {

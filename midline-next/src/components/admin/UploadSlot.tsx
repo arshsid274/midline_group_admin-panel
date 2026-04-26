@@ -33,6 +33,7 @@ export default function UploadSlot({ slotId, label, kind, currentUrl, fallbackUr
   const inputRef = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [processing, setProcessing] = useState(false)
   const [dragActive, setDragActive] = useState(false)
   const [justSucceeded, setJustSucceeded] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -62,9 +63,11 @@ export default function UploadSlot({ slotId, label, kind, currentUrl, fallbackUr
         onToast?.('error', `${label}: ${msg}`)
         return
       }
+      const isVideo = file.type.startsWith('video/')
       setError(null)
       setBusy(true)
       setProgress(0)
+      setProcessing(false)
 
       const xhr = new XMLHttpRequest()
       const fd = new FormData()
@@ -72,18 +75,29 @@ export default function UploadSlot({ slotId, label, kind, currentUrl, fallbackUr
       fd.append('file', file)
 
       xhr.upload.addEventListener('progress', (e) => {
-        if (e.lengthComputable) setProgress(e.loaded / e.total)
+        if (e.lengthComputable) {
+          const ratio = e.loaded / e.total
+          setProgress(ratio)
+          // Once the bytes are uploaded but the response isn't back, the
+          // server is transcoding (videos) or finalising (images).
+          if (ratio >= 1 && isVideo) setProcessing(true)
+        }
+      })
+      xhr.upload.addEventListener('load', () => {
+        if (isVideo) setProcessing(true)
       })
 
       xhr.onload = () => {
         setBusy(false)
+        setProcessing(false)
         try {
           const json = JSON.parse(xhr.responseText)
           if (xhr.status >= 200 && xhr.status < 300) {
             onManifestChange(json.manifest)
             setJustSucceeded(true)
             setTimeout(() => setJustSucceeded(false), 1400)
-            onToast?.('success', `Uploaded "${truncate(file.name, 32)}" → ${label}`)
+            const suffix = json.transcoded ? ' (transcoded → WebM + MP4)' : ''
+            onToast?.('success', `Uploaded "${truncate(file.name, 32)}" → ${label}${suffix}`)
           } else {
             const msg = json.error ?? `HTTP ${xhr.status}`
             setError(msg)
@@ -97,6 +111,7 @@ export default function UploadSlot({ slotId, label, kind, currentUrl, fallbackUr
 
       xhr.onerror = () => {
         setBusy(false)
+        setProcessing(false)
         setError('Network error')
         onToast?.('error', `${label}: network error`)
       }
@@ -272,18 +287,30 @@ export default function UploadSlot({ slotId, label, kind, currentUrl, fallbackUr
 
           <div className="mt-auto pt-3">
             {busy ? (
-              <div className="flex items-center gap-2">
-                <Loader2 className="w-3.5 h-3.5 text-[#053F6E] animate-spin" strokeWidth={2.25} aria-hidden="true" />
-                <div className="flex-1 h-1.5 rounded-full bg-[#053F6E]/10 overflow-hidden">
-                  <div
-                    className="h-full bg-[#053F6E] transition-[width] duration-150"
-                    style={{ width: showProgressLabel ? `${Math.round(progress * 100)}%` : '40%' }}
-                  />
+              processing ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-3.5 h-3.5 text-[#053F6E] animate-spin" strokeWidth={2.25} aria-hidden="true" />
+                  <div className="flex-1 h-1.5 rounded-full bg-[#053F6E]/10 overflow-hidden">
+                    <div className="h-full w-full bg-[#053F6E] animate-pulse" />
+                  </div>
+                  <span className="text-[10px] uppercase tracking-wider text-[#053F6E]/70">
+                    Transcoding…
+                  </span>
                 </div>
-                <span className="text-[10px] tabular-nums text-[#053F6E]/70 w-9 text-right">
-                  {showProgressLabel ? `${Math.round(progress * 100)}%` : '…'}
-                </span>
-              </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-3.5 h-3.5 text-[#053F6E] animate-spin" strokeWidth={2.25} aria-hidden="true" />
+                  <div className="flex-1 h-1.5 rounded-full bg-[#053F6E]/10 overflow-hidden">
+                    <div
+                      className="h-full bg-[#053F6E] transition-[width] duration-150"
+                      style={{ width: showProgressLabel ? `${Math.round(progress * 100)}%` : '40%' }}
+                    />
+                  </div>
+                  <span className="text-[10px] tabular-nums text-[#053F6E]/70 w-9 text-right">
+                    {showProgressLabel ? `${Math.round(progress * 100)}%` : '…'}
+                  </span>
+                </div>
+              )
             ) : locked ? (
               <span className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-[#053F6E]/65">
                 <Lock className="w-3 h-3" strokeWidth={2.25} aria-hidden="true" /> Locked — unlock to edit

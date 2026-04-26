@@ -67,8 +67,14 @@ body {
   font-size: 15px;
   line-height: 1.7;
   overflow-x: hidden;
-  cursor: none;
 }
+/*
+ * Hide the native cursor only on routes where SiteChrome mounts the custom
+ * cursor component (i.e. body has the .midline-shell class). On bare routes
+ * (`/admin/*`, `/companies/[slug]`) the custom cursor isn't rendered, so the
+ * native cursor must stay visible — otherwise the user sees nothing.
+ */
+body.midline-shell { cursor: none; }
 /*
  * CompanyInfoPages.css is a 2.3 MB Ssangyong-port stylesheet that ships rules
  * like `body { line-height: 1; font-family: 'SUIT'; color: #666; ... }` and a
@@ -1371,7 +1377,7 @@ footer { background: var(--deep); border-top: 1px solid rgba(255,255,255,.08); p
   .company-stack .company-card { min-height: 430px; padding: 24px }
   .company-card-title { font-size: 30px; margin-bottom: 28px }
   .company-stack .company-desc { font-size: 14px }
-  body { cursor: auto }
+  body, body.midline-shell { cursor: auto }
   #cursor, #cursor-trail { display: none }
 }
 

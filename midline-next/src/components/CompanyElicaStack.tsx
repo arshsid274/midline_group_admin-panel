@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import { type Company, companySlug } from '@/lib/data'
 import { useMediaOverrides } from '@/components/MediaOverrideProvider'
+import LazyVideo from '@/components/LazyVideo'
 import styles from './CompanyElicaStack.module.css'
 
 interface Props {
@@ -199,11 +200,14 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
                       <div key={idx} data-x={slot.dx} data-y={slot.dy} className={slot.wrap}>
                         {src ? (
                           isVideo ? (
-                            <video
-                              muted playsInline loop autoPlay
-                              className={styles.cardVideo}
+                            <LazyVideo
                               src={src}
                               poster={company.photo ?? undefined}
+                              muted
+                              playsInline
+                              loop
+                              autoPlay
+                              className={styles.cardVideo}
                             />
                           ) : (
                             // eslint-disable-next-line @next/next/no-img-element

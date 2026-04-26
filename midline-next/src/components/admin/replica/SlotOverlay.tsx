@@ -45,6 +45,7 @@ export default function SlotOverlay({
   const inputRef = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [processing, setProcessing] = useState(false)
   const [drag, setDrag] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [flash, setFlash] = useState(false)
@@ -73,26 +74,37 @@ export default function SlotOverlay({
         onToast?.('error', `${label}: ${msg}`)
         return
       }
+      const isVideo = file.type.startsWith('video/')
       setError(null)
       setBusy(true)
       setProgress(0)
+      setProcessing(false)
 
       const xhr = new XMLHttpRequest()
       const fd = new FormData()
       fd.append('slotId', slotId)
       fd.append('file', file)
       xhr.upload.addEventListener('progress', (e) => {
-        if (e.lengthComputable) setProgress(e.loaded / e.total)
+        if (e.lengthComputable) {
+          const ratio = e.loaded / e.total
+          setProgress(ratio)
+          if (ratio >= 1 && isVideo) setProcessing(true)
+        }
+      })
+      xhr.upload.addEventListener('load', () => {
+        if (isVideo) setProcessing(true)
       })
       xhr.onload = () => {
         setBusy(false)
+        setProcessing(false)
         try {
           const json = JSON.parse(xhr.responseText)
           if (xhr.status >= 200 && xhr.status < 300) {
             onManifestChange(json.manifest)
             setFlash(true)
             setTimeout(() => setFlash(false), 1200)
-            onToast?.('success', `${label}: replaced`)
+            const suffix = json.transcoded ? ' (transcoded)' : ''
+            onToast?.('success', `${label}: replaced${suffix}`)
           } else {
             const m = json.error ?? `HTTP ${xhr.status}`
             setError(m)
@@ -104,6 +116,7 @@ export default function SlotOverlay({
       }
       xhr.onerror = () => {
         setBusy(false)
+        setProcessing(false)
         setError('Network error')
         onToast?.('error', `${label}: network error`)
       }
@@ -249,10 +262,21 @@ export default function SlotOverlay({
       {busy && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-white/85 backdrop-blur-sm">
           <Loader2 className="w-5 h-5 text-[#053F6E] animate-spin" strokeWidth={2.25} />
-          <div className="w-3/4 max-w-[160px] h-1.5 rounded-full bg-[#053F6E]/10 overflow-hidden">
-            <div className="h-full bg-[#053F6E] transition-[width] duration-150" style={{ width: `${Math.max(8, Math.round(progress * 100))}%` }} />
-          </div>
-          <span className="text-[10px] tabular-nums text-[#053F6E]/70">{Math.round(progress * 100)}%</span>
+          {processing ? (
+            <>
+              <div className="w-3/4 max-w-[160px] h-1.5 rounded-full bg-[#053F6E]/10 overflow-hidden">
+                <div className="h-full w-full bg-[#053F6E] animate-pulse" />
+              </div>
+              <span className="text-[10px] uppercase tracking-wider text-[#053F6E]/70">Transcoding…</span>
+            </>
+          ) : (
+            <>
+              <div className="w-3/4 max-w-[160px] h-1.5 rounded-full bg-[#053F6E]/10 overflow-hidden">
+                <div className="h-full bg-[#053F6E] transition-[width] duration-150" style={{ width: `${Math.max(8, Math.round(progress * 100))}%` }} />
+              </div>
+              <span className="text-[10px] tabular-nums text-[#053F6E]/70">{Math.round(progress * 100)}%</span>
+            </>
+          )}
         </div>
       )}
 
