@@ -927,13 +927,45 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
   'elbasateen-food-industries': {
     tagline: 'Libya\'s trusted canned-food manufacturer since 2006.',
     overview: [
-      'Established in 2006 in Benghazi, Al Basateen Food Industries Company is a leading Libyan canned-food manufacturer producing 30,000 cans per day under the flagship "Saed" brand — fava beans, chickpeas, harissa, tomato paste, and more for nationwide distribution.',
+      'Established in 2006 and headquartered in Al-Talhiyah, Benghazi (Pharmaceutical Market area, near Al-Ahly Club), Al Basateen Food Industries Company is a leading Libyan canned-food manufacturer producing 30,000 cans per day under the flagship "Saed" brand — fava beans, chickpeas, harissa, tomato paste, and more for nationwide distribution.',
       'With over 18 years of experience, integrated Osmanli Makina production lines, and a complete legumes-canning system, the company combines hygienic processing, modern automation, and trusted brand recognition across both urban and regional Libyan retail markets.',
     ],
     qualitySubtitle:
       'Every can, every harvest, every batch — Osmanli Makina production lines, hygienic processing, and consistent quality across the trusted Saed brand portfolio.',
+    missionHeading: 'High-quality canned food, made in Libya.',
+    missionBody:
+      'Al Basateen produces safe, nutritious, and affordable canned-food products for Libyan consumers — combining careful raw-material selection, hygienic processing, modern automation, and durable packaging. Investing in advanced technology, expanding product lines, and supporting Libyan food security through industrial excellence and trusted local manufacturing.',
+    facts: [
+      {
+        stat: '2006',
+        title: 'Founded in Benghazi',
+        body: 'Headquartered in Al-Talhiyah, Benghazi — Pharmaceutical Market area near Al-Ahly Club — with strong accessibility to commercial and distribution hubs.',
+      },
+      {
+        stat: '30,000',
+        title: 'Cans per day',
+        body: 'High-performance machinery delivering continuous, reliable supply at scale — designed for high efficiency, minimal waste, and consistent output across every product line.',
+      },
+      {
+        stat: 'Saed',
+        title: 'Flagship brand',
+        body: 'All products marketed under the "Saed" brand — known for strong recognition in the Libyan market, wide retail distribution, and a reputation for quality, reliability, and affordability.',
+      },
+      {
+        stat: 'Osmanli Makina',
+        title: 'Tomato paste line',
+        body: 'Strategic partnership with Osmanli Makina delivering a fully integrated tomato-paste production line — end-to-end processing from fresh tomatoes to finished paste with automated efficiency.',
+      },
+      {
+        stat: 'Multi-product',
+        title: 'Canned food portfolio',
+        body: 'Fava beans, fava beans with seasoning (Foul Mix), chickpeas, green peas, beans (various types), harissa, and tomato paste — produced through a complete legumes-canning line with consistent hygiene standards.',
+      },
+    ],
     knowThatBody:
       'From fava beans and chickpeas to harissa, peas, and tomato paste, Al Basateen Food Industries produces 30,000 cans daily under the Saed brand — 18+ years of canning experience supporting Libya\'s food security with modern automation since 2006.',
+    visionQuote:
+      'To strengthen our position as a leading food manufacturing company in Libya by delivering products that meet international standards while expanding production capabilities and product offerings.',
   },
 
   'maraina-al-khadra-for-feed-industry-co': {
