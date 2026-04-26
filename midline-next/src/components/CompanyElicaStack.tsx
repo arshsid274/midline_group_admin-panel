@@ -169,35 +169,8 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
     // 1 on back-navigation (cards stuck invisible). Refresh once after
     // the fade has resolved AND after browser scroll restoration has
     // settled, so the triggers re-measure with stable coordinates.
-    // After the refresh, run a failsafe pass: any element currently in
-    // the viewport that is somehow still invisible gets force-reset to
-    // visible. This catches any once-trigger that missed its onEnter.
     const refreshId = window.setTimeout(() => {
       ScrollTrigger.refresh()
-
-      const section = sectionRef.current
-      if (!section) return
-      const contents = section.querySelectorAll<HTMLElement>(`.${styles.content}`)
-      const wraps = section.querySelectorAll<HTMLElement>(`.${styles.imageWrap}`)
-      const vh = window.innerHeight
-
-      contents.forEach((el) => {
-        const r = el.getBoundingClientRect()
-        const inView = r.bottom > 0 && r.top < vh
-        if (!inView) return
-        if (parseFloat(getComputedStyle(el).opacity) < 0.95) {
-          gsap.set(el, { autoAlpha: 1 })
-        }
-      })
-
-      wraps.forEach((el) => {
-        const r = el.getBoundingClientRect()
-        const inView = r.bottom > 0 && r.top < vh
-        if (!inView) return
-        if (parseFloat(getComputedStyle(el).opacity) < 0.95) {
-          gsap.set(el, { opacity: 1, xPercent: 0, yPercent: 0, clearProps: 'transform' })
-        }
-      })
     }, 350)
 
     return () => {
