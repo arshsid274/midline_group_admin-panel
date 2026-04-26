@@ -1012,18 +1012,6 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'To become a leading provider of animal feed solutions in Libya and the region — recognised for excellence in quality, innovation, and sustainable agricultural support.',
   },
 
-  'abco': {
-    tagline: 'Drilling, procurement, and engineering for the energy sector.',
-    overview: [
-      'Al Bareqa Co (ABCO) is a Dubai-based oil and gas company specialising in drilling operations, well maintenance, procurement, and engineering consultancy services — operating from Burlington Tower in Business Bay with focused activity across Libya\'s upstream sector.',
-      'Backed by partnerships with global industry leaders including Sinopec, Kerui Group, Coenesp, Wefic, Leen Electric, and High Trend, ABCO delivers integrated drilling, supply chain, and technical advisory services with a strong commitment to safety, quality, and operational continuity.',
-    ],
-    qualitySubtitle:
-      'Every well, every shipment, every service — drilling operations, well maintenance, procurement, and engineering consultancy delivered with strict safety and operational standards.',
-    knowThatBody:
-      'From Libya drills and well maintenance to procurement and engineering consultancy, ABCO operates across the upstream oil and gas sector — partnered with Sinopec, Kerui, Coenesp, and Wefic Group, headquartered at Burlington Tower in Dubai Business Bay.',
-  },
-
   'al-shifa': {
     tagline: 'Libya\'s registered pharmaceutical importer and distributor.',
     overview: [

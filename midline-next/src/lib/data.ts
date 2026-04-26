@@ -184,21 +184,6 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
         desc: 'Global oilfield and industrial solutions provider supplying drilling rigs, wellheads, OCTG, compressors, valves, pumps, and downhole equipment — with an international sourcing network spanning China, UK, Turkey, Italy, Spain, France, and Libya.',
         link: 'https://www.arcooilgas.com',
       },
-      {
-        name: 'ANCO',
-        tags: ['Oil & Gas'],
-        type: 'Oil & Gas Services',
-        desc: 'Deals in: Oil and gas operational support and services.',
-        link: null,
-      },
-      {
-        name: 'ABCO',
-        tags: ['Libya', 'UAE'],
-        type: 'Oil & Gas Services',
-        logo: '/assets/logos/abco.png',
-        desc: 'Libya-focused oil and gas company specializing in drilling operations, well maintenance, procurement, and engineering consultancy — operating from Burlington Tower, Dubai, with industry partners including Sinopec, Kerui Group, and Coenesp.',
-        link: null,
-      },
     ],
   },
   perfumes: {
@@ -306,7 +291,7 @@ export const MIDLINE_STRUCTURE: Array<{
     key: 'oilgas',
     name: 'Oil & Gas Service',
     markets: 'UAE',
-    companies: ['Arco Oil and Gas', 'ANCO', 'ABCO'],
+    companies: ['Arco Oil and Gas'],
   },
   {
     key: 'food',
