@@ -944,8 +944,40 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
     ],
     qualitySubtitle:
       'Every formulation, every batch, every farm — science-driven nutrition, raw-material quality control, and customised feed solutions tailored to Libyan livestock and poultry.',
+    missionHeading: 'Performance-oriented feed for sustainable agriculture.',
+    missionBody:
+      'Green Pastures delivers scientifically formulated, performance-oriented feed solutions tailored to Libyan livestock and poultry — built on three pillars: authenticity, innovation, and sustainability. Optimising feed efficiency, reducing production costs, and supporting long-term farm profitability through expert consultancy, raw-material quality assurance, and continuous formulation improvement.',
+    facts: [
+      {
+        stat: '70%',
+        title: 'Of production cost is feed',
+        body: 'Nutrition accounts for up to 70% of production costs and 90% of rearing success — Green Pastures focuses on performance-oriented formulations that maximise efficiency and ROI for livestock and poultry producers.',
+      },
+      {
+        stat: 'Balanced',
+        title: 'Complete-nutrition feed',
+        body: 'Formulated to meet complete nutritional requirements across multiple livestock and poultry categories — supporting optimal growth, health, and productivity throughout the rearing cycle.',
+      },
+      {
+        stat: 'Custom',
+        title: 'Local-breed formulations',
+        body: 'Customised feed formulations tailored to local breeds, regional climate challenges, and environmental conditions — optimised for cost-efficiency, productivity, and farm-level performance.',
+      },
+      {
+        stat: 'Advisory',
+        title: 'On-farm consultancy',
+        body: 'Expert nutritional consultancy covering feed planning, livestock management strategies, and economic optimisation — guiding farmers toward maximum returns and sustainable production.',
+      },
+      {
+        stat: 'QC + R&D',
+        title: 'Raw material assurance',
+        body: 'High-quality sourcing standards, strict raw-material quality control, advanced formulation techniques, and continuous product development aligned with international best practices.',
+      },
+    ],
     knowThatBody:
       'From balanced feed for poultry and livestock to customised nutrition programmes and on-farm consultancy, Maraina Al-Khadra (Green Pastures) optimises feed efficiency for Libyan producers — boosting productivity, profitability, and sustainable agricultural growth across the country.',
+    visionQuote:
+      'To become a leading provider of animal feed solutions in Libya and the region — recognised for excellence in quality, innovation, and sustainable agricultural support.',
   },
 
   'abco': {
