@@ -531,6 +531,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Experimentation with unique scent compositions, integration of modern fragrance technologies, and alignment with global trends while preserving heritage — dynamic and competitive.',
       },
     ],
+    qualitySubtitle:
+      'Every ingredient, every blend, every bottle — composed with premium oriental richness, modern technique, and uncompromising luxury craftsmanship.',
+    knowThatBody:
+      'Built on the fusion of Arabic olfactory heritage and French perfumery craft, Ard Al Teeb composes oud-rich and contemporary scents — luxury fragrances designed to be experienced, remembered, and worn as personal identity.',
     visionQuote:
       'To redefine luxury perfumery — combining Arabic fragrance heritage with French craftsmanship to create scents that are not only worn, but remembered.',
   },
@@ -576,6 +580,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Founded in 2017 — built through market insight, dedication, and commitment to excellence into one of Libya\'s most trusted beauty names.',
       },
     ],
+    qualitySubtitle:
+      'Every product, every store, every customer — curated global brands, well-trained staff, and a consistent standard of beauty across Libya.',
+    knowThatBody:
+      'From flagship stores in Benghazi to 150+ retail points across every major Libyan city, Ard Alteeba & AlGamal makes premium beauty and fragrance accessible — backed by curated global brands and trusted nationwide service.',
     visionQuote:
       'To become a leading beauty and fragrance company in Libya and the region — recognised for innovation, accessibility, and excellence.',
   },
