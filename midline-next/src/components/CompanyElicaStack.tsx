@@ -288,6 +288,17 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
                   <span className={styles.cardNumber}>
                     {String(i + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
                   </span>
+                  <button
+                    type="button"
+                    className={styles.openButton}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      router.push(`/companies/${slug}`)
+                    }}
+                    aria-label={`Open ${company.name} page`}
+                  >
+                    Open <span aria-hidden>→</span>
+                  </button>
                 </div>
 
               </div>

@@ -329,13 +329,48 @@
   font-size: clamp(13px, 1vw, 18px);
   letter-spacing: 0.14em;
   color: rgba(255, 255, 255, 0.32);
-  /* Pulled out of the .contentRight flex flow and pinned to the
-     bottom-right corner of the card itself, so it stays at its original
-     visual position regardless of where the tags/body/link sit. The
-     right/bottom inset matches `.contentBottom` padding for alignment. */
+  /* Pinned to the bottom-LEFT corner of the card. The Open button
+     takes the bottom-right slot. */
+  position: absolute;
+  left: clamp(1.5em, 3vw, 3em);
+  bottom: clamp(1.5em, 3vw, 3em);
+}
+
+/* Glassmorphic "Open" button — mirrors the Back button (.sc-back) styling
+ * in globals.css, but lives inside the card and is anchored to the
+ * bottom-right corner where the index used to sit. */
+.openButton {
   position: absolute;
   right: clamp(1.5em, 3vw, 3em);
   bottom: clamp(1.5em, 3vw, 3em);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 22px;
+  background: rgba(80, 207, 254, 0.08);
+  border: 1px solid rgba(80, 207, 254, 0.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #50CFFE;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .openButton:hover {
+    background: rgba(80, 207, 254, 0.14);
+    border-color: rgba(80, 207, 254, 0.50);
+  }
+}
+
+.openButton:active {
+  transform: scale(0.97);
 }
 
 /* All sizing uses clamp() with vh/vw inputs above, so the layout scales
