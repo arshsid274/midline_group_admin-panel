@@ -181,34 +181,40 @@
   flex-shrink: 0;
 }
 
-/* Primary: static in flex flow — tall square rising from bottom.
- * vh-based so all three photos scale together with the card height
- * (card itself is 80vh on the wrap). */
+/* Cluster: primary anchors bottom-left as the biggest box; secondary
+ * and tertiary float up-and-right at decreasing sizes (matches the
+ * Ssangyong / Ard Al Teeb reference). All sizing is vw-based so the
+ * cluster scales with CARD WIDTH (card is 88vw) — caps keep it from
+ * dwarfing big monitors or overflowing tablets. */
+
+/* Primary (1st): largest square, anchored to bottom-left. */
 .imageWrapMain {
   position: static;
-  height: clamp(26vh, 38vh, 46vh);
+  height: clamp(180px, 22vw, 500px);
   aspect-ratio: 1 / 1;
   /* flat bottom so it bleeds to card edge */
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-/* Secondary: floats up and to the right of primary */
+/* Secondary (2nd): mid-sized, floats up-and-right of primary. */
 .imageWrapSecondary {
   position: absolute;
-  width: clamp(22vh, 31vh, 38vh);
-  height: clamp(26vh, 37vh, 45vh);
-  top: clamp(-13vh, -9.5vh, -7vh);
-  right: clamp(-30vh, -22vh, -16vh);
+  width: clamp(150px, 18vw, 410px);
+  height: clamp(180px, 21vw, 480px);
+  top: clamp(-110px, -5vw, -45px);
+  right: clamp(-280px, -12vw, -110px);
 }
 
-/* Tertiary: floats further right and higher */
+/* Tertiary (3rd): smallest, floats further up-and-right.
+ * Total cluster width (primary + tertiary's right offset) is kept
+ * around 44vw so it stays clear of the info panel on every viewport. */
 .imageWrapTertiary {
   position: absolute;
-  width: clamp(18vh, 25vh, 30vh);
-  height: clamp(22vh, 30vh, 37vh);
-  top: clamp(-22vh, -17vh, -12vh);
-  right: clamp(-54vh, -42vh, -30vh);
+  width: clamp(120px, 14vw, 320px);
+  height: clamp(150px, 17vw, 380px);
+  top: clamp(-200px, -9vw, -85px);
+  right: clamp(-500px, -22vw, -200px);
 }
 
 .cardVideo,
