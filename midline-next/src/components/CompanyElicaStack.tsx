@@ -50,59 +50,67 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
       const allWraps = section.querySelectorAll<HTMLElement>(`.${styles.imageWrap}`)
       gsap.set(allWraps, { clearProps: 'opacity,transform,xPercent,yPercent' })
 
-      // ── PHASE 1: Create PIN triggers only ──
-      // Pin triggers insert pin-spacer divs that extend document height.
-      // We must create all pins FIRST, then refresh to materialise the
-      // spacers, before creating the fade-out triggers — otherwise the
-      // fade-outs evaluate `content.getBoundingClientRect().top` against
-      // the un-spaced layout, which on back-nav with restored scroll
-      // produces "past fade-out end" (progress=1, autoAlpha:0) for the
-      // card the user was viewing pinned. That state then sticks because
-      // invalidateOnRefresh re-reads the wrong autoAlpha:0 as the new
-      // tween start value.
+      // ── Single-timeline pin + fade per card ──
+      // Each non-last card gets ONE ScrollTrigger driving a timeline
+      // that runs pin/rotation/scale during the pin period, then a
+      // fade-out at the end. Why one trigger instead of two:
+      //
+      //   The previous design had a separate fade-out trigger that used
+      //   `content` as its trigger and `start: 'top -80%'`. Pin spacers
+      //   are not added until ScrollTrigger.refresh(). On back-navigation
+      //   with restored scroll (e.g. user was viewing card N pinned),
+      //   the fade-out trigger is created BEFORE pin spacers exist —
+      //   so it reads content's un-spaced document position and
+      //   evaluates "already past fade-end → progress=1 → autoAlpha:0"
+      //   for the card the user was viewing. That wrong state sticks
+      //   because invalidateOnRefresh re-reads autoAlpha:0 as the new
+      //   tween start value, producing "fade from 0 to 0".
+      //
+      //   With a single timeline keyed off the SLIDE (which never gets
+      //   pinned), there's nothing position-dependent to mis-evaluate
+      //   at creation, and the fade is just the last segment of the
+      //   pin's own scrub progress.
+      const vh = window.innerHeight
       slides.forEach((slide, idx) => {
         const wrap    = slide.querySelector<HTMLElement>(`.${styles.wrap}`)
         const content = slide.querySelector<HTMLElement>(`.${styles.content}`)
         if (!wrap || !content) return
         if (idx === total - 1) return // last card: no pin, no fade
 
-        gsap.to(content, {
-          rotationZ: 10 * (Math.random() - 0.1),
-          scale: 0.9,
-          rotationX: 40,
-          ease: 'power1.in',
+        // Total scrub distance: 100vh pin + 80vh post-pin wait + 20vh
+        // fade. After pin ends (scroll +100vh), content begins to
+        // scroll naturally; another 80vh later (content top = -80vh
+        // from viewport top) the fade begins, completing at +20vh more.
+        const pinEnd = vh
+        const fadeStart = pinEnd + 0.8 * vh
+        const fadeEnd = fadeStart + 0.2 * vh
+
+        const tl = gsap.timeline({
           scrollTrigger: {
             pin: wrap,
             trigger: slide,
             start: 'top 0%',
-            end: `+=${window.innerHeight}`,
+            end: `+=${fadeEnd}`,
             scrub: true,
             invalidateOnRefresh: true,
           },
         })
-      })
 
-      // Materialise the pin spacers so subsequent triggers read correct
-      // post-spacer document positions.
-      ScrollTrigger.refresh()
+        // 0 → pinEnd: rotate/scale during pin
+        tl.to(content, {
+          rotationZ: 10 * (Math.random() - 0.1),
+          scale: 0.9,
+          rotationX: 40,
+          ease: 'power1.in',
+          duration: pinEnd,
+        }, 0)
 
-      // ── PHASE 2: Create fade-out triggers with stable layout ──
-      slides.forEach((slide, idx) => {
-        const content = slide.querySelector<HTMLElement>(`.${styles.content}`)
-        if (!content) return
-        if (idx === total - 1) return
-
-        gsap.to(content, {
+        // fadeStart → fadeEnd: fade out as next card takes over
+        tl.to(content, {
           autoAlpha: 0,
           ease: 'power1.in',
-          scrollTrigger: {
-            trigger: content,
-            start: 'top -80%',
-            end: `+=${0.2 * window.innerHeight}`,
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
-        })
+          duration: fadeEnd - fadeStart,
+        }, fadeStart)
       })
 
       // ── Image/video parallax reveal ──
@@ -181,46 +189,13 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
       })
     }, sectionRef)
 
-    // The ROOT bug for back-nav stuck-invisible cards (only manifests in
-    // sectors with many cards because more cards = more pin spacers
-    // mis-evaluated):
-    //
-    //   1. ScrollTriggers are created in a loop. Pin spacers only exist
-    //      AFTER ScrollTrigger.refresh() — so during creation, every
-    //      slide reads its UN-spaced document position.
-    //   2. On back-nav with restored scroll (e.g. scroll=250vh while
-    //      viewing pinned Acacus on /sectors/food-industry), the
-    //      fade-out scrub for Acacus's content evaluates content.top at
-    //      120vh - 250vh = -130vh — past its fade-out end (-100vh).
-    //      Scrub progress = 1 → autoAlpha:0 painted on the DOM.
-    //   3. Refresh fires at +350ms and corrects positions (with pin
-    //      spacers, content is at 220vh → -30vh from viewport, progress
-    //      should be 0). BUT invalidateOnRefresh re-reads the tween's
-    //      START value from the CURRENT rendered state — which is now
-    //      autoAlpha:0 (wrongly painted in step 2). The tween records
-    //      "fade from 0 to 0" and progress=0 keeps autoAlpha at 0.
-    //
-    // Fix: re-assert the visible baseline (autoAlpha:1) IMMEDIATELY
-    // before refresh, so when invalidateOnRefresh re-reads start values
-    // it captures autoAlpha:1. After refresh, manually re-apply each
-    // scrub's progress so the corrected range produces the displayed
-    // state cards mid-fade get their mid-fade alpha; pinned cards get 1;
-    // scrolled-past cards get 0.
+    // PageTransition wraps the page in a framer-motion opacity 0→1 fade.
+    // ScrollTrigger captured trigger positions during that fade — a window
+    // where layout can be subtly off. Refresh once after the fade has
+    // resolved AND after browser scroll restoration has settled, so
+    // triggers re-measure with stable coordinates.
     const refreshId = window.setTimeout(() => {
-      const section = sectionRef.current
-      if (section) {
-        const contents = section.querySelectorAll<HTMLElement>(`.${styles.content}`)
-        gsap.set(contents, { autoAlpha: 1 })
-      }
-
       ScrollTrigger.refresh()
-
-      ScrollTrigger.getAll().forEach((st) => {
-        const cfgScrub = (st.vars as { scrub?: boolean | number } | undefined)?.scrub
-        if (cfgScrub && st.animation) {
-          st.animation.progress(st.progress, false)
-        }
-      })
     }, 350)
 
     return () => {
