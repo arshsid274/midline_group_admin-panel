@@ -47,6 +47,7 @@ next-env.d.ts
 # Vercel
 .vercel
 
-# Admin media overrides (local one-time uploads)
-/public/uploads/
-/public/media-overrides.json
+# Admin lock state — local-only, irrelevant to visitors.
+# `public/uploads/` and `public/media-overrides.json` ARE committed so the
+# admin's local edits ship to Vercel via git → static-CDN delivery.
+/public/media-preservation.json
