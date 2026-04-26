@@ -89,9 +89,9 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
       },
       {
         name: 'Majestic Elite Properties',
-        tags: ['UAE'],
-        type: 'Real Estate',
-        desc: 'Deals in: Real estate development and property management.',
+        tags: ['Dubai, UAE', 'Marina Royale Tower'],
+        type: 'Real Estate Investment & Asset Management',
+        desc: 'Dynamic UAE real estate group covering buying, selling, leasing, and full property management of residential and commercial assets — including a self-owned portfolio of premium residential towers headlined by Marina Royale Tower in Dubai Marina, with a customer-centric model serving investors, owners, and tenants alongside long-term asset and portfolio optimisation.',
         link: null,
       },
     ],
