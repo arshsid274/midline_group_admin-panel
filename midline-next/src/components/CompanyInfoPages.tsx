@@ -237,7 +237,16 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
       setProgress(1)
 
       const initSwiper = () => {
-        if (swiperInitialized.current || typeof (window as any).Swiper === 'undefined') return
+        if (swiperInitialized.current) return
+        // Swiper script is loaded async from a CDN — keep polling until it
+        // shows up on `window.Swiper`. Without this retry, the very first
+        // call (~100 ms after the section enters view) often runs before
+        // the CDN finishes downloading, the function bails, and rotation
+        // never starts.
+        if (typeof (window as any).Swiper === 'undefined') {
+          setTimeout(initSwiper, 100)
+          return
+        }
         swiperInitialized.current = true
         new (window as any).Swiper('.titleSwiper .swiper', {
           slidesPerView: 1,
@@ -246,6 +255,10 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
           touchRatio: 0, allowTouchMove: false,
         })
       }
+      // Kick off on mount so rotation starts even if the user never scrolls
+      // to the trigger point (or lands on the page already past it). The
+      // retry loop above handles the script-not-loaded-yet case.
+      initSwiper()
 
       const tl = gsap.timeline({
         defaults: { duration: 1 },
