@@ -35,11 +35,20 @@
   position: relative;
   width: 94%;
   height: 97vh;
-  margin-bottom: 10em;
+  /* Tight handoff: pin spacer (100vh) + slide height (97vh) → 3vh margin
+     puts the next card's top exactly at the viewport top as the previous
+     pin ends. Anything larger (e.g. the original 10em) leaves a visible
+     gap between cards mid-scroll. */
+  margin-bottom: 3vh;
   margin-left: auto;
   margin-right: auto;
   padding-top: 1em;
   padding-bottom: 1em;
+}
+
+/* The last card isn't pinned — it needs breathing room before the footer. */
+.slide:last-child {
+  margin-bottom: 10em;
 }
 
 /* GSAP pins this — perspective matches ElicaCards' 250vw */
@@ -308,7 +317,8 @@
 }
 
 @media (max-width: 768px) {
-  .slide { height: 98vh; margin-bottom: 5em }
+  .slide { height: 98vh; margin-bottom: 2vh }
+  .slide:last-child { margin-bottom: 5em }
   .stickyLabel { padding: 20px 24px }
   .contentTop { padding: 2em 1.25em 0; gap: 12px }
   .companyLogo { max-height: 48px }

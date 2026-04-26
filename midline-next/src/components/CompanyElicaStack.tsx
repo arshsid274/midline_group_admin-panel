@@ -35,6 +35,15 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
       const slides = section.querySelectorAll<HTMLElement>(`.${styles.slide}`)
       const total = slides.length
 
+      // Defensive reset on (re)mount. On back-navigation from a company
+      // detail page, scroll position is restored before PageTransition's
+      // opacity fade settles. Without this reset, leftover/stale state
+      // could leave a card invisible (autoAlpha:0). Force a clean slate
+      // — ScrollTrigger.refresh() below will then re-apply the right
+      // values for the current scroll position.
+      const allContents = section.querySelectorAll<HTMLElement>(`.${styles.content}`)
+      gsap.set(allContents, { autoAlpha: 1, clearProps: 'transform' })
+
       slides.forEach((slide, idx) => {
         const wrap    = slide.querySelector<HTMLElement>(`.${styles.wrap}`)
         const content = slide.querySelector<HTMLElement>(`.${styles.content}`)
@@ -54,6 +63,7 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
             start: 'top 0%',
             end: `+=${window.innerHeight}`,
             scrub: true,
+            invalidateOnRefresh: true,
           },
         })
 
@@ -66,6 +76,7 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
             start: 'top -80%',
             end: `+=${0.2 * window.innerHeight}`,
             scrub: true,
+            invalidateOnRefresh: true,
           },
         })
       })
@@ -79,15 +90,33 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
         const wraps = slide.querySelectorAll<HTMLElement>(`.${styles.imageWrap}`)
         if (!wraps.length) return
 
-        gsap.from(wraps, {
+        const tweenConfig = {
           xPercent: (_i: number, el: Element) => parseFloat(el.getAttribute('data-x') ?? '0') || 0,
           yPercent: (_i: number, el: Element) => parseFloat(el.getAttribute('data-y') ?? '0') || 0,
           opacity: 0,
           ease: 'expo.out',
           duration: 1.8,
           stagger: 0.1,
-          scrollTrigger: { trigger: slide, start: 'top center', once: true },
-        })
+        } as const
+
+        if (total === 1) {
+          // Single-card sector: the slide sits ~1.7vh down the page, so a
+          // scrollTrigger of `top center` would never fire for a user who
+          // lands on the page and doesn't scroll — leaving wraps stuck at
+          // opacity:0. Play the reveal on mount instead. The animation
+          // intent ("reveal images as user encounters them") is preserved;
+          // for a single card the encounter IS mount.
+          gsap.from(wraps, { ...tweenConfig, delay: 0.1 })
+        } else {
+          // Multi-card sectors: reveal as the slide enters view. `top 80%`
+          // fires earlier than `top center` so the animation completes
+          // before the slide reaches its pin position — no flash of
+          // empty card.
+          gsap.from(wraps, {
+            ...tweenConfig,
+            scrollTrigger: { trigger: slide, start: 'top 80%', once: true },
+          })
+        }
       })
 
       // ── Split-text heading reveal ──
@@ -119,7 +148,20 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
       })
     }, sectionRef)
 
-    return () => ctx.revert()
+    // PageTransition wraps the page in a framer-motion opacity 0→1 fade.
+    // ScrollTrigger captured trigger positions during that fade — a window
+    // where layout can be subtly off, leading to scrub progress landing at
+    // 1 on back-navigation (cards stuck invisible). Refresh once after
+    // the fade has resolved AND after browser scroll restoration has
+    // settled, so the triggers re-measure with stable coordinates.
+    const refreshId = window.setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 350)
+
+    return () => {
+      window.clearTimeout(refreshId)
+      ctx.revert()
+    }
   }, [])
 
   return (

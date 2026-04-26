@@ -14,7 +14,6 @@ export const dynamic = 'force-dynamic'
 // read-only — but the directive is harmless on platforms that ignore it.)
 export const maxDuration = 300
 
-const MAX_BYTES = 200 * 1024 * 1024 // 200 MB
 const LOCKED_MSG = 'Changes are preserved — click "Unlock to edit" before uploading or deleting.'
 
 export async function POST(req: Request): Promise<Response> {
@@ -37,9 +36,6 @@ export async function POST(req: Request): Promise<Response> {
   }
   if (!(file instanceof File) || file.size === 0) {
     return NextResponse.json({ error: 'Missing file' }, { status: 400 })
-  }
-  if (file.size > MAX_BYTES) {
-    return NextResponse.json({ error: `File exceeds ${MAX_BYTES} bytes` }, { status: 413 })
   }
   if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
     return NextResponse.json({ error: `Unsupported MIME: ${file.type}` }, { status: 415 })

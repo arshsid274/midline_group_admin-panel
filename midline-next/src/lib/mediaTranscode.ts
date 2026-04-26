@@ -13,18 +13,21 @@ export interface TranscodeResult {
 }
 
 /**
- * Re-encode a freshly-uploaded video into:
- *   <basename>.webm   — VP9, CRF 32, no audio (smallest)
- *   <basename>.mp4    — H.264, CRF 24, +faststart, no audio (universal fallback)
- *   <basename>.jpg    — single frame at 1s, decent quality (poster)
+ * Re-encode a freshly-uploaded video into web-optimised, low-bitrate
+ * outputs sized for hero/card display:
+ *   <basename>.webm   — VP9, CRF 36, no audio, capped 1280×720@30fps
+ *   <basename>.mp4    — H.264, CRF 28, +faststart, no audio, capped 1280×720@30fps
+ *   <basename>.jpg    — single frame at 1s, JPEG q 6 (~80–150 KB)
  *
- * The original input file is read from `inputAbsPath` and is NOT touched —
- * the caller is responsible for unlinking the original after this resolves
- * (so a re-upload to a slot whose previous file extension matched one of
- * our outputs doesn't leave orphans).
+ * Aggressive defaults so even a 4K source gets shrunk to a deploy-friendly
+ * size (~1–8 MB for typical hero clips). The scale filter only ever
+ * downscales — smaller inputs stay at their native size so we don't
+ * upscale and waste bytes.
  *
- * Runs the three jobs in parallel; on a typical Mac M-series this finishes
- * a 30 MB hero video in ~20–60 seconds.
+ * The original input is read from `inputAbsPath` and is NOT touched —
+ * the caller unlinks it after this resolves.
+ *
+ * Runs the three ffmpeg jobs in parallel.
  */
 export async function transcodeVideo(
   inputAbsPath: string,
@@ -37,23 +40,34 @@ export async function transcodeVideo(
   const mp4AbsPath = path.join(outputDir, `${basename}.mp4`)
   const posterAbsPath = path.join(outputDir, `${basename}.jpg`)
 
+  // `min(1280,iw)` clamps width down (never up). `-2` on height keeps
+  // aspect ratio and forces an even number for codec compatibility.
+  const scaleFilter = "scale='min(1280,iw)':-2:flags=bicubic"
+
   await Promise.all([
     runFfmpeg([
       '-i', inputAbsPath,
+      '-vf', scaleFilter,
+      '-r', '30',
       '-c:v', 'libvpx-vp9',
-      '-crf', '32',
+      '-crf', '36',
       '-b:v', '0',
       '-deadline', 'good',
-      '-cpu-used', '2',
+      '-cpu-used', '4',
       '-row-mt', '1',
+      '-tile-columns', '2',
       '-an',
       '-y', webmAbsPath,
     ]),
     runFfmpeg([
       '-i', inputAbsPath,
+      '-vf', scaleFilter,
+      '-r', '30',
       '-c:v', 'libx264',
-      '-crf', '24',
-      '-preset', 'medium',
+      '-crf', '28',
+      '-preset', 'fast',
+      '-profile:v', 'main',
+      '-level', '4.0',
       '-movflags', '+faststart',
       '-pix_fmt', 'yuv420p',
       '-an',
@@ -63,7 +77,8 @@ export async function transcodeVideo(
       '-i', inputAbsPath,
       '-ss', '1',
       '-frames:v', '1',
-      '-q:v', '4',
+      '-vf', scaleFilter,
+      '-q:v', '6',
       '-y', posterAbsPath,
     ]),
   ])

@@ -24,9 +24,9 @@ const ACCEPT_BY_KIND: Record<SlotKind, string> = {
 }
 
 const HINT_BY_KIND: Record<SlotKind, string> = {
-  photo: 'JPG, PNG, WebP up to 200 MB',
-  video: 'MP4, MOV, WebM up to 200 MB',
-  'image-or-video': 'Image or video up to 200 MB',
+  photo: 'JPG, PNG or WebP — any size',
+  video: 'Any video format, any size — auto-compressed to web-ready WebM + MP4',
+  'image-or-video': 'Image or video, any size',
 }
 
 export default function UploadSlot({ slotId, label, kind, currentUrl, fallbackUrl, onManifestChange, onToast, locked }: Props) {

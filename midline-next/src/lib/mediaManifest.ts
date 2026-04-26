@@ -1,5 +1,8 @@
 import 'server-only'
-import { promises as fs } from 'node:fs'
+import { promises as fs, createWriteStream } from 'node:fs'
+import { Readable } from 'node:stream'
+import { pipeline } from 'node:stream/promises'
+import type { ReadableStream as NodeReadableStream } from 'node:stream/web'
 import path from 'node:path'
 import { getSlotStoragePath } from './mediaSlots'
 
@@ -107,8 +110,13 @@ export async function saveUpload(slotId: string, file: File): Promise<SavedUploa
   const basename = `${filenameBase}-${Date.now()}`
   const filename = `${basename}${ext}`
   const absPath = path.join(absDir, filename)
-  const buffer = Buffer.from(await file.arrayBuffer())
-  await fs.writeFile(absPath, buffer)
+
+  // Stream the upload directly to disk instead of buffering it in memory.
+  // Lets the admin accept arbitrarily large videos without OOM-ing the
+  // dev server.
+  const webStream = file.stream() as unknown as NodeReadableStream<Uint8Array>
+  await pipeline(Readable.fromWeb(webStream), createWriteStream(absPath))
+
   const publicDir = dir ? `/uploads/${dir}` : '/uploads'
   return {
     url: `${publicDir}/${filename}`,
