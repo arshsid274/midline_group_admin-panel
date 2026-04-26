@@ -8,16 +8,16 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  padding: 28px 60px;
+  padding: clamp(20px, 2.4vh, 32px) clamp(24px, 4vw, 72px);
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: clamp(10px, 1vw, 16px);
   pointer-events: none;
 }
 
 .stickyLabelText {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: clamp(11px, 0.78vw, 14px);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--slate);
@@ -25,7 +25,7 @@
 
 .stickyCounter {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: clamp(11px, 0.78vw, 14px);
   letter-spacing: 0.12em;
   color: rgba(62, 99, 126, 0.55);
 }
@@ -33,13 +33,16 @@
 /* Each company slide — matches ElicaCards .elica__slide */
 .slide {
   position: relative;
-  width: 94%;
-  height: 97vh;
-  /* Tight handoff: pin spacer (100vh) + slide height (97vh) → 3vh margin
-     puts the next card's top exactly at the viewport top as the previous
-     pin ends. Anything larger (e.g. the original 10em) leaves a visible
-     gap between cards mid-scroll. */
-  margin-bottom: 3vh;
+  width: 88%;
+  height: 100vh;
+  /* Card is held at 80vh tall (set on .wrap below) and aligned to the
+     BOTTOM of the slide via flex-end, so the top 20vh of the slide is
+     transparent — the page's sticky label and header read clearly above
+     the card during pin. The pin distance is 100vh and the slide is now
+     100vh too, so margin-bottom is 0 for a seamless card-to-card handoff. */
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 0;
   margin-left: auto;
   margin-right: auto;
   padding-top: 1em;
@@ -55,7 +58,9 @@
 .wrap {
   perspective: 250vw;
   width: 100%;
-  height: 100%;
+  /* Fixed 80vh height so the card visually occupies the bottom 80vh of the
+     100vh slide. Flex parent (.slide) bottom-aligns this. */
+  height: 80vh;
 }
 
 /* The card — position:absolute inset:0, matches ElicaCards .elica__content */
@@ -91,17 +96,17 @@
 .contentTop {
   position: relative;
   z-index: 1;
-  padding: 3em 3em 0;
+  padding: clamp(1.5em, 3vw, 3em) clamp(1.5em, 3vw, 3em) 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
+  gap: clamp(10px, 1vw, 16px);
 }
 
 .logoTitleRow {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: clamp(12px, 1.4vw, 24px);
   flex-wrap: nowrap;
 }
 
@@ -109,18 +114,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 18px;
+  padding: clamp(8px, 0.8vw, 14px) clamp(12px, 1.2vw, 22px);
   background: rgba(255, 255, 255, 0.09);
   border: 1px solid rgba(255, 255, 255, 0.16);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-radius: 14px;
+  border-radius: clamp(10px, 0.9vw, 16px);
 }
 
 .companyLogo {
   display: block;
-  max-height: 68px;
-  max-width: 210px;
+  max-height: clamp(40px, 5vh, 76px);
+  max-width: clamp(140px, 14vw, 230px);
   width: auto;
   height: auto;
   object-fit: contain;
@@ -128,7 +133,7 @@
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: clamp(10px, 0.78vw, 14px);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(80, 207, 254, 0.85);
@@ -137,7 +142,9 @@
 
 .heading {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.5vw, 4.2rem);
+  /* Already fluid — widened the range so big screens read larger and
+     tablets still fit. */
+  font-size: clamp(1.7rem, 3.6vw, 4.4rem);
   font-weight: 400;
   line-height: 1.04;
   color: #fff;
@@ -155,8 +162,8 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 0 3em 3em;
-  gap: 28px;
+  padding: 0 clamp(1.5em, 3vw, 3em) clamp(1.5em, 3vw, 3em);
+  gap: clamp(20px, 2vw, 36px);
 }
 
 /* ── Media cluster ── */
@@ -174,10 +181,12 @@
   flex-shrink: 0;
 }
 
-/* Primary: static in flex flow — tall square rising from bottom */
+/* Primary: static in flex flow — tall square rising from bottom.
+ * vh-based so all three photos scale together with the card height
+ * (card itself is 80vh on the wrap). */
 .imageWrapMain {
   position: static;
-  height: 46vh;
+  height: clamp(26vh, 38vh, 46vh);
   aspect-ratio: 1 / 1;
   /* flat bottom so it bleeds to card edge */
   border-bottom-left-radius: 0;
@@ -187,19 +196,19 @@
 /* Secondary: floats up and to the right of primary */
 .imageWrapSecondary {
   position: absolute;
-  width: 37vh;
-  height: 45vh;
-  top: -11.7vh;
-  right: -27vh;
+  width: clamp(22vh, 31vh, 38vh);
+  height: clamp(26vh, 37vh, 45vh);
+  top: clamp(-13vh, -9.5vh, -7vh);
+  right: clamp(-30vh, -22vh, -16vh);
 }
 
 /* Tertiary: floats further right and higher */
 .imageWrapTertiary {
   position: absolute;
-  width: 30vh;
-  height: 37vh;
-  top: -22vh;
-  right: -50.1vh;
+  width: clamp(18vh, 25vh, 30vh);
+  height: clamp(22vh, 30vh, 37vh);
+  top: clamp(-22vh, -17vh, -12vh);
+  right: clamp(-54vh, -42vh, -30vh);
 }
 
 .cardVideo,
@@ -220,7 +229,7 @@
   justify-content: center;
   background: radial-gradient(circle at center, rgba(80, 207, 254, 0.14) 0%, rgba(4, 46, 82, 0.55) 100%);
   font-family: var(--font-display);
-  font-size: 1.8rem;
+  font-size: clamp(1.4rem, 1.8vw, 2.2rem);
   font-weight: 300;
   color: rgba(80, 207, 254, 0.35);
   letter-spacing: 0.15em;
@@ -240,25 +249,25 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 460px;
+  gap: clamp(12px, 1vw, 22px);
+  max-width: clamp(360px, 30vw, 540px);
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: clamp(6px, 0.5vw, 10px);
 }
 
 .tag {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: clamp(10px, 0.7vw, 13px);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(80, 207, 254, 0.9);
   background: rgba(80, 207, 254, 0.10);
   border: 1px solid rgba(80, 207, 254, 0.22);
-  padding: 6px 14px;
+  padding: clamp(5px, 0.4vw, 8px) clamp(10px, 0.9vw, 18px);
   border-radius: 999px;
 }
 
@@ -269,8 +278,8 @@
 }
 
 .body {
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: clamp(13px, 0.95vw, 17px);
+  line-height: 1.75;
   color: rgba(255, 255, 255, 0.75);
   margin: 0;
 }
@@ -278,13 +287,13 @@
 .link {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: clamp(5px, 0.5vw, 9px);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: clamp(11px, 0.78vw, 14px);
   letter-spacing: 0.10em;
   color: #fff;
   text-decoration: none;
-  padding: 11px 22px;
+  padding: clamp(9px, 0.8vw, 14px) clamp(16px, 1.5vw, 28px);
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.28);
   background: rgba(255, 255, 255, 0.06);
@@ -305,26 +314,24 @@
 
 .cardNumber {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: clamp(11px, 0.85vw, 15px);
   letter-spacing: 0.14em;
   color: rgba(255, 255, 255, 0.30);
 }
 
-@media (max-width: 991px) {
-  .imageWrapSecondary { width: 30vh; height: 37vh; top: -11.2vh; right: -18.2vh }
-  .imageWrapTertiary  { width: 28vh; height: 34vh; top: -23.4vh; right: -33.2vh }
-  .imageWrapMain { height: 28vh }
-}
+/* All sizing uses clamp() with vh/vw inputs above, so the layout scales
+ * fluidly from tablet (~768 px) up through laptop (1280–1440) to large
+ * monitors (1920+). Only mobile-specific layout shifts remain below. */
 
 @media (max-width: 768px) {
-  .slide { height: 98vh; margin-bottom: 2vh }
+  .slide {
+    height: 98vh;
+    display: block;          /* drop the flex-end bottom alignment on mobile */
+    margin-bottom: 2vh;
+  }
+  .wrap { height: 96vh; }    /* near-full-viewport on phones */
   .slide:last-child { margin-bottom: 5em }
-  .stickyLabel { padding: 20px 24px }
-  .contentTop { padding: 2em 1.25em 0; gap: 12px }
-  .companyLogo { max-height: 48px }
-  .logoPlate { padding: 9px 13px }
-  .contentBottom { flex-direction: column; padding: 0 1.25em 1.25em; align-items: flex-start }
-  .heading { font-size: clamp(1.6rem, 5vw, 2.4rem) }
+  .contentBottom { flex-direction: column; align-items: flex-start }
   .imageWrapSecondary { display: none }
   .imageWrapTertiary  { display: none }
 }
