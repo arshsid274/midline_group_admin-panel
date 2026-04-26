@@ -65,10 +65,10 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
       },
       {
         name: 'Saegon Contraction LLC',
-        tags: ['UAE'],
-        type: 'Construction',
+        tags: ['UAE', 'Est. 2016'],
+        type: 'General Contracting',
         logo: '/assets/logos/saegon.png',
-        desc: 'Deals in: Building and construction projects across the UAE.',
+        desc: 'UAE building contractor since 2016 delivering residential, commercial, and industrial projects nationwide with a 200+ skilled workforce — masons, steel fixers, carpenters, site technicians, and supervisors — backed by experienced engineers, structured execution teams, and strict adherence to UAE construction regulations, material quality control, and on-site safety standards.',
         link: null,
       },
       {
@@ -81,10 +81,10 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
       },
       {
         name: 'Al Sarh Engineering Consultant',
-        tags: ['UAE'],
-        type: 'Engineering Consultancy',
+        tags: ['UAE', 'Est. 2023'],
+        type: 'Multidisciplinary Engineering Consultancy',
         logo: '/assets/logos/al-sarh.png',
-        desc: 'Deals in: Technical engineering advisory, project management, and quality assurance.',
+        desc: 'UAE engineering consultancy founded in 2023 delivering integrated architectural, structural, interior, and landscape design alongside on-site engineering supervision for residential, commercial, and mixed-use developments — combining conceptual design, authority submission drawings, multidisciplinary coordination, quality-assurance inspections, and construction-feasibility optimisation under one roof.',
         link: null,
       },
       {
