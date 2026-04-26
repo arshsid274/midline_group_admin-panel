@@ -153,10 +153,10 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
       },
       {
         name: 'Al-Dabousiya Mineral Water Bottling Company',
-        tags: ['Libya'],
-        type: 'Water Bottling',
+        tags: ['Libya', 'Est. 2018'],
+        type: 'Mineral Water Bottling',
         logo: '/assets/logos/aldabousiya.png',
-        desc: 'Deals in: Mineral water bottling and distribution.',
+        desc: 'Libyan mineral water bottling company since 2018 producing naturally sourced, premium-quality drinking water — operating under ISO 9001, ISO 22000, GMP, and HACCP standards with UV plus ozone twin sterilisation, a fully automated bottling line, and an in-house microbiological lab for continuous quality testing.',
         link: null,
       },
       {
