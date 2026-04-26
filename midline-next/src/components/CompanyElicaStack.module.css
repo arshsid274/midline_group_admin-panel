@@ -245,29 +245,35 @@
 }
 
 /* ── Right side — info panel ── */
+/* Was bottom-anchored (inherits align-items: flex-end from .contentBottom),
+ * which left a large empty band above it on tall cards. Centering it on
+ * the cross-axis pulls it up into the middle of the card, just below the
+ * heading — fills the empty space the user circled. */
 .contentRight {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 1vw, 22px);
-  max-width: clamp(360px, 30vw, 540px);
+  gap: clamp(14px, 1.2vw, 26px);
+  max-width: clamp(380px, 32vw, 580px);
+  align-self: center;
+  padding-top: clamp(2vh, 4vh, 8vh);
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(6px, 0.5vw, 10px);
+  gap: clamp(7px, 0.55vw, 12px);
 }
 
 .tag {
   font-family: var(--font-mono);
-  font-size: clamp(10px, 0.7vw, 13px);
+  font-size: clamp(11px, 0.82vw, 15px);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(80, 207, 254, 0.9);
   background: rgba(80, 207, 254, 0.10);
   border: 1px solid rgba(80, 207, 254, 0.22);
-  padding: clamp(5px, 0.4vw, 8px) clamp(10px, 0.9vw, 18px);
+  padding: clamp(6px, 0.5vw, 10px) clamp(12px, 1.1vw, 22px);
   border-radius: 999px;
 }
 
@@ -278,22 +284,22 @@
 }
 
 .body {
-  font-size: clamp(13px, 0.95vw, 17px);
-  line-height: 1.75;
-  color: rgba(255, 255, 255, 0.75);
+  font-size: clamp(15px, 1.1vw, 20px);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
   margin: 0;
 }
 
 .link {
   display: inline-flex;
   align-items: center;
-  gap: clamp(5px, 0.5vw, 9px);
+  gap: clamp(6px, 0.55vw, 10px);
   font-family: var(--font-mono);
-  font-size: clamp(11px, 0.78vw, 14px);
+  font-size: clamp(12px, 0.9vw, 16px);
   letter-spacing: 0.10em;
   color: #fff;
   text-decoration: none;
-  padding: clamp(9px, 0.8vw, 14px) clamp(16px, 1.5vw, 28px);
+  padding: clamp(10px, 0.9vw, 16px) clamp(18px, 1.7vw, 32px);
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.28);
   background: rgba(255, 255, 255, 0.06);
@@ -314,9 +320,9 @@
 
 .cardNumber {
   font-family: var(--font-mono);
-  font-size: clamp(11px, 0.85vw, 15px);
+  font-size: clamp(13px, 1vw, 18px);
   letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.30);
+  color: rgba(255, 255, 255, 0.32);
 }
 
 /* All sizing uses clamp() with vh/vw inputs above, so the layout scales
