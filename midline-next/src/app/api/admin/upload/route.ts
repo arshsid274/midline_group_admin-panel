@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 import { isValidSlotId } from '@/lib/mediaSlots'
 import { readManifest, removeEntry, saveUpload, setEntry } from '@/lib/mediaManifest'
 import { isLocked } from '@/lib/mediaPreservation'
-import { transcodeVideo } from '@/lib/mediaTranscode'
+import { processPhoto, transcodeVideo } from '@/lib/mediaTranscode'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -44,8 +44,31 @@ export async function POST(req: Request): Promise<Response> {
   const saved = await saveUpload(slotId, file)
   let publicUrl = saved.url
   let transcoded: { webm: string; mp4: string; poster: string } | undefined
+  let optimized: { url: string; format: 'jpeg' | 'webp' } | undefined
 
-  if (file.type.startsWith('video/')) {
+  if (file.type.startsWith('image/')) {
+    // Mirror the video pipeline: rename the upload to a temp `.input.<ext>`
+    // sibling so processPhoto's output never collides with its input.
+    const tempInputPath = path.join(saved.absDir, `${saved.basename}.input${saved.ext}`)
+    await fs.rename(saved.absPath, tempInputPath)
+
+    let result
+    try {
+      result = await processPhoto(tempInputPath, saved.absDir, saved.basename)
+    } catch (err: unknown) {
+      await fs.unlink(tempInputPath).catch(() => {})
+      const msg = err instanceof Error ? err.message : String(err)
+      return NextResponse.json({ error: `Photo processing failed: ${msg}` }, { status: 500 })
+    }
+
+    await fs.unlink(tempInputPath).catch(() => {})
+
+    publicUrl = `${saved.publicDir}/${result.outFilename}`
+    optimized = {
+      url: publicUrl,
+      format: result.outExt === '.webp' ? 'webp' : 'jpeg',
+    }
+  } else if (file.type.startsWith('video/')) {
     // ffmpeg refuses to read and write the same path. Rename the upload
     // to a `.input<ext>` sibling so the WebM/MP4/JPG outputs use the
     // canonical basename.
@@ -79,7 +102,7 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const manifest = await setEntry(slotId, publicUrl)
-  return NextResponse.json({ slotId, url: publicUrl, manifest, transcoded })
+  return NextResponse.json({ slotId, url: publicUrl, manifest, transcoded, optimized })
 }
 
 export async function DELETE(req: Request): Promise<Response> {

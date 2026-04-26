@@ -40,3 +40,23 @@ button.cip-back:active{transform:scale(0.97)}
 .sec_enc .flex-item.right .cip-brand-logo{display:block;width:auto;height:auto;max-width:max(calc(280px * var(--base-ratio)), calc(calc(280 / var(--base-size)) * var(--base-percent)));max-height:max(calc(140px * var(--base-ratio)), calc(calc(140 / var(--base-size)) * var(--base-percent)));object-fit:contain;opacity:1;transform:none;transition:none;background:rgba(255,255,255,.04);border-radius:12px;padding:16px 20px}
 .sec_enc .flex-item.right .cip-brand-name{font-family:"Gilda Display","Cormorant Garamond",serif;font-size:max(calc(40px * var(--base-ratio)), calc(calc(40 / var(--base-size)) * var(--base-percent)));line-height:1.15;letter-spacing:-.01em;font-weight:400;color:#fff;margin:0}
 @media (max-width:1024px){.sec_enc .flex-item.right .cip-brand-logo{max-height:max(calc(96px * var(--base-ratio)), calc(calc(96 / var(--base-size)) * var(--base-percent)));padding:12px 14px}.sec_enc .flex-item.right .cip-brand-name{font-size:max(calc(28px * var(--base-ratio)), calc(calc(28 / var(--base-size)) * var(--base-percent)))}}
+
+
+/* ── "For The Best Quality" — force-show all 8 side images.
+ *
+ * The leaked Ssangyong CSS hides 4 of the 8 quality side items by default
+ * (`item1` + `item3` on the left, `item2` + `item4` on the right). Their
+ * about page intentionally renders only 4 photos, but our admin renders
+ * all 8 slots and lets users upload to any of them — uploads to the
+ * hidden slots silently never appear. Override with higher specificity
+ * so every slot the admin exposes is visible. */
+#wrap.intro.company.about .sec_quality .first_wrap .img_cont .left .item.item1,
+#wrap.intro.company.about .sec_quality .first_wrap .img_cont .left .item.item2,
+#wrap.intro.company.about .sec_quality .first_wrap .img_cont .left .item.item3,
+#wrap.intro.company.about .sec_quality .first_wrap .img_cont .left .item.item4,
+#wrap.intro.company.about .sec_quality .first_wrap .img_cont .right .item.item1,
+#wrap.intro.company.about .sec_quality .first_wrap .img_cont .right .item.item2,
+#wrap.intro.company.about .sec_quality .first_wrap .img_cont .right .item.item3,
+#wrap.intro.company.about .sec_quality .first_wrap .img_cont .right .item.item4 {
+  display: block;
+}

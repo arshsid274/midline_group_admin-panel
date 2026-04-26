@@ -78,13 +78,14 @@ export default function UploadSlot({ slotId, label, kind, currentUrl, fallbackUr
         if (e.lengthComputable) {
           const ratio = e.loaded / e.total
           setProgress(ratio)
-          // Once the bytes are uploaded but the response isn't back, the
-          // server is transcoding (videos) or finalising (images).
-          if (ratio >= 1 && isVideo) setProcessing(true)
+          // Once bytes are fully uploaded but the response hasn't returned,
+          // the server is doing post-upload work — transcoding video or
+          // re-encoding photo. Either way, show "Processing…".
+          if (ratio >= 1) setProcessing(true)
         }
       })
       xhr.upload.addEventListener('load', () => {
-        if (isVideo) setProcessing(true)
+        setProcessing(true)
       })
 
       xhr.onload = () => {
@@ -96,7 +97,11 @@ export default function UploadSlot({ slotId, label, kind, currentUrl, fallbackUr
             onManifestChange(json.manifest)
             setJustSucceeded(true)
             setTimeout(() => setJustSucceeded(false), 1400)
-            const suffix = json.transcoded ? ' (transcoded → WebM + MP4)' : ''
+            const suffix = json.transcoded
+              ? ' (transcoded → WebM + MP4)'
+              : json.optimized
+              ? ` (optimised → ${json.optimized.format.toUpperCase()})`
+              : ''
             onToast?.('success', `Uploaded "${truncate(file.name, 32)}" → ${label}${suffix}`)
           } else {
             const msg = json.error ?? `HTTP ${xhr.status}`
@@ -294,7 +299,7 @@ export default function UploadSlot({ slotId, label, kind, currentUrl, fallbackUr
                     <div className="h-full w-full bg-[#053F6E] animate-pulse" />
                   </div>
                   <span className="text-[10px] uppercase tracking-wider text-[#053F6E]/70">
-                    Transcoding…
+                    {kind === 'video' ? 'Transcoding…' : 'Optimising…'}
                   </span>
                 </div>
               ) : (

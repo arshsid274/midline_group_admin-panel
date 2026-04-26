@@ -20,8 +20,9 @@ const nextConfig: NextConfig = {
   // ffmpeg-static exports the absolute path to its prebuilt binary. Webpack
   // would otherwise rewrite that string to a bundle-internal path while
   // leaving the binary on disk, breaking `spawn(ffmpegPath, …)` at runtime.
-  // Marking it external keeps it a normal CommonJS require.
-  serverExternalPackages: ['ffmpeg-static'],
+  // sharp ships native bindings that webpack can't bundle correctly either.
+  // Marking both external keeps them as normal CommonJS requires.
+  serverExternalPackages: ['ffmpeg-static', 'sharp'],
 }
 
 export default nextConfig

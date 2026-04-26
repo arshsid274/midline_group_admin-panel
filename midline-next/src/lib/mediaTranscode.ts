@@ -3,6 +3,7 @@ import { spawn } from 'node:child_process'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 import ffmpegPath from 'ffmpeg-static'
+import sharp from 'sharp'
 
 const FFMPEG_BIN = (ffmpegPath as unknown as string) || 'ffmpeg'
 
@@ -84,6 +85,74 @@ export async function transcodeVideo(
   ])
 
   return { webmAbsPath, mp4AbsPath, posterAbsPath }
+}
+
+export interface PhotoResult {
+  /** Absolute path of the processed file. */
+  outAbsPath: string
+  /** Filename only (no directory), e.g. "abc-1234.jpg" or "abc-1234.webp". */
+  outFilename: string
+  /** Output extension including the dot ('.jpg' or '.webp'). */
+  outExt: string
+}
+
+/**
+ * Re-encode an uploaded photo into a web-ready single output file.
+ *
+ *   • Auto-rotates per EXIF orientation, then strips EXIF.
+ *   • Caps the longest dimension at 2560 px (good for retina hero use,
+ *     overkill for small thumbnails — the browser scales down for free).
+ *     Smaller inputs are NOT upscaled.
+ *   • Photos with no alpha channel → JPEG @ q82, mozjpeg, progressive
+ *     (typically 60–85% smaller than a raw camera JPEG, no visible loss).
+ *   • Photos with alpha (logos, cut-outs) → WebP @ q85 with high alpha
+ *     quality (preserves transparency, ~50–70% smaller than equivalent PNG).
+ *
+ * The original input file is NOT touched — caller unlinks it after this
+ * resolves (mirrors the transcodeVideo contract).
+ */
+export async function processPhoto(
+  inputAbsPath: string,
+  outputDir: string,
+  basename: string,
+): Promise<PhotoResult> {
+  await fs.mkdir(outputDir, { recursive: true })
+
+  const meta = await sharp(inputAbsPath).metadata()
+  const hasAlpha = !!meta.hasAlpha
+
+  const outExt = hasAlpha ? '.webp' : '.jpg'
+  const outFilename = `${basename}${outExt}`
+  const outAbsPath = path.join(outputDir, outFilename)
+
+  let pipeline = sharp(inputAbsPath, { failOn: 'truncated' })
+    .rotate() // honour EXIF orientation, then strip metadata implicitly
+    .resize({
+      width: 2560,
+      height: 2560,
+      fit: 'inside',
+      withoutEnlargement: true,
+    })
+
+  if (hasAlpha) {
+    pipeline = pipeline.webp({
+      quality: 85,
+      alphaQuality: 90,
+      effort: 4,
+      smartSubsample: true,
+    })
+  } else {
+    pipeline = pipeline.jpeg({
+      quality: 82,
+      mozjpeg: true,
+      progressive: true,
+      chromaSubsampling: '4:2:0',
+    })
+  }
+
+  await pipeline.toFile(outAbsPath)
+
+  return { outAbsPath, outFilename, outExt }
 }
 
 function runFfmpeg(args: string[]): Promise<void> {

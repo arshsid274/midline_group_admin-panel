@@ -88,11 +88,11 @@ export default function SlotOverlay({
         if (e.lengthComputable) {
           const ratio = e.loaded / e.total
           setProgress(ratio)
-          if (ratio >= 1 && isVideo) setProcessing(true)
+          if (ratio >= 1) setProcessing(true)
         }
       })
       xhr.upload.addEventListener('load', () => {
-        if (isVideo) setProcessing(true)
+        setProcessing(true)
       })
       xhr.onload = () => {
         setBusy(false)
@@ -103,7 +103,11 @@ export default function SlotOverlay({
             onManifestChange(json.manifest)
             setFlash(true)
             setTimeout(() => setFlash(false), 1200)
-            const suffix = json.transcoded ? ' (transcoded)' : ''
+            const suffix = json.transcoded
+              ? ' (transcoded)'
+              : json.optimized
+              ? ` (${json.optimized.format.toUpperCase()})`
+              : ''
             onToast?.('success', `${label}: replaced${suffix}`)
           } else {
             const m = json.error ?? `HTTP ${xhr.status}`
@@ -267,7 +271,9 @@ export default function SlotOverlay({
               <div className="w-3/4 max-w-[160px] h-1.5 rounded-full bg-[#053F6E]/10 overflow-hidden">
                 <div className="h-full w-full bg-[#053F6E] animate-pulse" />
               </div>
-              <span className="text-[10px] uppercase tracking-wider text-[#053F6E]/70">Transcoding…</span>
+              <span className="text-[10px] uppercase tracking-wider text-[#053F6E]/70">
+                {kind === 'video' ? 'Transcoding…' : 'Optimising…'}
+              </span>
             </>
           ) : (
             <>
