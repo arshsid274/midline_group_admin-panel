@@ -126,6 +126,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Continuous improvement, supplier evaluation, and full compliance with global industry standards — every component traceable, every delivery accountable.',
       },
     ],
+    qualitySubtitle:
+      'Every component, every shipment, every project — sourced through certified global OEMs and delivered with operational reliability and HSE precision.',
+    knowThatBody:
+      'From drilling rigs and wellheads to OCTG, valves, pumps, and downhole tools — ARCO sources from China, the UK, Turkey, Italy, Spain, France, and Libya, bridging global supply with regional energy operators worldwide.',
     visionQuote:
       'To be a globally recognised leader in oilfield services and industrial supply solutions — distinguished by excellence, integrity, and innovation.',
   },
@@ -171,6 +175,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Engine protection lubricants, performance-enhancing oils, timing belts, tensioners, pulleys, bushes and supporting components — reduced wear, optimised efficiency.',
       },
     ],
+    qualitySubtitle:
+      'Every part, every shipment, every workshop — sourced from certified manufacturers and delivered with consistency, authenticity, and dependable supply chain reliability.',
+    knowThatBody:
+      'From Dubai to workshops, retailers, and fleet operators across the Middle East and beyond, ARC bridges global manufacturers and local automotive demand with engine, suspension, body, electrical, and timing components for modern vehicles.',
     visionQuote:
       'To become a leading global automotive spare parts trading company — recognised for innovation, reliability, and excellence in supply chain solutions.',
   },
@@ -216,6 +224,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Access to international sourcing networks and procurement expertise through Midline Holding Group — bridging global automotive supply chains with local Libyan demand.',
       },
     ],
+    qualitySubtitle:
+      'Every part, every repair, every customer — five Benghazi branches delivering genuine spare parts, expert diagnostics, and complete automotive aftermarket service.',
+    knowThatBody:
+      'From a single Benghazi branch in 2020 to five locations by 2026, Almutakbal Alsheeh delivers spare parts wholesale and retail alongside a full service centre — bodywork, electrical, mechanical, tires, and alignment.',
     visionQuote:
       'To become one of Libya\'s leading companies in automotive spare parts and maintenance — recognised for quality, professionalism, and customer trust.',
   },
@@ -261,6 +273,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Strict adherence to UAE construction quality standards, safe working environments, continuous quality monitoring, and full regulatory compliance.',
       },
     ],
+    qualitySubtitle:
+      'Every site, every team, every milestone — disciplined planning, structural quality control, and full compliance with UAE construction standards on every project.',
+    knowThatBody:
+      'From residential developments to commercial offices, retail spaces, warehouses, and industrial facilities — Midline Trend delivers full general contracting across the UAE, backed by civil engineers, project supervisors, and skilled execution teams since 2024.',
     visionQuote:
       'To become a leading construction group in the United Arab Emirates — recognised for high-quality, innovative, and sustainable projects that contribute to national development.',
   },
@@ -306,6 +322,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'On-site engineering support ensuring design intent is accurately executed — quality control, technical coordination, and contractor interface management.',
       },
     ],
+    qualitySubtitle:
+      'Every drawing, every discipline, every site — coordinated architectural, structural, and MEP engineering aligned with UAE regulations and execution realities.',
+    knowThatBody:
+      'As the design intelligence centre of the Midline construction ecosystem, Handasiah translates concept into fully coordinated architectural, structural, MEP, interior, and landscape engineering — bridging design intent and on-site execution across UAE built-environment projects.',
     visionQuote:
       'To be a leading engineering consultancy within an integrated construction ecosystem in the UAE — delivering coordinated, efficient, buildable engineering that supports high-quality project delivery.',
   },
@@ -351,6 +371,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'International pharmaceutical sourcing standards, GMP-aligned products, GDP principles, and UAE regulatory and import compliance — every product traceable and authentic.',
       },
     ],
+    qualitySubtitle:
+      'Every medicine, every supplement, every device — sourced from certified manufacturers under GMP and GDP frameworks for institutional and consumer healthcare.',
+    knowThatBody:
+      'From prescription medicines and vitamins to baby formula and surgical equipment, Trivix supplies hospitals, pharmacies, wholesalers, and institutional buyers across regional and international markets — a unified UAE platform for pharmaceutical trade and consumer wellness.',
     visionQuote:
       'To become a leading UAE-based healthcare trading and distribution company — recognised for trusted pharmaceutical products, healthcare essentials, and medical solutions across global markets.',
   },
@@ -396,6 +420,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Oil, tomato paste, pasta, poultry processing, and tuna canning production lines — full technical and commercial support for setting up or expanding food production facilities.',
       },
     ],
+    qualitySubtitle:
+      'Every concentrate, every grain, every production line — sourced through Lactalis, FrieslandCampina, Döhler, Fava, Alapala, and Symrise for global food industry partners.',
+    knowThatBody:
+      'From juice concentrates and milk powder to wheat, sugar, edible oil, and complete tomato-paste, pasta, poultry, and tuna production lines — Flavour Food bridges global manufacturers and Middle East, African, and Asian food industries.',
     visionQuote:
       'To become a globally recognised leader in food trading and industrial solutions — delivering value through quality, reliability, and innovation across the entire food supply chain.',
   },
@@ -441,6 +469,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Hygienic storage facilities with controlled temperature systems and a modern delivery fleet covering major Libyan cities — safety and freshness preserved end-to-end.',
       },
     ],
+    qualitySubtitle:
+      'Every shipment, every cold chain, every delivery — sourced globally and delivered fresh through controlled warehousing and a modern Libyan distribution fleet.',
+    knowThatBody:
+      'With 6 million LYD capital and a Benghazi base, Al-Aws supplies restaurants, hotels, hospitals, supermarkets, and consumers across Libya — managing import, customs clearance, temperature-controlled storage, and nationwide distribution as a trusted food import partner.',
     visionQuote:
       'To be the leading and most preferred Libyan company in food import — a trusted partner for restaurants, hotels, markets, and consumers seeking quality and excellence.',
   },
@@ -486,6 +518,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Packaging designed for product freshness and protection, easy storage and handling, and clear labelling — supporting both retail and wholesale distribution requirements.',
       },
     ],
+    qualitySubtitle:
+      'Every batch, every shape, every package — automated production, precision drying, and continuous quality control delivering 17.5 tons of pasta daily.',
+    knowThatBody:
+      'For nearly two decades since 2006, Saif Pasta Factory has produced penne, macaroni, and short-cut pasta varieties for Libyan kitchens — 17.5 tons daily from automated production lines, precision drying systems, and high-performance packaging.',
     visionQuote:
       'To become a leading pasta manufacturer in Libya and a trusted name in the food industry — recognised for quality, reliability, and continuous innovation.',
   },
@@ -629,6 +665,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Precision filling and sealing, consistency across every product size, high efficiency — automation minimises human intervention and maximises hygiene.',
       },
     ],
+    qualitySubtitle:
+      'Every bottle, every batch, every drop — UV and ozone-purified mineral water meeting ISO 9001, ISO 22000, GMP, and HACCP food safety standards.',
+    knowThatBody:
+      'From a fully automated bottling line to in-house microbiological lab and dual UV plus ozone sterilisation, Al-Dabussia delivers naturally sourced mineral water with certified quality at every stage from source to consumer since 2018.',
     visionQuote:
       'To expand our presence in the water industry by increasing production capacity and delivering innovative, high-quality bottled water solutions for modern consumers.',
   },
@@ -674,6 +714,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Strong understanding of UAE regulatory requirements, multidisciplinary coordination expertise, focus on constructability and execution efficiency, attention to technical detail.',
       },
     ],
+    qualitySubtitle:
+      'Every drawing, every discipline, every site — architectural, structural, interior, and landscape design coordinated with execution feasibility and UAE regulatory compliance.',
+    knowThatBody:
+      'From conceptual design and authority submissions to on-site supervision and quality assurance, Al Sarh delivers integrated architectural, structural, interior, and landscape engineering for residential, commercial, and mixed-use UAE developments — all under one roof since 2023.',
     visionQuote:
       'To be a recognised engineering consultancy in the United Arab Emirates — known for innovative, coordinated, and high-quality engineering solutions aligned with international standards.',
   },
@@ -719,6 +763,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Site preparation, structural works, finishing — comprehensive contracting covering full project execution under one accountable team.',
       },
     ],
+    qualitySubtitle:
+      'Every site, every team, every project — disciplined planning, structural quality control, and strict adherence to UAE construction regulations on every build.',
+    knowThatBody:
+      'With 200+ skilled masons, steel fixers, carpenters, and supervisors backed by experienced engineers, Saegon delivers residential, commercial, and industrial construction across the UAE — disciplined site execution and material quality control since 2016.',
     visionQuote:
       'To be a recognised and dependable construction contracting company in the United Arab Emirates — delivering high-quality, reliable, and efficient construction services.',
   },
@@ -764,6 +812,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'Strict hygiene protocols, raw material inspection, standardised manufacturing, regular quality testing, and compliance with international food safety requirements.',
       },
     ],
+    qualitySubtitle:
+      'Every batch, every package, every product — hygienic manufacturing, raw-material inspection, and continuous quality testing across juices, dairy, and canned tuna.',
+    knowThatBody:
+      'From fruit juices and flavored milk to evaporated milk and canned tuna, Shahd Al Madina delivers consistent FMCG food and beverage products to retail, wholesale, export, and institutional markets — built on strict food-safety compliance and reliable production.',
     visionQuote:
       'To be a recognised food manufacturing brand in the UAE and international markets — delivering trusted, high-quality, and affordable FMCG food products.',
   },
@@ -809,8 +861,83 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
           'End-to-end customer support from consultation to delivery, warranty assurance, secure payments, and free interior design styling guidance from expert designers.',
       },
     ],
+    qualitySubtitle:
+      'Every set, every finish, every detail — premium materials, hand-finishing, and durable construction across signature collections like Bugatti, Milan, Oslo, and Lorenzo.',
+    knowThatBody:
+      'From Bugatti and Sahara to Lorenzo, Milan, Oslo, and Madrid — Aasandian Furniture\'s signature collections combine bespoke craftsmanship, premium materials, and free interior design support for residential, commercial, and hospitality clients across Sharjah and the UAE.',
     visionQuote:
       'To become a leading furniture brand in the region — known for innovation, sustainability, and exceptional design.',
+  },
+  'majestic-elite-properties': {
+    tagline: 'Premium UAE real estate, asset management, and investment.',
+    overview: [
+      'Majestic Elite Properties is a dynamic UAE real estate company specialising in property management, investment, and real estate transactions across the Emirates — delivering comprehensive solutions in buying, selling, leasing, and managing high-value assets for investors, owners, and tenants.',
+      'With a growing portfolio of owned residential towers headlined by Marina Royale Tower in Dubai Marina, the company is a trusted name in the UAE real estate sector — offering reliable, professional services anchored in long-term value creation and asset excellence.',
+    ],
+    qualitySubtitle:
+      'Every property, every tenant, every transaction — long-term value, professional management, and a customer-centric model anchored by self-owned premium residential assets.',
+    knowThatBody:
+      'From Marina Royale Tower in Dubai Marina to a growing portfolio of premium residential properties, Majestic Elite Properties manages buying, selling, leasing, and full asset operations — a UAE real estate partner built around investor and tenant trust.',
+  },
+
+  'acacus-juice-and-milk-factory': {
+    tagline: 'Libya\'s next-generation food and beverage manufacturer.',
+    overview: [
+      'Inaugurated in February 2024 in Benghazi, Acacus Juice & Milk Factory is one of Libya\'s most advanced industrial food manufacturing projects — built to strengthen local food security, reduce import dependence, and deliver high-quality locally produced beverages, dairy, oils, and canned goods.',
+      'Operating under the Shahd Al-Madina Food Industries Group with ISO 22000 and ISO 9001 certifications, Acacus combines UHT pasteurisation, automated filling lines, and a science-driven production approach — supporting Libya\'s industrial growth and consumer self-sufficiency.',
+    ],
+    qualitySubtitle:
+      'Every juice, every dairy carton, every can — UHT pasteurisation, automated filling, and ISO 22000-certified safety across orange, mango, dairy, oils, and tuna.',
+    knowThatBody:
+      'From seven juice flavours and full-cream-to-skimmed dairy to flavored milks, evaporated milk, edible oils, and canned tuna, Acacus delivers a multi-category Libyan food portfolio — built on UHT, automation, and international food-safety standards since 2024.',
+  },
+
+  'elbasateen-food-industries': {
+    tagline: 'Libya\'s trusted canned-food manufacturer since 2006.',
+    overview: [
+      'Established in 2006 in Benghazi, Al Basateen Food Industries Company is a leading Libyan canned-food manufacturer producing 30,000 cans per day under the flagship "Saed" brand — fava beans, chickpeas, harissa, tomato paste, and more for nationwide distribution.',
+      'With over 18 years of experience, integrated Osmanli Makina production lines, and a complete legumes-canning system, the company combines hygienic processing, modern automation, and trusted brand recognition across both urban and regional Libyan retail markets.',
+    ],
+    qualitySubtitle:
+      'Every can, every harvest, every batch — Osmanli Makina production lines, hygienic processing, and consistent quality across the trusted Saed brand portfolio.',
+    knowThatBody:
+      'From fava beans and chickpeas to harissa, peas, and tomato paste, Al Basateen Food Industries produces 30,000 cans daily under the Saed brand — 18+ years of canning experience supporting Libya\'s food security with modern automation since 2006.',
+  },
+
+  'maraina-al-khadra-for-feed-industry-co': {
+    tagline: 'Science-driven animal feed for Libyan agriculture.',
+    overview: [
+      'MARAINA AL-KHADRA, recognised under the brand Green Pastures, is a registered Libyan animal-feed company specialising in scientifically formulated balanced feed, customised nutrition programmes, and consultancy services for livestock and poultry producers across the country.',
+      'Built on the principle that nutrition accounts for up to 70% of production costs and 90% of rearing success, Green Pastures combines authenticity, innovation, and sustainability — delivering performance-oriented feed solutions tailored to local breeds and conditions.',
+    ],
+    qualitySubtitle:
+      'Every formulation, every batch, every farm — science-driven nutrition, raw-material quality control, and customised feed solutions tailored to Libyan livestock and poultry.',
+    knowThatBody:
+      'From balanced feed for poultry and livestock to customised nutrition programmes and on-farm consultancy, Maraina Al-Khadra (Green Pastures) optimises feed efficiency for Libyan producers — boosting productivity, profitability, and sustainable agricultural growth across the country.',
+  },
+
+  'abco': {
+    tagline: 'Drilling, procurement, and engineering for the energy sector.',
+    overview: [
+      'Al Bareqa Co (ABCO) is a Dubai-based oil and gas company specialising in drilling operations, well maintenance, procurement, and engineering consultancy services — operating from Burlington Tower in Business Bay with focused activity across Libya\'s upstream sector.',
+      'Backed by partnerships with global industry leaders including Sinopec, Kerui Group, Coenesp, Wefic, Leen Electric, and High Trend, ABCO delivers integrated drilling, supply chain, and technical advisory services with a strong commitment to safety, quality, and operational continuity.',
+    ],
+    qualitySubtitle:
+      'Every well, every shipment, every service — drilling operations, well maintenance, procurement, and engineering consultancy delivered with strict safety and operational standards.',
+    knowThatBody:
+      'From Libya drills and well maintenance to procurement and engineering consultancy, ABCO operates across the upstream oil and gas sector — partnered with Sinopec, Kerui, Coenesp, and Wefic Group, headquartered at Burlington Tower in Dubai Business Bay.',
+  },
+
+  'al-shifa': {
+    tagline: 'Libya\'s registered pharmaceutical importer and distributor.',
+    overview: [
+      'Al-Shiffa Pharma is a registered Libyan pharmaceutical company specialising in the import and distribution of medicines and medical supplies sourced from leading international and regional manufacturers — officially registered with the Ministry of Health and Medical Supply.',
+      'Headquartered in Benghazi with branches in Tripoli and Misrata plus authorised distributors nationwide, Al-Shiffa supports Libya\'s healthcare infrastructure with reliable supply, certified cold-chain warehousing, and a professional field team serving hospitals, clinics, and pharmacies.',
+    ],
+    qualitySubtitle:
+      'Every medicine, every shipment, every storage cycle — certified cold-chain warehousing, regulatory compliance, and trusted distribution serving Libyan hospitals, clinics, and pharmacies.',
+    knowThatBody:
+      'From prescription medicines and OTC products to specialised pharmaceuticals and medical consumables, Al-Shiffa Pharma supplies hospitals, clinics, and pharmacies across Libya — three regional branches and authorised distributors backed by certified warehousing and a skilled field team.',
   },
 }
 
