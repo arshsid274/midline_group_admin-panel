@@ -16,6 +16,14 @@ node_modules/
 # production build
 /build
 
+# Tooling caches
+.eslintcache
+.swc/
+.turbo/
+.parcel-cache/
+coverage/
+node_modules/.cache/
+
 # env files
 .env
 .env.local
