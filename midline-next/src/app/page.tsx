@@ -35,8 +35,8 @@ export default function HomePage() {
         <div className="hero-media">
           <div className="hero-media-frame">
             <Image
-              src="/assets/Midline_Office_Interior.jpg"
-              alt="Midline Investment Dubai headquarters interior"
+              src="/assets/burlington.jpeg"
+              alt="Burlington Tower, Dubai — Midline Investment headquarters"
               fill
               style={{ objectFit: 'cover' }}
               priority
