@@ -33,10 +33,6 @@ export interface CompanyContent {
   knowThatBody?: string
   /** Vision quote shown in `sec_wonder` instead of the default tagline. */
   visionQuote?: string
-  /** Public path to a printable PDF (e.g. '/assets/brochures/foo.pdf').
-   *  When set, a "Print PDF" button appears in the hero breadcrumb area
-   *  that opens the PDF and triggers the browser's print dialog. */
-  pdfPath?: string
 }
 
 export const COMPANY_CONTENT: Record<string, CompanyContent> = {
@@ -1095,34 +1091,6 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
 
 export function getCompanyContent(slug: string): CompanyContent | undefined {
   return COMPANY_CONTENT[slug]
-}
-
-/**
- * Maps a company slug to its downloadable PDF brochure under /public/pdf/.
- * Filenames mirror what was supplied — spaces and case are preserved so the
- * upload doesn't need to be renamed. The browser percent-encodes the URL.
- */
-const COMPANY_PDFS: Record<string, string> = {
-  'midline-aviation-service': '/pdf/midline avaition.pdf',
-  'arco-oil-and-gas': '/pdf/Company Profile ARCO - OIL&GAS.pdf',
-  'arc-auto-spare-parts-trading-llc': '/pdf/arc comapny profile.pdf',
-  'almutakbal-alsheesh-ltd': '/pdf/Al_mutakbal_alseeh_LTD.pdf',
-  'midline-trend-building-contracting-llc': '/pdf/Midline Trend contracting.pdf',
-  'handasiah-engineering-consultant': '/pdf/handasan comapnay.pdf',
-  'trivix': '/pdf/Company Profile - TriVX.pdf',
-  'flavour-food-trading-llc': '/pdf/flouver food.pdf',
-  'al-aws-food-products': '/pdf/al aws profile.pdf',
-  'saif-pasta-factory': '/pdf/saif profile.pdf',
-  'ard-al-teeb': '/pdf/ARD AL TEEB - Company Profile.pdf',
-  'al-sarh-engineering-consultant': '/pdf/Al Sarh Engineering.pdf',
-  'saegon-contracting-l-l-c': '/pdf/Saegon.pdf',
-  'al-sanidan-furniture-showroom': '/pdf/Al sandian furniture.pdf',
-  'maraina-al-khadra': '/pdf/Marain al khadra.pdf',
-  'al-shiffa-pharma': '/pdf/Al shifa.pdf',
-}
-
-export function getCompanyPdf(slug: string): string | undefined {
-  return COMPANY_PDFS[slug]
 }
 
 /**

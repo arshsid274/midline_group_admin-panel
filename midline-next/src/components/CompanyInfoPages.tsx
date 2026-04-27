@@ -20,7 +20,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { SplitText } from 'gsap/SplitText'
-import { type CompanyContent, getCompanyPdf } from '@/lib/companyContent'
+import type { CompanyContent } from '@/lib/companyContent'
 import { useMediaOverrides } from '@/components/MediaOverrideProvider'
 import LazyVideo, { deriveVideoAlternates } from '@/components/LazyVideo'
 import './CompanyInfoPages.css'
@@ -422,25 +422,6 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                               <li><b>{companyName ?? 'Overview'}</b></li>
                             </ul>
                           </div>
-                          {(() => {
-                            const pdfHref = (cSlug && getCompanyPdf(cSlug)) ?? content?.pdfPath
-                            if (!pdfHref) return null
-                            // Strip the path/extension to derive a sane suggested filename.
-                            const fileNameFromPath = pdfHref.split('/').pop() ?? 'company-profile.pdf'
-                            const downloadName = `${(companyName ?? 'company-profile').replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.pdf`
-                            return (
-                              <a
-                                className="cip-print-pdf"
-                                href={pdfHref}
-                                download={downloadName || fileNameFromPath}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label={`Download ${companyName ?? ''} company profile PDF`}
-                              >
-                                <span aria-hidden>↓</span> Download PDF
-                              </a>
-                            )
-                          })()}
                           <div className="title">
                             <h2>Overview</h2>
                             <div className="txt">

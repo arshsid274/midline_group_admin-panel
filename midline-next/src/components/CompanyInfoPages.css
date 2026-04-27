@@ -34,14 +34,6 @@ button.cip-back:active{transform:scale(0.97)}
 @media (hover:hover) and (pointer:fine){button.cip-back:hover{background:rgba(80,207,254,.16);border-color:rgba(80,207,254,.50)}}
 @media (max-width:768px){button.cip-back{top:16px;left:16px;padding:8px 16px;font-size:13px}}
 
-/* ── Print PDF button — lives in the hero breadcrumb row, mirrors the back button glassmorphism. Positioned absolutely so it sits to the right of the breadcrumb without disturbing the title block beneath. ── */
-.sub_visual .top{position:relative}
-a.cip-print-pdf, button.cip-print-pdf{position:absolute;top:60px;right:0;z-index:5;display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:rgba(80,207,254,.10);border:1px solid rgba(80,207,254,.30);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:999px;font-family:var(--font-body),system-ui,sans-serif;font-size:14px;font-weight:600;letter-spacing:.06em;color:#50CFFE;line-height:1;cursor:pointer;text-decoration:none;transition:transform 160ms cubic-bezier(0.23,1,0.32,1),background 200ms ease,border-color 200ms ease}
-a.cip-print-pdf, button.cip-print-pdf span{font-size:16px;line-height:1}
-a.cip-print-pdf, button.cip-print-pdf:active{transform:scale(0.97)}
-@media (hover:hover) and (pointer:fine){a.cip-print-pdf, button.cip-print-pdf:hover{background:rgba(80,207,254,.16);border-color:rgba(80,207,254,.50)}}
-@media (max-width:768px){a.cip-print-pdf, button.cip-print-pdf{padding:8px 16px;font-size:13px}}
-
 /* ── Per-company brand block (replaces the SSANGYONG E&C wordmark when a company logo is available) ── */
 .sec_enc .flex-item.right .cip-brand{display:flex;flex-direction:column;align-items:flex-start;gap:max(calc(20px * var(--base-ratio)), calc(calc(20 / var(--base-size)) * var(--base-percent)));opacity:0;transform:translateY(max(calc(80px * var(--base-ratio)), calc(calc(80 / var(--base-size)) * var(--base-percent))));transition:opacity .5s ease, transform .5s ease}
 .sec_enc.active .flex-item.right .cip-brand{opacity:1;transform:translateY(0)}
