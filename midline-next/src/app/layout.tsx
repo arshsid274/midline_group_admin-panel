@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from 'next/font/google'
 import './globals.css'
 import SiteChrome from '@/components/SiteChrome'
@@ -49,6 +50,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const manifest = await readManifest()
   return (
     <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable}`}>
+      <head>
+        {/* Microsoft Clarity — analytics + session recording. Loaded after
+            interactive so it never blocks first paint. Project ID: wi1t835k0n. */}
+        <Script id="ms-clarity" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "wi1t835k0n");
+          `}
+        </Script>
+      </head>
       <body>
         <MediaOverrideProvider initialManifest={manifest}>
           <SiteChrome>{children}</SiteChrome>
