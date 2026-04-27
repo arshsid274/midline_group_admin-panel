@@ -33,6 +33,10 @@ export interface CompanyContent {
   knowThatBody?: string
   /** Vision quote shown in `sec_wonder` instead of the default tagline. */
   visionQuote?: string
+  /** Public path to a printable PDF (e.g. '/assets/brochures/foo.pdf').
+   *  When set, a "Print PDF" button appears in the hero breadcrumb area
+   *  that opens the PDF and triggers the browser's print dialog. */
+  pdfPath?: string
 }
 
 export const COMPANY_CONTENT: Record<string, CompanyContent> = {
@@ -281,7 +285,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'To become a leading construction group in the United Arab Emirates — recognised for high-quality, innovative, and sustainable projects that contribute to national development.',
   },
 
-  'handasiah-consultant-arch-civilion-llc': {
+  'handasiah-engineering-consultant': {
     tagline: 'Engineering the connection between vision and execution.',
     overview: [
       'Handasiah Engineering Consultant — Arch Civillion LLC is a multidisciplinary engineering consultancy based in the United Arab Emirates, providing comprehensive architectural, structural, and MEP engineering services across residential, commercial, and mixed-use developments.',
@@ -428,7 +432,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'To become a globally recognised leader in food trading and industrial solutions — delivering value through quality, reliability, and innovation across the entire food supply chain.',
   },
 
-  'libyan-al-aws-to-import-foodstuffs': {
+  'al-aws-food-products': {
     tagline: 'Bridging the quality gap in Libya\'s food market.',
     overview: [
       'Al-Aws Libyan Company for Food Import was established in Benghazi with a clear and ambitious vision to bridge the quality gap in the local market. Over the years it has grown into one of the leading businesses in the import and distribution of food products across Libya.',
@@ -526,7 +530,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'To become a leading pasta manufacturer in Libya and a trusted name in the food industry — recognised for quality, reliability, and continuous innovation.',
   },
 
-  'ard-al-teeb-w-al-jamal-perfumes-trading-llc': {
+  'ard-al-teeb': {
     tagline: 'Where Arabian heritage meets French perfumery.',
     overview: [
       'At Ard Al Teeb, perfumery is not merely a craft — it is an art form that transforms emotions into unforgettable sensory experiences. Since its establishment in 2007, the company has been dedicated to creating timeless fragrances that embody elegance, identity, and individuality.',
@@ -575,7 +579,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'To redefine luxury perfumery — combining Arabic fragrance heritage with French craftsmanship to create scents that are not only worn, but remembered.',
   },
 
-  'ard-alteeba-and-aljamal': {
+  'ard-alteeba-and-algamal': {
     tagline: 'Libya\'s most accessible beauty and fragrance brand.',
     overview: [
       'Founded in 2017, Ard Alteeba & AlGamal was established with a bold vision to lead, innovate, and redefine the beauty and fragrance industry in Libya. Headquartered in Benghazi, the company has grown from a local business into a nationally recognised brand.',
@@ -627,7 +631,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
   'al-dabousiya-mineral-water-bottling-company': {
     tagline: 'Pure, safe, naturally balanced mineral water.',
     overview: [
-      'Established in 2018, Al-Dabussia for bottling Mineral Water Company has positioned itself as a trusted provider of premium-quality drinking water — committed to meeting and exceeding international standards of safety, purity, and excellence.',
+      'Established in 2018, Al-Dabousiya Mineral Water Bottling Company has positioned itself as a trusted provider of premium-quality drinking water — committed to meeting and exceeding international standards of safety, purity, and excellence.',
       'From inception, the company has focused on a product that reflects natural integrity and technological precision, ensuring consistent quality for consumers across all markets it serves. Naturally sourced mineral water with balanced composition, treated through advanced UV and ozone systems, bottled in a fully automated facility.',
     ],
     missionHeading: 'Pure water, engineered for trust.',
@@ -668,7 +672,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
     qualitySubtitle:
       'Every bottle, every batch, every drop — UV and ozone-purified mineral water meeting ISO 9001, ISO 22000, GMP, and HACCP food safety standards.',
     knowThatBody:
-      'From a fully automated bottling line to in-house microbiological lab and dual UV plus ozone sterilisation, Al-Dabussia delivers naturally sourced mineral water with certified quality at every stage from source to consumer since 2018.',
+      'From a fully automated bottling line to in-house microbiological lab and dual UV plus ozone sterilisation, Al-Dabousiya delivers naturally sourced mineral water with certified quality at every stage from source to consumer since 2018.',
     visionQuote:
       'To expand our presence in the water industry by increasing production capacity and delivering innovative, high-quality bottled water solutions for modern consumers.',
   },
@@ -722,7 +726,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'To be a recognised engineering consultancy in the United Arab Emirates — known for innovative, coordinated, and high-quality engineering solutions aligned with international standards.',
   },
 
-  'saegon-contraction-llc': {
+  'saegon-contracting-l-l-c': {
     tagline: 'Construction with discipline, reliability, and strength.',
     overview: [
       'SAEGON CONTRACTING L.L.C is a UAE-based building contracting company established in 2016, operating within the country\'s dynamic construction sector. The company has built a solid reputation for delivering reliable, cost-effective, quality-driven construction across residential, commercial, and industrial developments.',
@@ -876,8 +880,40 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
     ],
     qualitySubtitle:
       'Every property, every tenant, every transaction — long-term value, professional management, and a customer-centric model anchored by self-owned premium residential assets.',
+    missionHeading: 'Real estate excellence for investors, owners, and tenants.',
+    missionBody:
+      'Majestic Elite Properties delivers high-quality real estate services through strategic investments, efficient property management, and a customer-centric approach — ensuring maximum value and satisfaction. Strong UAE market presence, ownership of premium residential properties, and a focus on long-term value, reliability, and professional integrity in every transaction.',
+    facts: [
+      {
+        stat: 'Marina Royale',
+        title: 'Flagship asset',
+        body: 'A premium residential tower at Marsa Dubai — Dubai Marina, maintained to high standards with strong tenant satisfaction and operational efficiency at the heart of the portfolio.',
+      },
+      {
+        stat: 'Buy / Sell',
+        title: 'Real estate transactions',
+        body: 'Expert guidance and execution in property acquisition and sales across the UAE — investor-focused advisory backed by deep local market knowledge.',
+      },
+      {
+        stat: 'Lease',
+        title: 'Leasing & property management',
+        body: 'End-to-end leasing solutions and professional management of residential and commercial properties — covering tenant relations, maintenance, and asset performance.',
+      },
+      {
+        stat: 'Self-owned',
+        title: 'Asset management',
+        body: 'Managing and optimising self-owned real estate assets for long-term value and returns — combining ownership scale with hands-on operational discipline.',
+      },
+      {
+        stat: 'Multi-site',
+        title: 'Portfolio management',
+        body: 'Overseeing diverse property portfolios across multiple UAE locations — strategic oversight, performance reporting, and consistent service standards across every asset.',
+      },
+    ],
     knowThatBody:
       'From Marina Royale Tower in Dubai Marina to a growing portfolio of premium residential properties, Majestic Elite Properties manages buying, selling, leasing, and full asset operations — a UAE real estate partner built around investor and tenant trust.',
+    visionQuote:
+      'To be a leading real estate company in the UAE — recognised for delivering exceptional property solutions, long-term value, and superior asset management.',
   },
 
   'acacus-juice-and-milk-factory': {
@@ -968,7 +1004,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'To strengthen our position as a leading food manufacturing company in Libya by delivering products that meet international standards while expanding production capabilities and product offerings.',
   },
 
-  'maraina-al-khadra-for-feed-industry-co': {
+  'maraina-al-khadra': {
     tagline: 'Science-driven animal feed for Libyan agriculture.',
     overview: [
       'MARAINA AL-KHADRA, recognised under the brand Green Pastures, is a registered Libyan animal-feed company specialising in scientifically formulated balanced feed, customised nutrition programmes, and consultancy services for livestock and poultry producers across the country.',
@@ -1012,7 +1048,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'To become a leading provider of animal feed solutions in Libya and the region — recognised for excellence in quality, innovation, and sustainable agricultural support.',
   },
 
-  'al-shifa': {
+  'al-shiffa-pharma': {
     tagline: 'Libya\'s registered pharmaceutical importer and distributor.',
     overview: [
       'Al-Shiffa Pharma is a registered Libyan pharmaceutical company specialising in the import and distribution of medicines and medical supplies sourced from leading international and regional manufacturers — officially registered with the Ministry of Health and Medical Supply, ensuring full compliance with national healthcare regulations.',
@@ -1059,6 +1095,34 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
 
 export function getCompanyContent(slug: string): CompanyContent | undefined {
   return COMPANY_CONTENT[slug]
+}
+
+/**
+ * Maps a company slug to its downloadable PDF brochure under /public/pdf/.
+ * Filenames mirror what was supplied — spaces and case are preserved so the
+ * upload doesn't need to be renamed. The browser percent-encodes the URL.
+ */
+const COMPANY_PDFS: Record<string, string> = {
+  'midline-aviation-service': '/pdf/midline avaition.pdf',
+  'arco-oil-and-gas': '/pdf/Company Profile ARCO - OIL&GAS.pdf',
+  'arc-auto-spare-parts-trading-llc': '/pdf/arc comapny profile.pdf',
+  'almutakbal-alsheesh-ltd': '/pdf/Al_mutakbal_alseeh_LTD.pdf',
+  'midline-trend-building-contracting-llc': '/pdf/Midline Trend contracting.pdf',
+  'handasiah-engineering-consultant': '/pdf/handasan comapnay.pdf',
+  'trivix': '/pdf/Company Profile - TriVX.pdf',
+  'flavour-food-trading-llc': '/pdf/flouver food.pdf',
+  'al-aws-food-products': '/pdf/al aws profile.pdf',
+  'saif-pasta-factory': '/pdf/saif profile.pdf',
+  'ard-al-teeb': '/pdf/ARD AL TEEB - Company Profile.pdf',
+  'al-sarh-engineering-consultant': '/pdf/Al Sarh Engineering.pdf',
+  'saegon-contracting-l-l-c': '/pdf/Saegon.pdf',
+  'al-sanidan-furniture-showroom': '/pdf/Al sandian furniture.pdf',
+  'maraina-al-khadra': '/pdf/Marain al khadra.pdf',
+  'al-shiffa-pharma': '/pdf/Al shifa.pdf',
+}
+
+export function getCompanyPdf(slug: string): string | undefined {
+  return COMPANY_PDFS[slug]
 }
 
 /**

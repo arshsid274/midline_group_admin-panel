@@ -20,7 +20,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { SplitText } from 'gsap/SplitText'
-import type { CompanyContent } from '@/lib/companyContent'
+import { type CompanyContent, getCompanyPdf } from '@/lib/companyContent'
 import { useMediaOverrides } from '@/components/MediaOverrideProvider'
 import LazyVideo, { deriveVideoAlternates } from '@/components/LazyVideo'
 import './CompanyInfoPages.css'
@@ -290,49 +290,8 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
       })
     }
 
-    // ── secWonder (YouTube IFrame embed) ───────────────────────────────────
-    function secWonder() {
-      const sec = qs('.sec_wonder')!
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: sec, start: 'top 20%', end: 'bottom bottom',
-          onEnter() { titleMotion(sec); sec.classList.add('active') },
-        },
-      })
-
-      const videoView = sec.querySelector<HTMLElement>('.video_area')!
-      const slot      = videoView.querySelector<HTMLElement>('.video')!
-      slot.innerHTML  = ''
-      const iframe    = document.createElement('div')
-      iframe.id = 'youtube-video'
-      slot.appendChild(iframe)
-
-      const buildPlayer = () => {
-        new (window as any).YT.Player('youtube-video', {
-          videoId: 'mk_at4pCXrE',
-          playerVars: { rel: 0 },
-          events: {
-            onReady(event: any) {
-              videoView.querySelector('.bg')!.addEventListener('click', function (this: HTMLElement) {
-                this.classList.add('active')
-                event.target.playVideo()
-              })
-            },
-          },
-        })
-      }
-
-      if ((window as any).YT?.Player) {
-        buildPlayer()
-      } else {
-        ;(window as any).onYouTubeIframeAPIReady = buildPlayer
-        if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
-          const tag = document.createElement('script')
-          tag.src = 'https://www.youtube.com/iframe_api'
-          document.head.appendChild(tag)
-        }
-      }
-    }
+    // sec_wonder JSX removed; the secWonder() init (and its YouTube
+    // IFrame embed) is dropped along with it.
 
     // ── subVisual (hero intro + scroll-based mask reveal) ──────────────────
     function subVisual() {
@@ -420,28 +379,12 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
       }
     }
 
-    // ── secBusiness (parallax bg on Overseas / Domestic panels) ────────────
-    function secBusiness() {
-      const sec = qs('.sec_business')!
-      ScrollTrigger.matchMedia({
-        '(min-width: 1025px)': () => {
-          gsap.to(sec.querySelector<HTMLElement>('.item1 .bg')!, {
-            y: '-60%', ease: 'none',
-            scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true },
-          })
-          gsap.to(sec.querySelector<HTMLElement>('.item2 .bg')!, {
-            y: '60%', ease: 'none',
-            scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true },
-          })
-        },
-      })
-    }
+    // sec_business JSX has been removed; the secBusiness() init is dropped
+    // along with it. The block below intentionally has no replacement.
 
     subVisual()
     const cleanup = groupTrigger()
     secPortfolio()
-    secWonder()
-    secBusiness()
 
     return () => {
       cleanup?.()
@@ -472,13 +415,32 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
                     <div className="col-10 offset-1">
                       <div className="inner">
                         <div className="top">
-                          <div className="breadcrumb_wrap">
+                          <div className="breadcrumb_wrap" style={{ marginLeft: '-3vw' }}>
                             <ul>
                               <li>HOME</li>
                               <li>{sectorTitle ?? 'About Us'}</li>
                               <li><b>{companyName ?? 'Overview'}</b></li>
                             </ul>
                           </div>
+                          {(() => {
+                            const pdfHref = (cSlug && getCompanyPdf(cSlug)) ?? content?.pdfPath
+                            if (!pdfHref) return null
+                            // Strip the path/extension to derive a sane suggested filename.
+                            const fileNameFromPath = pdfHref.split('/').pop() ?? 'company-profile.pdf'
+                            const downloadName = `${(companyName ?? 'company-profile').replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.pdf`
+                            return (
+                              <a
+                                className="cip-print-pdf"
+                                href={pdfHref}
+                                download={downloadName || fileNameFromPath}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`Download ${companyName ?? ''} company profile PDF`}
+                              >
+                                <span aria-hidden>↓</span> Download PDF
+                              </a>
+                            )
+                          })()}
                           <div className="title">
                             <h2>Overview</h2>
                             <div className="txt">
@@ -750,62 +712,13 @@ export default function CompanyInfoPages({ companyName, sectorTitle, sectorSlug,
               </div>
             </div>
 
-            {/* ════════════════════════════════════════════════════════
-                sec_wonder — YouTube PR video
-            ════════════════════════════════════════════════════════ */}
-            <div className="sec sec_wonder">
-              <div className="row_wrap">
-                <div className="row">
-                  <div className="col-12">
-                    <div className="inner">
-                      <div className="top">
-                        <strong className="gilda">We Make<span className="m_on"></span> Wonders</strong>
-                        <p className="suit">
-                          {content?.visionQuote ?? 'Ssangyong E&C creates wonders that have never existed in the world.'}
-                        </p>
-                      </div>
-                      <div className="cont">
-                        <div className="video_area">
-                          <div className="video"></div>
-                          <div className="bg"><i></i></div>
-                        </div>
-                        <p className="video_tit">Ssangyong E&amp;C&apos;s PR video</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* sec_wonder removed — was the "We Make Wonders" Ssangyong PR
+                video block. Vision quote content (visionQuote field) is no
+                longer rendered; can be moved into another section if needed. */}
 
-            {/* ════════════════════════════════════════════════════════
-                sec_business — Overseas / Domestic panels
-            ════════════════════════════════════════════════════════ */}
-            <div className="sec sec_business">
-              <div className="flex-container">
-
-                <div className="col-6 item item1">
-                  <div className="bg"></div>
-                  <strong>Overseas Business</strong>
-                  <ul className="list">
-                    <li><a href="https://www.ssyenc.com/en/business/overseas/list">Architecture<i></i></a></li>
-                    <li><a href="https://www.ssyenc.com/en/business/overseas/list?category=prjgbn_civil">Civil Engineering<i></i></a></li>
-                    <li><a href="https://www.ssyenc.com/en/business/overseas/list?category=prjgbn_plant-electric">Plant &amp; Electricity<i></i></a></li>
-                  </ul>
-                </div>
-
-                <div className="col-6 item item2">
-                  <div className="bg"></div>
-                  <strong>Domestic Business</strong>
-                  <ul className="list">
-                    <li><a href="https://www.ssyenc.com/en/business/domestic/list">Architecture<i></i></a></li>
-                    <li><a href="https://www.ssyenc.com/en/business/domestic/list?category=prjgbn_civil">Civil Engineering<i></i></a></li>
-                    <li><a href="https://www.ssyenc.com/en/business/domestic/list?category=prjgbn_housing-renovation">Residential &amp; Remodeling<i></i></a></li>
-                    <li><a href="https://www.ssyenc.com/en/business/domestic/list?category=prjgbn_plant-electric">Plant &amp; Electricity<i></i></a></li>
-                  </ul>
-                </div>
-
-              </div>
-            </div>
+            {/* sec_business removed — was the Ssangyong "Overseas / Domestic
+                Business" panel with hardcoded external links to ssyenc.com,
+                irrelevant to every Midline company. */}
 
           </div>
         </div>

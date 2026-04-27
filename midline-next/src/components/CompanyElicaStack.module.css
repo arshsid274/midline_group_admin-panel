@@ -339,25 +339,32 @@
 /* Glassmorphic "Open" button — mirrors the Back button (.sc-back) styling
  * in globals.css, but lives inside the card and is anchored to the
  * bottom-right corner where the index used to sit. */
-.openButton {
+.openButton,
+a.openButton,
+body.midline-shell .openButton,
+body.midline-shell a.openButton {
   position: absolute;
   right: clamp(1.5em, 3vw, 3em);
   bottom: clamp(1.5em, 3vw, 3em);
+  z-index: 50;
+  pointer-events: auto;
   display: inline-flex;
   align-items: center;
   gap: 7px;
   padding: 10px 22px;
-  background: rgba(80, 207, 254, 0.08);
-  border: 1px solid rgba(80, 207, 254, 0.28);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  /* Solid-ish background instead of backdrop-filter — backdrop-filter
+   * creates a stacking context that traps the custom cursor behind the
+   * button on chrome routes (body.midline-shell { cursor: none }).
+   * A frosted but opaque-enough fill keeps the visual identity. */
+  background: rgba(13, 53, 92, 0.55);
+  border: 1px solid rgba(80, 207, 254, 0.40);
   border-radius: 999px;
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.06em;
   color: #50CFFE;
-  cursor: pointer;
+  cursor: pointer !important;
   text-decoration: none;
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }

@@ -4,14 +4,14 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
 const ORB_DATA = [
-  { size: 170, angle: 180, img: 'https://picsum.photos/seed/laptop/300/300', sector: 'Aviation' },
-  { size: 135, angle: 235, img: 'https://picsum.photos/seed/flex/300/300',   sector: 'Construction' },
-  { size: 112, angle: 275, img: 'https://picsum.photos/seed/white/300/300',  sector: 'Food Industry' },
-  { size: 118, angle: 325, img: 'https://picsum.photos/seed/phone/300/300',  sector: 'Oil & Gas' },
-  { size: 135, angle: 15,  img: 'https://picsum.photos/seed/sky/300/300',    sector: 'Perfumes' },
-  { size: 122, angle: 55,  img: 'https://picsum.photos/seed/desk2/300/300',  sector: 'Furniture' },
-  { size: 105, angle: 95,  img: 'https://picsum.photos/seed/desk1/300/300',  sector: 'Auto Parts' },
-  { size: 112, angle: 140, img: 'https://picsum.photos/seed/dark/300/300',   sector: 'Pharma' },
+  { size: 170, angle: 180, img: '/assets/sectors/aviation.png',    sector: 'Aviation' },
+  { size: 135, angle: 235, img: '/assets/sectors/construction.png', sector: 'Construction' },
+  { size: 112, angle: 275, img: '/assets/sectors/food.png',         sector: 'Food Industry' },
+  { size: 118, angle: 325, img: '/assets/sectors/oilgas.png',       sector: 'Oil & Gas' },
+  { size: 135, angle: 15,  img: '/assets/sectors/perfumes.png',     sector: 'Perfumes' },
+  { size: 122, angle: 55,  img: '/assets/sectors/furniture.png',    sector: 'Furniture' },
+  { size: 105, angle: 95,  img: '/assets/sectors/spareparts.png',   sector: 'Auto Parts' },
+  { size: 112, angle: 140, img: '/assets/sectors/pharma.png',       sector: 'Pharma' },
 ]
 
 const RADIUS = 370

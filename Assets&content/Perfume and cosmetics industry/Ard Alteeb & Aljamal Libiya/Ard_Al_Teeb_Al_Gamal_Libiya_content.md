@@ -8,7 +8,7 @@ Founded in 2017, Ard Alteeba & AlGamal was established with a bold vision to lea
 
 Headquartered in Benghazi, the company has grown from a local business into a nationally recognized brand with a strong and expanding presence across the country.
 
-Through market insight, dedication, and a commitment to excellence, Ard Alteeba & AlGamal has built a reputation for delivering high-quality beauty and fragrance products that meet the evolving expectations of modern consumers.
+
 
 ---
 

@@ -64,7 +64,7 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
         link: null,
       },
       {
-        name: 'Saegon Contraction LLC',
+        name: 'SAEGON CONTRACTING L.L.C',
         tags: ['UAE', 'Est. 2016'],
         type: 'General Contracting',
         logo: '/assets/logos/saegon.png',
@@ -72,7 +72,7 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
         link: null,
       },
       {
-        name: 'Handasiah Consultant Arch Civilion LLC',
+        name: 'HANDASIAH ENGINEERING CONSULTANT',
         tags: ['UAE'],
         type: 'Architecture & Civil Consulting',
         logo: '/assets/logos/handasiah.png',
@@ -128,7 +128,7 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
         link: null,
       },
       {
-        name: 'Libyan Al-Aws to Import Foodstuffs',
+        name: 'Al Aws Food Products',
         tags: ['Benghazi, Libya'],
         type: 'Food Import & Distribution',
         logo: '/assets/logos/libyan-alaws.png',
@@ -160,7 +160,7 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
         link: null,
       },
       {
-        name: 'Maraina Al-Khadra for Feed Industry Co.',
+        name: 'MARAINA AL-KHADRA',
         tags: ['Libya'],
         type: 'Animal Feed Manufacturing',
         logo: '/assets/logos/maraina.png',
@@ -194,7 +194,7 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
     blurb: 'Luxury Arabic and French fragrances, present in 7+ countries worldwide.',
     companies: [
       {
-        name: 'Ard Al Teeb W Al Jamal Perfumes Trading LLC',
+        name: 'Ard Al Teeb',
         tags: ['Dubai, UAE', 'Est. 2007'],
         type: 'Luxury Perfumes',
         logo: '/assets/logos/ard-alteeb-uae.png',
@@ -202,7 +202,7 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
         link: 'https://ardalteeb.com',
       },
       {
-        name: 'Ard Alteeba & Aljamal',
+        name: 'Ard Alteeba & Algamal',
         tags: ['Benghazi, Libya', 'Est. 2017'],
         type: 'Perfumes & Cosmetics',
         logo: '/assets/logos/ard-alteeb-libya.png',
@@ -269,7 +269,7 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
         link: null,
       },
       {
-        name: 'Al Shifa',
+        name: 'Al-Shiffa Pharma',
         tags: ['Benghazi, Libya'],
         type: 'Pharmaceutical Distribution',
         logo: '/assets/logos/al-shifa.png',
@@ -301,11 +301,11 @@ export const MIDLINE_STRUCTURE: Array<{
       'Flavour Food Trading LLC',
       'Acacus Juice and Milk Factory',
       'Shahd Al Madina',
-      'Libyan Al-Aws to Import Foodstuffs',
+      'Al Aws Food Products',
       'Elbasateen Food Industries',
       'Saif Pasta Factory',
       'Al-Dabousiya Mineral Water Bottling Company',
-      'Maraina Al-Khadra for Feed Industry Co.',
+      'MARAINA AL-KHADRA',
     ],
   },
   {
@@ -314,8 +314,8 @@ export const MIDLINE_STRUCTURE: Array<{
     markets: 'UAE',
     companies: [
       'Midline Trend Building Contracting LLC',
-      'Saegon Contraction LLC',
-      'Handasiah Consultant Arch Civilion LLC',
+      'SAEGON CONTRACTING L.L.C',
+      'HANDASIAH ENGINEERING CONSULTANT',
       'Al Sarh Engineering Consultant',
       'Majestic Elite Properties',
     ],
@@ -324,7 +324,7 @@ export const MIDLINE_STRUCTURE: Array<{
     key: 'pharma',
     name: 'Pharma Industry',
     markets: 'UAE, Libya',
-    companies: ['Trivix', 'Al Shifa'],
+    companies: ['Trivix', 'Al-Shiffa Pharma'],
   },
   {
     key: 'spareparts',
@@ -336,7 +336,7 @@ export const MIDLINE_STRUCTURE: Array<{
     key: 'perfumes',
     name: 'Perfume & Cosmetics',
     markets: 'UAE',
-    companies: ['Ard Al Teeb W Al Jamal Perfumes Trading LLC', 'Ard Alteeba & Aljamal'],
+    companies: ['Ard Al Teeb', 'Ard Alteeba & Algamal'],
   },
   {
     key: 'furniture',

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
@@ -328,17 +329,22 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
                   <span className={styles.cardNumber}>
                     {String(i + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
                   </span>
-                  <button
-                    type="button"
+                  <Link
+                    href={`/companies/${slug}`}
+                    prefetch={false}
                     className={styles.openButton}
                     onClick={(e) => {
                       e.stopPropagation()
+                      // Belt-and-suspenders: if the parent's onClick wins
+                      // the race somehow, navigate via the router directly.
                       router.push(`/companies/${slug}`)
                     }}
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onMouseDown={(e) => e.stopPropagation()}
                     aria-label={`Open ${company.name} page`}
                   >
                     Open <span aria-hidden>→</span>
-                  </button>
+                  </Link>
                 </div>
 
               </div>

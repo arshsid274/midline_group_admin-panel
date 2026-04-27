@@ -74,7 +74,7 @@ body {
  * (`/admin/*`, `/companies/[slug]`) the custom cursor isn't rendered, so the
  * native cursor must stay visible — otherwise the user sees nothing.
  */
-body.midline-shell { cursor: none; }
+/* Custom <Cursor /> removed — native cursor stays visible. */
 /*
  * CompanyInfoPages.css is a 2.3 MB Ssangyong-port stylesheet that ships rules
  * like `body { line-height: 1; font-family: 'SUIT'; color: #666; ... }` and a
@@ -124,30 +124,7 @@ body::before {
 }
 a { text-decoration: none }
 
-/* ── CURSOR ── */
-#cursor {
-  position: fixed;
-  width: 12px;
-  height: 12px;
-  background: var(--sky);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: transform .1s ease, width .3s, height .3s, background .3s;
-  mix-blend-mode: multiply;
-}
-#cursor-trail {
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  border: 1.5px solid rgba(47,184,238,.4);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
-  transform: translate(-50%, -50%);
-  transition: left .12s ease, top .12s ease, width .3s, height .3s;
-}
+/* Custom cursor + trail removed — using native pointer everywhere. */
 
 /* ── AURORA ── */
 .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden }
@@ -214,7 +191,7 @@ nav a:hover, nav a.active { color: white }
   font-size: 12px;
   font-weight: 500;
   letter-spacing: .06em;
-  cursor: none;
+  cursor: pointer;
   box-shadow: var(--shadow-sky);
   transition: opacity var(--dur-fast), transform var(--dur-fast);
 }
@@ -316,7 +293,7 @@ nav a:hover, nav a.active { color: white }
   font-size: 14px;
   font-weight: 500;
   letter-spacing: .06em;
-  cursor: none;
+  cursor: pointer;
   box-shadow: var(--shadow-btn);
   display: inline-flex;
   align-items: center;
@@ -336,7 +313,7 @@ nav a:hover, nav a.active { color: white }
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 400;
-  cursor: none;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -995,7 +972,7 @@ nav a:hover, nav a.active { color: white }
   border: 1px solid var(--mist);
   border-radius: var(--r-lg);
   padding: 32px 28px 28px;
-  cursor: none;
+  cursor: pointer;
   position: relative;
   overflow: hidden;
   opacity: 0;
