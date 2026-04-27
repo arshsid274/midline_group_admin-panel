@@ -25,46 +25,64 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, SplitText)
 
-    const ctx = gsap.context(() => {
-      const section = sectionRef.current
-      if (!section) return
+    const section = sectionRef.current
+    if (!section) return
 
-      // ── 3D card scroll-away (matches ElicaCards original) ──
-      // All cards except the last get both animations.
-      // Last card stays visible — no pin, no animation.
+    // ── The Ssangyong/Elica pattern (from index.html initElicaSlides) ──
+    //
+    // The original 3-card stack works for ANY count of cards because it
+    // creates ScrollTriggers at scrollY=0. Every card evaluates
+    // progress=0 → no wrong autoAlpha:0 painted, no rotation/scale leaked
+    // into the from-state. Then scroll is restored AFTER triggers exist;
+    // ScrollTrigger updates progress for the new scroll position,
+    // painting correct values across all cards.
+    //
+    // Next.js App Router auto-restores scroll BEFORE useEffect, breaking
+    // this invariant. We restore it explicitly: scroll to 0 → build
+    // triggers → scroll back to the user's saved Y.
+
+    // Read user's intended scroll position (from sessionStorage if present,
+    // or from current scrollY which the browser/Next may have already set).
+    const storageKey = `midline:scroll:${window.location.pathname}`
+    let savedY = window.scrollY
+    try {
+      const fromStorage = window.sessionStorage.getItem(storageKey)
+      const parsed = fromStorage ? parseInt(fromStorage, 10) : NaN
+      if (Number.isFinite(parsed) && parsed > savedY) savedY = parsed
+    } catch {
+      // Ignore storage failures (private mode, quota, etc.)
+    }
+
+    // Force scroll to 0 BEFORE creating triggers so they all evaluate
+    // their progress at the safe baseline (everything visible, no
+    // transforms applied). This is the structural invariant the original
+    // Ssangyong code relied on via `history.scrollRestoration = 'manual'
+    // + window.scrollTo(0, 0)` at page load.
+    if (window.scrollY !== 0) window.scrollTo(0, 0)
+
+    // ── Trigger setup (mirrors initElicaSlides from index.html) ──
+    const ctx = gsap.context(() => {
       const slides = section.querySelectorAll<HTMLElement>(`.${styles.slide}`)
       const total = slides.length
 
-      // Defensive reset on (re)mount. On back-navigation from a company
-      // detail page, scroll position is restored before PageTransition's
-      // opacity fade settles. Without this reset, leftover/stale state
-      // could leave a card invisible (autoAlpha:0). Force a clean slate
-      // — ScrollTrigger.refresh() below will then re-apply the right
-      // values for the current scroll position.
-      const allContents = section.querySelectorAll<HTMLElement>(`.${styles.content}`)
-      gsap.set(allContents, { autoAlpha: 1, clearProps: 'transform' })
-
-      // Same defensive reset for the photo wraps. A previous mount's
-      // mid-animation state (opacity:0 + translation from gsap.from)
-      // can persist if ctx.revert lands during the framer-motion fade.
-      const allWraps = section.querySelectorAll<HTMLElement>(`.${styles.imageWrap}`)
-      gsap.set(allWraps, { clearProps: 'opacity,transform,xPercent,yPercent' })
-
-      // ── PHASE 1: Pin triggers only ──
-      // Pin triggers must be created FIRST and ScrollTrigger.refresh()
-      // must run BEFORE the fade-out triggers, so that the fade-out
-      // triggers read post-pin-spacer layout when calculating their
-      // start/end positions. Without this two-phase split, the fade-out
-      // for the card the user was viewing pinned (on back-nav) reads
-      // un-spaced positions, evaluates as "past fade end → progress=1
-      // → autoAlpha:0", and that wrong state then sticks because
-      // invalidateOnRefresh re-reads autoAlpha:0 as the new start value.
       slides.forEach((slide, idx) => {
         const wrap    = slide.querySelector<HTMLElement>(`.${styles.wrap}`)
         const content = slide.querySelector<HTMLElement>(`.${styles.content}`)
         if (!wrap || !content) return
-        if (idx === total - 1) return // last card: no pin, no fade
+        if (idx === total - 1) return // last card untouched (kept visible at end)
 
+        // Pin + 3D tilt.
+        //
+        // CRITICAL: pinType: 'transform' — our PageTransition wraps every
+        // page in a framer-motion <motion.div>, which applies a transform
+        // stacking context to the ancestor. ScrollTrigger's default
+        // pinType:'fixed' uses position:fixed, which breaks when a
+        // transformed ancestor exists (CSS spec: fixed-position elements
+        // get reparented to the transformed ancestor's containing block,
+        // not the viewport). The pinned card ends up rendered at the
+        // wrong location, appearing "missing" on back-navigation.
+        // pinType:'transform' uses translate3d instead — unaffected by
+        // transformed ancestors. See GSAP forum 37048.
         gsap.to(content, {
           rotationZ: 10 * (Math.random() - 0.1),
           scale: 0.9,
@@ -72,6 +90,7 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
           ease: 'power1.in',
           scrollTrigger: {
             pin: wrap,
+            pinType: 'transform',
             trigger: slide,
             start: 'top 0%',
             end: `+=${window.innerHeight}`,
@@ -79,20 +98,8 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
             invalidateOnRefresh: true,
           },
         })
-      })
 
-      // Materialise pin spacers so subsequent triggers see stable layout.
-      ScrollTrigger.refresh()
-
-      // ── PHASE 2: Fade-out triggers ──
-      // Now `content.getBoundingClientRect().top` reads correct
-      // post-spacer positions for every card — no false "past fade end"
-      // evaluations on back-nav.
-      slides.forEach((slide, idx) => {
-        const content = slide.querySelector<HTMLElement>(`.${styles.content}`)
-        if (!content) return
-        if (idx === total - 1) return
-
+        // Fade-out as next card takes over
         gsap.to(content, {
           autoAlpha: 0,
           ease: 'power1.in',
@@ -106,32 +113,7 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
         })
       })
 
-      // ── PHASE 3: Final reset + refresh ──
-      // Force autoAlpha:1 across every card AFTER all triggers exist,
-      // then refresh once more so each scrub re-evaluates against a
-      // known-good baseline. invalidateOnRefresh causes scrubs to
-      // re-read start values: with all cards at autoAlpha:1, every
-      // tween captures "fade from 1 to 0". The refresh then applies
-      // each scrub's correct scroll-driven progress — pinned/visible
-      // cards get autoAlpha:1, cards mid-fade get the proper lerp,
-      // cards fully scrolled past get autoAlpha:0. This step is
-      // idempotent so it can't disturb correct state.
-      //
-      // Capture scroll BEFORE refresh and restore AFTER so layout
-      // shifts (pin spacer recalculation, font load, etc.) can't push
-      // the user's view away from the section they were viewing.
-      const savedScrollY = window.scrollY
-      gsap.set(allContents, { autoAlpha: 1 })
-      ScrollTrigger.refresh()
-      if (window.scrollY !== savedScrollY) {
-        window.scrollTo(0, savedScrollY)
-      }
-
-      // ── Image/video parallax reveal ──
-      // `once: true` so the entrance plays exactly once — without it, fast-scrolling
-      // past a slide could leave its wraps stuck at the gsap.from start state
-      // (opacity:0, translated off-position) because GSAP's scroll-state can
-      // desync on rapid scroll jumps.
+      // Photo/video parallax reveal
       slides.forEach((slide) => {
         const wraps = slide.querySelectorAll<HTMLElement>(`.${styles.imageWrap}`)
         if (!wraps.length) return
@@ -146,35 +128,17 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
         } as const
 
         if (total === 1) {
-          // Single-card sector: the slide sits ~1.7vh down the page, so a
-          // scrollTrigger of `top center` would never fire for a user who
-          // lands on the page and doesn't scroll — leaving wraps stuck at
-          // opacity:0. Play the reveal on mount instead. The animation
-          // intent ("reveal images as user encounters them") is preserved;
-          // for a single card the encounter IS mount.
+          // Single-card sector: trigger never fires, so play on mount.
           gsap.from(wraps, { ...tweenConfig, delay: 0.1 })
         } else {
-          // Multi-card sectors: reveal as the slide enters view. `top 80%`
-          // fires earlier than `top center` so the animation completes
-          // before the slide reaches its pin position — no flash of
-          // empty card.
-          //
-          // immediateRender:false defers the from-state (opacity:0 +
-          // translation) until the trigger actually fires. On back-nav
-          // from a company detail page, framer-motion's fade window can
-          // cause the once-trigger to miss its onEnter — without this
-          // flag, the wraps would be stuck at opacity:0 forever. With
-          // it, wraps stay at their natural visible state if the
-          // trigger never fires.
           gsap.from(wraps, {
             ...tweenConfig,
-            immediateRender: false,
-            scrollTrigger: { trigger: slide, start: 'top 80%', once: true },
+            scrollTrigger: { trigger: slide, start: 'top center' },
           })
         }
       })
 
-      // ── Split-text heading reveal ──
+      // Split-text heading reveal
       const timings = {
         lines: { duration: 1.2, stagger: 0.08 },
         words: { duration: 1.0, stagger: 0.05 },
@@ -203,24 +167,22 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
       })
     }, sectionRef)
 
-    // PageTransition wraps the page in a framer-motion opacity 0→1 fade.
-    // ScrollTrigger captured trigger positions during that fade — a window
-    // where layout can be subtly off. Refresh once after the fade has
-    // resolved AND after browser scroll restoration has settled, so
-    // triggers re-measure with stable coordinates.
-    const refreshId = window.setTimeout(() => {
-      const savedY = window.scrollY
-      ScrollTrigger.refresh()
-      if (window.scrollY !== savedY) window.scrollTo(0, savedY)
-    }, 350)
+    // ── Restore scroll position AFTER triggers exist ──
+    // Two RAFs to ensure the browser has committed the trigger setup
+    // (pin spacers materialised, layout extended) before the scroll lands.
+    // Then a final ScrollTrigger.refresh() so all scrubs lock to their
+    // correct scroll-driven progress for the restored Y.
+    let restoreId: number | null = null
+    if (savedY > 4) {
+      restoreId = window.requestAnimationFrame(() => {
+        restoreId = window.requestAnimationFrame(() => {
+          window.scrollTo(0, savedY)
+          ScrollTrigger.refresh()
+        })
+      })
+    }
 
-    // ── Scroll-position preservation across browser refresh / hard reload ──
-    // Save the user's scroll position to sessionStorage as they scroll.
-    // On mount, if a saved position exists for this exact pathname,
-    // restore it AFTER triggers + pin spacers have settled so the user
-    // lands back on the same card they were viewing.
-    const storageKey = `midline:scroll:${window.location.pathname}`
-
+    // ── Save scroll position on user scroll (sessionStorage) ──
     let saveTimer: number | null = null
     const onScroll = () => {
       if (saveTimer) window.clearTimeout(saveTimer)
@@ -228,29 +190,14 @@ export default function CompanyElicaStack({ companies, sectorTitle, totalCompani
         try {
           window.sessionStorage.setItem(storageKey, String(window.scrollY))
         } catch {
-          // Ignore storage failures (private mode, quota, etc.)
+          // Ignore storage failures
         }
       }, 150)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
 
-    let restoreId: number | null = null
-    try {
-      const saved = window.sessionStorage.getItem(storageKey)
-      const savedY = saved ? parseInt(saved, 10) : NaN
-      if (Number.isFinite(savedY) && savedY > 0 && Math.abs(window.scrollY - savedY) > 4) {
-        restoreId = window.setTimeout(() => {
-          window.scrollTo(0, savedY)
-          ScrollTrigger.refresh()
-        }, 380)
-      }
-    } catch {
-      // Ignore storage failures
-    }
-
     return () => {
-      window.clearTimeout(refreshId)
-      if (restoreId) window.clearTimeout(restoreId)
+      if (restoreId !== null) window.cancelAnimationFrame(restoreId)
       if (saveTimer) window.clearTimeout(saveTimer)
       window.removeEventListener('scroll', onScroll)
       ctx.revert()
