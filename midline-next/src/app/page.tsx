@@ -10,7 +10,7 @@ import SectorCarousel from '@/components/SectorCarousel'
 export const metadata: Metadata = {
   title: 'Midline Investment — Multi-Sector Holding Group, Dubai UAE',
   description:
-    'From One Name, many successes are born. Midline Investment LLC is a Dubai-based multi-sector holding group operating 30+ companies across 8 industries in 9 countries.',
+    'From One Name, many successes are born. Midline Investment LLC is a Dubai-based multi-sector holding group operating 34 companies across 8 industries in 9 countries.',
 }
 
 export default function HomePage() {
@@ -25,7 +25,7 @@ export default function HomePage() {
         </h1>
         <p className="hero-sub">
           Midline Investment LLC is a multi-sector holding group headquartered in Business Bay, Dubai —
-          operating 30+ companies across aviation, energy, food, construction, and more.
+          operating 34 companies across aviation, energy, food, construction, and more.
         </p>
         <div className="hero-ctas">
           <Link href="/contact" className="btn-primary">Get A Quote</Link>

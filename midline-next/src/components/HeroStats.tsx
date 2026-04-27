@@ -10,7 +10,7 @@ interface Stat {
 }
 
 const STATS: Stat[] = [
-  { target: 30, suffix: '+', label: 'Companies' },
+  { target: 34, label: 'Companies' },
   { target: 8, label: 'Sectors' },
   { target: 9, label: 'Countries' },
 ]

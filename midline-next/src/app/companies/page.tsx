@@ -7,7 +7,7 @@ import RevealOnScroll from '@/components/RevealOnScroll'
 export const metadata: Metadata = {
   title: 'Companies',
   description:
-    'A clear view of the Midline portfolio — 30+ companies across 8 sectors including aviation, oil & gas, food industry, construction, pharma, spare parts, perfumes, and furniture.',
+    'A clear view of the Midline portfolio — 34 companies across 8 sectors including aviation, oil & gas, food industry, construction, pharma, spare parts, perfumes, and furniture.',
 }
 
 export default function CompaniesPage() {
@@ -27,7 +27,7 @@ export default function CompaniesPage() {
       <section className="structure-section">
         <RevealOnScroll className="section-label">Holding Structure</RevealOnScroll>
         <RevealOnScroll className="section-title">
-          A clear tree of <em>30+ companies</em> across the group
+          A clear tree of <em>34 companies</em> across the group
         </RevealOnScroll>
         <RevealOnScroll className="section-body">
           Built from the company profiles document, this view shows the Midline Holding Group root, each

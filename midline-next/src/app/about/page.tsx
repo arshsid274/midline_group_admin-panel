@@ -63,7 +63,7 @@ export default function AboutPage() {
                 <h4>Integrity &amp; Innovation</h4>
                 <p>
                   We uphold the highest standards of governance, accountability, and operational quality
-                  across all 30+ companies in the portfolio.
+                  across all 34 companies in the portfolio.
                 </p>
               </RevealOnScroll>
             </div>

@@ -113,7 +113,7 @@ export default function OrbitalRing() {
       <div ref={compRef} className="orbital-stage">
 
         <div ref={textRef} className="orbital-center">
-          <div className="orbital-eyebrow">30+ Companies · 8 Sectors</div>
+          <div className="orbital-eyebrow">34 Companies · 8 Sectors</div>
           <div className="orbital-headline">One portfolio.<br /><em>Infinite reach.</em></div>
         </div>
 
