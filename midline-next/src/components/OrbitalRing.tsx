@@ -133,6 +133,18 @@ export default function OrbitalRing() {
                   <div
                     ref={(el) => { floatRefs.current[i] = el }}
                     className="orbital-orb"
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View ${data.sector} sector`}
+                    onClick={() => {
+                      window.dispatchEvent(new CustomEvent('midline:focus-sector', { detail: { index: i } }))
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        window.dispatchEvent(new CustomEvent('midline:focus-sector', { detail: { index: i } }))
+                      }
+                    }}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={data.img} alt="" className="orbital-orb-img" />

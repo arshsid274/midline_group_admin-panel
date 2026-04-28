@@ -531,6 +531,8 @@ nav a:hover, nav a.active { color: white }
 .sc-header {
   padding: 0 60px 48px;
   max-width: 1300px;
+  margin: 0 auto;
+  text-align: center;
 }
 .sc-carousel {
   display: flex;

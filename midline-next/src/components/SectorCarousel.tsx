@@ -150,6 +150,46 @@ export default function SectorCarousel() {
     return () => el.removeEventListener('wheel', onWheel)
   }, [])
 
+  // Listen for orbital-ring orb clicks: scroll page to carousel, then slide to matching sector.
+  // Lands the section's top edge exactly at the viewport top, then waits for the page scroll
+  // to fully settle before sliding the carousel horizontally — so the framing is identical
+  // across orb clicks (header at top, cards filling the viewport, pips at bottom).
+  useEffect(() => {
+    const onFocusSector = (e: Event) => {
+      const { index } = (e as CustomEvent<{ index: number }>).detail
+      const section  = sectionRef.current
+      const carousel = carouselRef.current
+      if (!section || !carousel) return
+
+      const targetY = section.getBoundingClientRect().top + window.scrollY
+      window.scrollTo({ top: targetY, behavior: 'smooth' })
+
+      const total       = SECTORS.length
+      const ratio       = index / (total - 1)
+      const targetLeft  = ratio * (carousel.scrollWidth - carousel.clientWidth)
+
+      let fired = false
+      const slide = () => {
+        if (fired) return
+        fired = true
+        // Snap final vertical position to lock the framing — kills any sub-pixel drift
+        // from interrupted smooth-scrolls.
+        window.scrollTo({ top: targetY })
+        carousel.scrollTo({ left: targetLeft, behavior: 'smooth' })
+        setActiveIndex(index)
+        window.removeEventListener('scrollend', slide)
+      }
+
+      window.addEventListener('scrollend', slide, { once: true })
+      // Fallback for browsers without `scrollend` (Safari < 18) and as a safety net
+      // in case the smooth-scroll is interrupted.
+      setTimeout(slide, 900)
+    }
+
+    window.addEventListener('midline:focus-sector', onFocusSector)
+    return () => window.removeEventListener('midline:focus-sector', onFocusSector)
+  }, [])
+
   const handleScroll = () => {
     const el = carouselRef.current
     if (!el) return
@@ -213,12 +253,7 @@ export default function SectorCarousel() {
     <section ref={sectionRef} className="sc-section">
 
       <div className="sc-header">
-        <div className="section-label revealed">Our Sectors</div>
         <h2 className="section-title revealed">Eight industries. <em>One vision.</em></h2>
-        <p className="section-body revealed">
-          Midline&apos;s portfolio spans essential and high-growth industries — from energy and aviation to food,
-          pharma, and premium retail.
-        </p>
       </div>
 
       <div
