@@ -1044,6 +1044,55 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'To become a leading provider of animal feed solutions in Libya and the region — recognised for excellence in quality, innovation, and sustainable agricultural support.',
   },
 
+  'maraina-al-khadra-food': {
+    tagline: 'Natural food for a healthy life.',
+    overview: [
+      'MARAINA AL-KHADRA is a Libyan food manufacturer specialising in grain milling and rice processing since 2023, sourcing the finest local crops while preserving their natural nutritional value and authentic taste — based in Al-Nawagiya, next to Al-Intila Gate, Benghazi.',
+      'Beyond local sourcing, MARAINA AL-KHADRA imports premium wheat, malt, and bran flour to maintain a consistent supply of top-quality raw materials for production and distribution — supporting local farmers, strengthening the national economy, and adhering to the highest food safety and health standards.',
+    ],
+    qualitySubtitle:
+      'Every grain, every batch, every package — from raw-material selection through milling, rice processing, and final packaging, built on strict food safety standards and authentic natural taste.',
+    missionHeading: 'Healthy, natural staples for every household.',
+    missionBody:
+      'MARAINA AL-KHADRA delivers high-quality staple foods derived from grains and rice, supplies premium imported wheat, malt, and bran flour to meet market demand, adheres to the highest food safety and health standards, and supports local farmers — continuously innovating across production and packaging to earn customer trust through quality and excellent service.',
+    facts: [
+      {
+        stat: '2023',
+        title: 'Grain milling & rice processing',
+        body:
+          'Specialising in grain milling and rice processing since 2023 — sourcing the finest local crops and preserving their natural nutritional value and authentic taste through every stage of production.',
+      },
+      {
+        stat: 'Premium',
+        title: 'Imported wheat, malt & bran flour',
+        body:
+          'Imports premium wheat, malt, and bran flour to ensure a consistent supply of top-quality raw materials — meeting market demand and supporting reliable production and distribution.',
+      },
+      {
+        stat: 'Safety',
+        title: 'Highest food safety standards',
+        body:
+          'Adherence to the highest food safety and health standards across raw-material selection, milling, processing, and packaging — every product engineered for trust and consumer well-being.',
+      },
+      {
+        stat: 'Local',
+        title: 'Supporting Libyan farmers',
+        body:
+          'Working with a network of trusted suppliers and local farmers to source the highest-quality raw materials — strengthening the national economy and supporting sustainable agriculture across Libya.',
+      },
+      {
+        stat: 'Logistics',
+        title: 'Reliable distribution network',
+        body:
+          'Collaboration with leading logistics partners to guarantee timely and efficient delivery of products — backed by continuous innovation in production and packaging processes.',
+      },
+    ],
+    knowThatBody:
+      'From locally milled grains and processed rice to imported premium wheat, malt, and bran flour, MARAINA AL-KHADRA delivers natural, high-quality staple foods to Libyan households — built on quality, integrity, innovation, social responsibility, and sustainability.',
+    visionQuote:
+      'To become a leading company in the production of essential food products in the region — offering healthy, natural products that contribute to building a healthier society.',
+  },
+
   'al-shiffa-pharma': {
     tagline: 'Libya\'s registered pharmaceutical importer and distributor.',
     overview: [

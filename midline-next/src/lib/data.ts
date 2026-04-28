@@ -167,6 +167,14 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
         desc: 'Libya-based animal feed company (brand: Green Pastures) delivering scientifically formulated balanced feed, custom nutritional programs, and expert consultancy services for livestock and poultry producers — with a focus on farm efficiency and food security.',
         link: 'https://green.maraina.com.ly',
       },
+      {
+        name: 'MARAINA AL-KHADRA (Food)',
+        tags: ['Benghazi, Libya', 'Est. 2023'],
+        type: 'Grain Milling & Rice Processing',
+        logo: '/assets/logos/maraina.png',
+        desc: 'Benghazi-based food manufacturer specialising in grain milling and rice processing since 2023 — preserving the natural nutritional value of locally sourced crops alongside imported premium wheat, malt, and bran flour, with a focus on food safety, sustainable production, and partnerships with local farmers.',
+        link: 'https://maraina.com.ly',
+      },
     ],
   },
   oilgas: {
@@ -306,6 +314,7 @@ export const MIDLINE_STRUCTURE: Array<{
       'Saif Pasta Factory',
       'Al-Dabousiya Mineral Water Bottling Company',
       'MARAINA AL-KHADRA',
+      'MARAINA AL-KHADRA (Food)',
     ],
   },
   {
