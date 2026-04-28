@@ -1047,7 +1047,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
   'maraina-al-khadra-food': {
     tagline: 'Natural food for a healthy life.',
     overview: [
-      'MARAINA AL-KHADRA is a Libyan food manufacturer specialising in grain milling and rice processing since 2023, sourcing the finest local crops while preserving their natural nutritional value and authentic taste — based in Al-Nawagiya, next to Al-Intila Gate, Benghazi.',
+      'MARAINA AL-KHADRA is a Libyan food manufacturer specialising in grain milling and rice processing since 2022, sourcing the finest local crops while preserving their natural nutritional value and authentic taste — based in Al-Nawagiya, next to Al-Intila Gate, Benghazi.',
       'Beyond local sourcing, MARAINA AL-KHADRA imports premium wheat, malt, and bran flour to maintain a consistent supply of top-quality raw materials for production and distribution — supporting local farmers, strengthening the national economy, and adhering to the highest food safety and health standards.',
     ],
     qualitySubtitle:
@@ -1057,10 +1057,10 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'MARAINA AL-KHADRA delivers high-quality staple foods derived from grains and rice, supplies premium imported wheat, malt, and bran flour to meet market demand, adheres to the highest food safety and health standards, and supports local farmers — continuously innovating across production and packaging to earn customer trust through quality and excellent service.',
     facts: [
       {
-        stat: '2023',
+        stat: '2022',
         title: 'Grain milling & rice processing',
         body:
-          'Specialising in grain milling and rice processing since 2023 — sourcing the finest local crops and preserving their natural nutritional value and authentic taste through every stage of production.',
+          'Specialising in grain milling and rice processing since 2022 — sourcing the finest local crops and preserving their natural nutritional value and authentic taste through every stage of production.',
       },
       {
         stat: 'Premium',

@@ -1,6 +1,6 @@
 # MARAINA AL-KHADRA – Natural Food for a Healthy Life
 
-At MARAINA AL-KHADRA, we take pride in being a leading company in the food industry, specializing in grain milling and rice processing since 2023. We are committed to delivering high-quality products sourced from the finest grains and local crops, while preserving their natural nutritional value and authentic taste. In addition, we import premium wheat, malt, and bran flour to ensure a consistent supply of top-quality raw materials for our production and distribution.
+At MARAINA AL-KHADRA, we take pride in being a leading company in the food industry, specializing in grain milling and rice processing since 2022. We are committed to delivering high-quality products sourced from the finest grains and local crops, while preserving their natural nutritional value and authentic taste. In addition, we import premium wheat, malt, and bran flour to ensure a consistent supply of top-quality raw materials for our production and distribution.
 
 ## Location
 

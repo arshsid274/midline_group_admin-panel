@@ -169,10 +169,10 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
       },
       {
         name: 'MARAINA AL-KHADRA (Food)',
-        tags: ['Benghazi, Libya', 'Est. 2023'],
+        tags: ['Benghazi, Libya', 'Est. 2022'],
         type: 'Grain Milling & Rice Processing',
         logo: '/assets/logos/maraina.png',
-        desc: 'Benghazi-based food manufacturer specialising in grain milling and rice processing since 2023 — preserving the natural nutritional value of locally sourced crops alongside imported premium wheat, malt, and bran flour, with a focus on food safety, sustainable production, and partnerships with local farmers.',
+        desc: 'Benghazi-based food manufacturer specialising in grain milling and rice processing since 2022 — preserving the natural nutritional value of locally sourced crops alongside imported premium wheat, malt, and bran flour, with a focus on food safety, sustainable production, and partnerships with local farmers.',
         link: 'https://maraina.com.ly',
       },
     ],
