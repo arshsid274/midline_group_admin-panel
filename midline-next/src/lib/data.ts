@@ -244,7 +244,7 @@ export const MIDLINE_SECTORS: Record<string, Sector> = {
         link: 'https://arc-autoparts.com',
       },
       {
-        name: 'Almutakbal Alsheesh Ltd',
+        name: 'Almutakbal Alsheeh Ltd',
         tags: ['Benghazi, Libya', 'Est. 2020'],
         type: 'Auto Spare Parts & Service',
         logo: '/assets/logos/almutakbal.png',
@@ -330,7 +330,7 @@ export const MIDLINE_STRUCTURE: Array<{
     key: 'spareparts',
     name: 'Spare Parts',
     markets: 'UAE',
-    companies: ['ARC Auto Spare Parts Trading LLC', 'Almutakbal Alsheesh Ltd'],
+    companies: ['ARC Auto Spare Parts Trading LLC', 'Almutakbal Alsheeh Ltd'],
   },
   {
     key: 'perfumes',

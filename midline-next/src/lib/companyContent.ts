@@ -183,7 +183,7 @@ export const COMPANY_CONTENT: Record<string, CompanyContent> = {
       'To become a leading global automotive spare parts trading company — recognised for innovation, reliability, and excellence in supply chain solutions.',
   },
 
-  'almutakbal-alsheesh-ltd': {
+  'almutakbal-alsheeh-ltd': {
     tagline: 'Libya\'s growing automotive aftermarket force.',
     overview: [
       'Almutakbal Alsheeh Ltd is a specialised automotive business in Libya, focused on the trade of modern auto spare parts and the delivery of comprehensive vehicle maintenance services. Established in Benghazi in 2020 with a single branch, the company now operates 5 branches across the city by 2026.',
