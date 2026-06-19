@@ -199,6 +199,116 @@ nav a:hover, nav a.active { color: white }
 .btn-nav:hover, .btn-nav.active { opacity: .88; transform: translateY(-1px) }
 @keyframes navIn { from { opacity: 0; transform: translateX(-50%) translateY(-16px) } to { opacity: 1; transform: translateX(-50%) translateY(0) } }
 
+/* ── MOBILE NAV ──
+ * Desktop renders the floating pill above; on ≤960px that pill is hidden and
+ * this floating glass hamburger (top-right, clear of the top-left back button
+ * on sector pages) opens a full-screen menu. Hidden on desktop by default. */
+.nav-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1001;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5,63,110,.86);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--r-full);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,.08);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.nav-toggle:active { transform: scale(0.94) }
+.nav-toggle-box { position: relative; width: 20px; height: 14px }
+.nav-toggle-bar {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--white);
+  transition: top var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) ease;
+}
+.nav-toggle-bar:nth-child(1) { top: 0 }
+.nav-toggle-bar:nth-child(2) { top: 6px }
+.nav-toggle-bar:nth-child(3) { top: 12px }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) { top: 6px; transform: rotate(45deg) }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) { opacity: 0 }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) { top: 6px; transform: rotate(-45deg) }
+
+.nav-mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  flex-direction: column;
+  justify-content: center;
+  padding: 88px 28px 48px;
+  background: linear-gradient(160deg, rgba(5,63,110,.97) 0%, rgba(7,42,68,.98) 100%);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  /* Entry handled by opacity/transform so display can stay flex on mobile. */
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity var(--dur-mid) var(--ease-out), transform var(--dur-mid) var(--ease-out);
+}
+.nav-mobile-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto }
+.nav-mobile-brand {
+  position: absolute;
+  top: 22px;
+  left: 28px;
+  margin: 0;
+  font-size: 18px;
+}
+.nav-mobile-links { display: flex; flex-direction: column }
+.nav-mobile-menu a:not(.btn-nav) {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: .01em;
+  color: rgba(255,255,255,.84);
+  padding: 18px 4px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  transition: color var(--dur-fast) ease, opacity var(--dur-mid) var(--ease-out), transform var(--dur-mid) var(--ease-out);
+  /* staggered entry — start slightly down + transparent, settle when .open */
+  opacity: 0;
+  transform: translateY(10px);
+}
+.nav-mobile-menu a:not(.btn-nav).active { color: var(--bright) }
+.nav-mobile-menu a:not(.btn-nav):active { color: var(--white) }
+.nav-mobile-menu.open a:not(.btn-nav) { opacity: 1; transform: translateY(0) }
+.nav-mobile-menu.open .nav-mobile-links > *:nth-child(1) { transition-delay: 60ms }
+.nav-mobile-menu.open .nav-mobile-links > *:nth-child(2) { transition-delay: 110ms }
+.nav-mobile-menu.open .nav-mobile-links > *:nth-child(3) { transition-delay: 160ms }
+.nav-mobile-menu.open .nav-mobile-links > *:nth-child(4) { transition-delay: 210ms }
+.nav-mobile-cta {
+  margin-top: 32px;
+  text-align: center;
+  padding: 16px;
+  font-size: 14px;
+  border-radius: var(--r-md);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--dur-mid) var(--ease-out), transform var(--dur-mid) var(--ease-out);
+}
+.nav-mobile-menu.open .nav-mobile-cta { opacity: 1; transform: translateY(0); transition-delay: 260ms }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-mobile-menu,
+  .nav-mobile-menu a:not(.btn-nav),
+  .nav-mobile-cta {
+    transition: opacity 200ms ease !important;
+    transform: none !important;
+  }
+}
+
 /* ── HERO ── */
 .hero {
   min-height: 100vh;
@@ -1350,6 +1460,10 @@ footer { background: var(--deep); border-top: 1px solid rgba(255,255,255,.08); p
   .hero-stats { gap: 32px }
   .structure-shell, .detail-panel { padding: 24px }
   .structure-head, .detail-head { grid-template-columns: 1fr }
+  /* .structure-head is flex (justify-content:space-between), so the grid rule
+     above is inert for it — stack it explicitly or the summary pills get
+     pushed off the right edge and widen the layout viewport on phones. */
+  .structure-head { flex-direction: column; align-items: flex-start }
   .sector-page-intro { grid-template-columns: 1fr }
   .company-stack { min-height: calc(var(--company-count) * 78vh) }
   .company-stack .company-stack-stage { top: 92px; height: 470px }
@@ -1358,6 +1472,11 @@ footer { background: var(--deep); border-top: 1px solid rgba(255,255,255,.08); p
   .company-stack .company-desc { font-size: 14px }
   body, body.midline-shell { cursor: auto }
   #cursor, #cursor-trail { display: none }
+  /* Hide the desktop pill (override even the higher-specificity
+     `body.midline-shell nav` rule) and switch on the mobile nav. */
+  nav, body.midline-shell nav { display: none !important }
+  .nav-toggle { display: inline-flex }
+  .nav-mobile-menu { display: flex }
 }
 
 @media (max-width: 560px) {
@@ -1368,6 +1487,41 @@ footer { background: var(--deep); border-top: 1px solid rgba(255,255,255,.08); p
   .hero-stats { gap: 24px }
   .stat-num { font-size: 36px }
   .contact-details { gap: 20px }
+  /* Smaller display-type floors so headlines don't crowd narrow phones. */
+  .hero { padding: 96px 20px 64px }
+  .hero h1 { font-size: clamp(34px, 9vw, 48px) }
+  .hero-tag { margin-bottom: 28px }
+  .hero-sub { font-size: 15px; margin-bottom: 36px }
+  .subhero { padding: 104px 20px 60px }
+  .subhero-title { font-size: clamp(32px, 8.5vw, 44px) }
+  .subhero-copy { font-size: 15px }
+  .page-section, .structure-section, .presence-section, .sectors-section, .detail-sections { padding-left: 20px; padding-right: 20px }
+  .about-section, .contact-banner { padding: 56px 20px }
+  footer { padding: 44px 20px 24px }
+}
+
+/* ── ORBITAL RING (responsive) ──
+ * The ring + orbs are sized/positioned in fixed px by GSAP (820px wrap,
+ * 370px radius). Rather than rework the JS, we scale the whole wrap down and
+ * shrink the stage so it never overflows or leaves a tall empty band on
+ * phones. transform-origin stays centered so the ring keeps its framing. */
+@media (max-width: 960px) {
+  .orbital-stage { height: 680px }
+  .orbital-ring-wrap { transform: translate(-50%, -50%) scale(0.78) }
+  .orbital-headline { font-size: clamp(38px, 7vw, 64px) }
+}
+@media (max-width: 700px) {
+  .orbital-section { padding: 40px 0 70px }
+  .orbital-stage { height: 540px }
+  .orbital-ring-wrap { transform: translate(-50%, -50%) scale(0.6) }
+  .orbital-center { width: 88vw }
+  .orbital-headline { font-size: clamp(30px, 8.5vw, 48px) }
+  .orbital-eyebrow { margin-bottom: 12px }
+}
+@media (max-width: 460px) {
+  .orbital-stage { height: 420px }
+  .orbital-ring-wrap { transform: translate(-50%, -50%) scale(0.42) }
+  .orbital-headline { font-size: 27px }
 }
 
 /* ── SMOOTH SCROLL — only for users who haven't opted out of motion ── */

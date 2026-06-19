@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from 'next/font/google'
 import './globals.css'
@@ -7,6 +7,12 @@ import { MediaOverrideProvider } from '@/components/MediaOverrideProvider'
 import { readManifest } from '@/lib/mediaManifest'
 
 export const revalidate = 0
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+}
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
