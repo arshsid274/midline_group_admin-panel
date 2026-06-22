@@ -1,0 +1,329 @@
+/* OrbitalCarousel — scoped styles.
+   The per-frame 3D transforms are driven by CSS custom properties the component
+   writes each animation frame (--pos-x, --scale, --rotation-deg, …); those plus
+   the keyframes live here because Tailwind can't express them. Static layout is
+   handled with Tailwind utilities in the .tsx. */
+
+.root {
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-spring: cubic-bezier(.22, 1.08, .24, 1);
+  --sphere-size: clamp(120px, 25vw, 300px);
+  --sphere-extent: min(400vw, 100vh);
+  --orbit-radius: max(400px, 80cqmin);
+
+  position: relative;
+  width: 100%;
+  height: 1000vh;                 /* scroll distance that drives the carousel */
+  color: #0963A8;                 /* Midline navy */
+  font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
+}
+.root.faded { opacity: 0; transition: opacity 360ms ease; }
+
+.sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--cloud, #F0FAFF), var(--wash, #E0F4FC));
+  isolation: isolate;
+  container-type: size;
+}
+
+.sphereWrap {
+  position: absolute;
+  inset: 0;
+  perspective: 1200px;
+  z-index: 10;
+}
+
+.sphere {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--sphere-extent);
+  height: var(--sphere-extent);
+  container-type: inline-size;
+  transform-style: preserve-3d;
+  /* translate(-50%,-50%) centres the sphere even when it's larger than the
+     viewport (place-items/grid centring does NOT for oversized children). */
+  transform:
+    translate(-50%, -50%)
+    scale(var(--container-scale, 1))
+    translateX(calc(var(--zoom-offset, 0cqmin) + var(--tilt-offset-x, 0%)))
+    translateY(var(--tilt-offset-y, 0%));
+  will-change: transform;
+}
+
+.item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--sphere-size) * var(--sphere-size-scale, 1));
+  aspect-ratio: 1;
+  border: 0;
+  padding: 0;
+  border-radius: 999px;
+  overflow: hidden;
+  display: block;
+  background: none;
+  opacity: var(--item-opacity, 1);
+  transform:
+    translate(-50%, -50%)
+    translate(
+      calc(var(--pos-x, 0) * var(--orbit-radius)),
+      calc(var(--pos-y, 0) * var(--orbit-radius))
+    )
+    scale(var(--scale, 1));
+  z-index: var(--z-index, 1);
+  backface-visibility: hidden;
+  pointer-events: var(--pointer, none);
+  cursor: pointer;
+  will-change: transform, opacity;
+  box-shadow: 0 0 0 1px rgb(18 17 13 / .04);
+  transition: opacity 520ms ease, box-shadow 520ms ease;
+}
+
+.visual {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 110%;
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+  transform: translate(-50%, -50%);
+  transition: transform 900ms var(--ease-spring);
+}
+
+.item.active { pointer-events: auto; box-shadow: 0 18px 70px rgb(18 17 13 / .15), 0 0 0 1px rgb(18 17 13 / .06); }
+.item.active:hover .visual { transform: translate(-50%, -50%) scale(1.045); }
+.item.entering {
+  animation: oc-pop 980ms var(--ease-spring) backwards;
+  animation-delay: calc(var(--intro-index) * 80ms + 260ms);
+}
+
+.intro {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: min(30ch, calc(100vw - 40px));
+  height: max-content;
+  margin: auto;
+  text-align: center;
+  font-size: clamp(12px, 1.12vw, 16px);
+  line-height: 1.25;
+  font-weight: 500;
+  pointer-events: none;
+}
+.intro span { display: inline-block; overflow: hidden; padding-block: .15em; margin-block: -.15em; }
+.intro i { display: inline-block; font-style: normal; transform: translateY(115%); transition: transform 600ms var(--ease-out); }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  color: #0963A8;            /* Midline navy — titles render true (no exclusion) */
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  width: clamp(40px, 4vw, 48px);
+  height: clamp(40px, 4vw, 48px);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #fdfdfc;
+  color: #12110d;
+  pointer-events: auto;
+  cursor: pointer;
+  mix-blend-mode: normal;
+  transform: translateY(-50%);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.arrow:hover { opacity: .72; transform: translateY(-50%) scale(.98); }
+.prev { left: 16px; }
+.next { right: 16px; }
+.arrow svg { width: 1em; height: 1em; fill: currentColor; }
+
+.titles {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  bottom: 16px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 20%, black 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, black 20%, black 80%, transparent 100%);
+}
+.titles h2 {
+  grid-area: 1 / 1;
+  margin: 0;
+  font-size: clamp(36px, 4vw, 42px);
+  line-height: 1;
+  font-weight: 400;
+  font-style: italic;           /* matches the orbital-ring sector labels */
+  white-space: nowrap;
+  text-align: center;
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform 620ms var(--ease-out), opacity 300ms ease;
+}
+.titles h2.active { transform: translateY(0); opacity: 1; }
+.titles h2.exitUp { transform: translateY(-110%); opacity: 0; }
+.titles h2.exitDown { transform: translateY(110%); opacity: 0; }
+
+.dots {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 50;
+  width: 45px;
+  height: 45px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+}
+.dots span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 999px;
+  background: currentColor;
+  color: #12110d;
+  transition: opacity 400ms ease, width 400ms var(--ease-out), height 400ms var(--ease-out), transform 600ms var(--ease-out);
+}
+
+/* square-wipe transition tile (appended to <body>, so no var inheritance here) */
+.clone {
+  position: fixed;
+  z-index: 99;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 999px;
+  background-size: cover;
+  background-position: center;
+  transition:
+    left 780ms cubic-bezier(.22, 1.08, .24, 1),
+    top 780ms cubic-bezier(.22, 1.08, .24, 1),
+    width 780ms cubic-bezier(.22, 1.08, .24, 1),
+    height 780ms cubic-bezier(.22, 1.08, .24, 1),
+    border-radius 780ms cubic-bezier(.22, 1.08, .24, 1);
+}
+
+/* detail view — sector video hero + company cards, opens from a circle wipe */
+.detail {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: linear-gradient(180deg, var(--cloud, #F0FAFF), var(--wash, #E0F4FC));
+  color: #0963A8;
+  animation: oc-detail-in 620ms cubic-bezier(.76, 0, .24, 1) both;
+}
+.detail.detailClosing { animation: oc-detail-out 380ms cubic-bezier(.76, 0, .24, 1) both; }
+@keyframes oc-detail-in {
+  from { clip-path: inset(42% 42% round 999px); opacity: .4 }
+  to { clip-path: inset(0 0 round 0); opacity: 1 }
+}
+@keyframes oc-detail-out {
+  from { clip-path: inset(0 0 round 0); opacity: 1 }
+  to { clip-path: inset(45% 45% round 999px); opacity: 0 }
+}
+
+.detailBack {
+  position: fixed;
+  top: clamp(18px, 3vw, 28px);
+  left: clamp(18px, 3vw, 28px);
+  z-index: 110;
+  background: rgba(255, 255, 255, .7);
+  border: 1px solid rgba(9, 99, 168, .25);
+  color: #0963A8;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 13px;
+  letter-spacing: .04em;
+  padding: 9px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+.detailBack:hover { background: #fff; }
+
+.detailHero {
+  position: relative;
+  width: 100%;
+  height: clamp(340px, 56vh, 600px);
+  overflow: hidden;
+}
+.detailVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.detailHeroTitle {
+  position: absolute;
+  left: clamp(24px, 5vw, 64px);
+  bottom: clamp(24px, 4vh, 48px);
+  margin: 0;
+  font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(44px, 8vw, 110px);
+  line-height: .9;
+  color: #fff;
+  text-shadow: 0 4px 40px rgba(5, 28, 46, .45);
+}
+
+.detailCards {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  padding: clamp(28px, 5vw, 64px);
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+@keyframes oc-pop {
+  from {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      translate(
+        calc(var(--pos-x, 0) * var(--orbit-radius) * .2),
+        calc(var(--pos-y, 0) * var(--orbit-radius) * .2)
+      )
+      scale(.12);
+  }
+}
+
+@media (max-width: 760px) {
+  .root {
+    --sphere-size: clamp(120px, 25vw, 300px);
+    --sphere-extent: min(400vw, 100svh);
+    --orbit-radius: clamp(150px, 42vw, 230px);
+  }
+  .titles { top: 50%; bottom: auto; transform: translateY(-50%); }
+  .titles h2 { font-size: clamp(26px, 9.5vw, 36px); }
+}
+
+@media (max-width: 420px) {
+  .arrow { width: 36px; height: 36px; }
+  .prev { left: 12px; }
+  .next { right: 12px; }
+  .titles { left: 56px; right: 56px; height: 44px; }
+  .dots { right: 16px; bottom: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item, .visual, .titles h2, .intro i { transition: none; }
+  .item.entering { animation: none; }
+}

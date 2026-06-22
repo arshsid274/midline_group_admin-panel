@@ -30,15 +30,17 @@ export default function AboutPage() {
                 A holding group shaped by <em>innovation, precision, and responsible investment.</em>
               </p>
               <p className="about-body">
-                At Midline Investment LLC, we are more than a global investment firm — we are architects of
-                progress, building a sustainable future through innovation, precision, and responsible
-                investment strategies. With a presence spanning continents and industries, we create value,
-                foster partnerships, and shape markets for generations to come.
+                At Midline Investment LLC, we are more than a multi-sector investment group — we are builders
+                of progress. We create long-term value by combining disciplined capital allocation, deep
+                operational expertise, and a genuine sense of responsibility toward the markets and
+                communities we serve. With a presence that spans continents and industries, we are focused on
+                creating value, forging partnerships, and shaping markets for the generations to come.
               </p>
               <p className="about-body">
-                Our success is defined not only by the returns we generate, but by the enduring legacies we
-                leave behind. By seamlessly integrating creativity, expertise, and cutting-edge technology,
-                we provide bespoke investment solutions that drive long-term growth.
+                Our success is measured not only by the returns we generate, but by the durable businesses and
+                lasting relationships we leave behind. By bringing together creativity, expertise, and modern
+                technology, we deliver tailored investment solutions that drive sustainable growth and
+                meaningful, positive impact.
               </p>
             </div>
             <div className="mission-grid">
@@ -46,8 +48,9 @@ export default function AboutPage() {
                 <div className="mission-label">Our Vision</div>
                 <h4>Investment as Transformation</h4>
                 <p>
-                  We see investment as more than capital — it is a force for transformation that shapes
-                  industries through bold innovation and lasting economic impact.
+                  We see investment as more than capital — it is a force for transformation. With a growing
+                  international footprint and a reputation for excellence, we shape industries through bold
+                  innovation, strategic foresight, and lasting economic impact.
                 </p>
               </RevealOnScroll>
               <RevealOnScroll className="mission-item" delay={70}>

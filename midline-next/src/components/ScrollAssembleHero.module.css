@@ -1,0 +1,241 @@
+/* Scroll-assemble cinematic opener.
+   Themed with the site tokens (navy/sky palette, Cormorant Garamond + DM Sans).
+   Fully self-contained — does not touch the existing .hero styles. */
+
+.assemble {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 18% 72%, rgba(80,207,254,.48) 0%, transparent 26%),
+    radial-gradient(circle at 84% 32%, rgba(47,184,238,.35) 0%, transparent 24%),
+    var(--grad-hero);
+}
+.assemble::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 80% at 78% 48%, rgba(80,207,254,.22) 0%, transparent 70%),
+    radial-gradient(ellipse 42% 60% at 14% 65%, rgba(224,244,252,.16) 0%, transparent 60%);
+}
+
+.stage {
+  position: relative;
+  z-index: 1;
+  width: min(1100px, 92vw);
+  text-align: center;
+}
+
+.slogan {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(34px, 8.2vw, 104px);
+  line-height: 1.04;
+  letter-spacing: .005em;
+  color: var(--white);
+  margin: 0;
+}
+
+.word { display: inline-block; white-space: nowrap; margin: 0 .14em }
+
+/* every glyph is its own span so it can move / fade independently.
+   line-height:1 makes getBoundingClientRect().height track the font-size only,
+   so the assemble scale = targetSize / sloganSize (no line-height inflation). */
+.g { display: inline-block; line-height: 1; will-change: transform, opacity }
+.key { color: var(--bright); will-change: transform, opacity, color }
+
+.sub {
+  margin: 1.5rem auto 0;
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1.5vw, 17px);
+  letter-spacing: .01em;
+  color: rgba(255,255,255,.60);
+  max-width: 52ch;
+  line-height: 1.7;
+  will-change: opacity, transform;
+}
+
+/* assembled wordmark guide + resolved tagline.
+   Sits in the upper-middle (not dead centre) so the pill, tagline, CTAs and the
+   image banner all stack below it like a full hero. */
+.resolve {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 33%;
+  transform: translateY(-50%);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+.mark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: .06em;
+  font-size: clamp(40px, 9vw, 120px);
+  color: var(--pale);
+}
+/* each MIDLINE slot — used as a measurement guide for the assembling capitals.
+   line-height:1 must match .g so the height ratio equals the font-size ratio. */
+.target { display: inline-block; line-height: 1 }
+/* the resolved-tagline layer (animated to opacity 1 at the end of the timeline) */
+.resolveLabel { will-change: opacity, transform }
+.tag {
+  margin-top: .5rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(22px, 3.6vw, 44px);
+  line-height: 1.1;
+  color: var(--white);
+}
+.accent { color: var(--bright) }
+
+/* glass pill at the top (imported from the hero) */
+.heroTag {
+  position: absolute;
+  top: 14vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  opacity: 1;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--cloud);
+  background: rgba(255, 255, 255, .10);
+  border: 1px solid rgba(255, 255, 255, .26);
+  padding: 6px 18px;
+  border-radius: var(--r-full);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Resolved tagline + CTAs, stacked in one column so they can never overlap,
+   anchored below the wordmark. */
+.heroStack {
+  position: absolute;
+  top: 46vh;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* CTA buttons below the tagline — side by side */
+.ctas {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroTag, .heroStack { opacity: 1 }
+}
+
+/* In-section image banner. Starts as a wide rounded banner anchored at the line
+   (below the tagline) and is grown to fullscreen by the GSAP timeline.
+   Width / height / transform / opacity are driven by JS; these are just the
+   resting defaults (and the reduced-motion fallback). */
+.media {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  z-index: 2;
+  width: 80vw;
+  height: 64vh;
+  transform: translate(-50%, 70vh);
+  border-radius: 14px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 24px 70px rgba(5, 28, 46, .30);
+}
+.mediaImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* caption overlays that reveal from the bottom once the image is fullscreen */
+.mediaCopy {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: end;
+  z-index: 2;
+  pointer-events: none;
+}
+.mediaNote {
+  max-width: 420px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .16);
+  backdrop-filter: blur(18px);
+  text-align: left;
+  opacity: 0;
+}
+.mediaNote span { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--pale); margin-bottom: 8px }
+.mediaNote strong { display: block; font-family: var(--font-display); font-size: 28px; font-weight: 400; line-height: 1.05; color: #fff }
+.mediaNote p { margin-top: 10px; font-size: 13px; line-height: 1.7; color: rgba(255, 255, 255, .70) }
+.mediaChip {
+  padding: 14px 18px;
+  border-radius: var(--r-full);
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .20);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #fff;
+  backdrop-filter: blur(18px);
+  white-space: nowrap;
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .media { opacity: 1 }
+}
+
+.scrollhint {
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+}
+.scrollhint span { display: inline-block; animation: assembleBob 1.8s ease-in-out infinite }
+
+@keyframes assembleBob {
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(5px) }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollhint span { animation: none }
+}

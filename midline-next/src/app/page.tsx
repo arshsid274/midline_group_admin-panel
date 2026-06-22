@@ -1,11 +1,22 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import Image from 'next/image'
 import PreviewCard from '@/components/PreviewCard'
-import HeroStats from '@/components/HeroStats'
 import RevealOnScroll from '@/components/RevealOnScroll'
 import OrbitalRing from '@/components/OrbitalRing'
 import SectorCarousel from '@/components/SectorCarousel'
+import ScrollAssembleHero from '@/components/ScrollAssembleHero'
+import OrbitalCarousel from '@/components/OrbitalCarousel'
+
+// Same eight sectors the orbital ring uses — image, label and sector route.
+const SECTOR_ITEMS = [
+  { title: 'Aviation',     background: 'url(/assets/sectors/aviation.png)',     href: '/sectors/aviation' },
+  { title: 'Construction', background: 'url(/assets/sectors/construction.png)', href: '/sectors/construction' },
+  { title: 'Food Industry',background: 'url(/assets/sectors/food.png)',         href: '/sectors/food' },
+  { title: 'Oil & Gas',    background: 'url(/assets/sectors/oilgas.png)',       href: '/sectors/oilgas' },
+  { title: 'Perfumes',     background: 'url(/assets/sectors/perfumes.png)',     href: '/sectors/perfumes' },
+  { title: 'Furniture',    background: 'url(/assets/sectors/furniture.png)',    href: '/sectors/furniture' },
+  { title: 'Auto Parts',   background: 'url(/assets/sectors/spareparts.png)',   href: '/sectors/spareparts' },
+  { title: 'Pharma',       background: 'url(/assets/sectors/pharma.png)',       href: '/sectors/pharma' },
+]
 
 export const metadata: Metadata = {
   title: 'Midline Investment — Multi-Sector Holding Group, Dubai UAE',
@@ -16,44 +27,14 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      {/* ── HERO ── */}
-      <section className="hero">
-        <div className="hero-tag">Dubai · UAE · Global Investment Group</div>
-        <h1>
-          From One Name,<br />
-          many <em>successes</em> are born.
-        </h1>
-        <p className="hero-sub">
-          Midline Investment LLC is a multi-sector holding group headquartered in Business Bay, Dubai —
-          operating 34 companies across aviation, energy, food, construction, and more.
-        </p>
-        <div className="hero-ctas">
-          <Link href="/contact" className="btn-primary">Get A Quote</Link>
-          <Link href="/companies" className="btn-ghost">Our Sectors →</Link>
-        </div>
+      {/* ── SCROLL-ASSEMBLE OPENER (now also grows the Burlington image to fullscreen) ── */}
+      <ScrollAssembleHero />
 
-        <div className="hero-media">
-          <div className="hero-media-frame">
-            <Image
-              src="/assets/burlington.jpeg"
-              alt="Burlington Tower, Dubai — Midline Investment headquarters"
-              fill
-              style={{ objectFit: 'cover' }}
-              priority
-            />
-            <div className="hero-media-copy">
-              <div className="hero-media-note">
-                <span>Headquarters</span>
-                <strong>Burlington Tower, Dubai</strong>
-                <p>Business Bay · Office 410 · Marasi Drive, UAE</p>
-              </div>
-              <div className="hero-media-chip">Est. Dubai · UAE</div>
-            </div>
-          </div>
-        </div>
-
-        <HeroStats />
-      </section>
+      {/* ── ORBITAL CAROUSEL (sector ring) ── */}
+      <OrbitalCarousel
+        intro="Eight sectors. One disciplined investment group."
+        items={SECTOR_ITEMS}
+      />
 
       {/* ── ORBITAL RING ── */}
       <OrbitalRing />

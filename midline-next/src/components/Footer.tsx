@@ -15,7 +15,12 @@ export default function Footer() {
             <li><Link href="/">Home</Link></li>
             <li><Link href="/companies">Companies</Link></li>
             <li><Link href="/about">About</Link></li>
+            <li><Link href="/approach">Our Approach</Link></li>
+            <li><Link href="/partners">Partners</Link></li>
+            <li><Link href="/sustainability">Sustainability</Link></li>
             <li><Link href="/global">Global Presence</Link></li>
+            <li><Link href="/careers">Careers</Link></li>
+            <li><Link href="/faq">FAQ</Link></li>
             <li><Link href="/contact">Contact</Link></li>
           </ul>
         </div>

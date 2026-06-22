@@ -1,6 +1,16 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  // This project lives under ~/Desktop (iCloud-synced) and dev is sometimes run
+  // in more than one process at a time. Webpack's *filesystem* cache writes pack
+  // files and renames them atomically (`5.pack.gz_` -> `5.pack.gz`); both iCloud
+  // sync and a second dev process racing the same file throw ENOENT. Using an
+  // in-memory dev cache removes the on-disk pack files entirely, so there is
+  // nothing to race on — HMR stays fast within the session.
+  webpack: (config, { dev }) => {
+    if (dev) config.cache = { type: 'memory' }
+    return config
+  },
   images: {
     unoptimized: false,
   },
