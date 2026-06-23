@@ -1,0 +1,130 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--cloud, #F0FAFF), var(--wash, #E0F4FC));
+  color: #0963A8;
+}
+
+/* Back exit: the detail shrinks + blurs away, then we navigate to the carousel.
+   opacity/blur/scale are scroll-safe (clip-path on this tall, scrollable page
+   would anchor to the element box and skew when scrolled). */
+.pageExiting {
+  animation: cd-out 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: center;
+  pointer-events: none;
+}
+@keyframes cd-out {
+  from { opacity: 1; transform: scale(1); filter: blur(0); }
+  to { opacity: 0; transform: scale(0.94); filter: blur(8px); }
+}
+
+.back {
+  position: fixed;
+  top: clamp(86px, 11vh, 120px);
+  left: clamp(18px, 3vw, 32px);
+  z-index: 40;
+  background: rgba(255, 255, 255, .72);
+  border: 1px solid rgba(9, 99, 168, .25);
+  color: #0963A8;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 13px;
+  letter-spacing: .04em;
+  padding: 9px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  transition: background var(--dur-fast), transform var(--dur-fast);
+}
+.back:hover { background: #fff; transform: translateX(-2px); }
+.back:active { transform: scale(0.96); }
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: clamp(380px, 66vh, 760px);
+  overflow: hidden;
+  /* open fullscreen (continuing the square-wipe) then resize down to the band */
+  animation: cd-hero-resize 780ms cubic-bezier(.72, 0, .15, 1) both;
+}
+@keyframes cd-hero-resize {
+  from { height: 100svh; }
+}
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5, 28, 46, .12) 0%, transparent 38%, rgba(5, 28, 46, .55) 100%);
+  pointer-events: none;
+}
+.heroCopy {
+  position: absolute;
+  left: clamp(24px, 5vw, 72px);
+  right: clamp(24px, 5vw, 72px);
+  bottom: clamp(28px, 5vh, 56px);
+  color: #fff;
+  animation: cd-fade 620ms ease 380ms both;
+}
+@keyframes cd-fade {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  opacity: .9;
+  margin-bottom: 12px;
+}
+.title {
+  margin: 0;
+  font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(48px, 9vw, 128px);
+  line-height: .9;
+  text-shadow: 0 4px 40px rgba(5, 28, 46, .45);
+}
+.blurb {
+  margin: 14px 0 0;
+  max-width: 56ch;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: clamp(14px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, .88);
+}
+
+.body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(36px, 6vw, 80px) clamp(24px, 5vw, 64px) clamp(20px, 3vw, 40px);
+  animation: cd-fade 720ms ease 460ms both;
+}
+.intro {
+  max-width: 60ch;
+  margin: 0 0 clamp(28px, 4vw, 48px);
+  font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.35;
+  color: #0963A8;
+}
+.cards {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero, .heroCopy, .body { animation: none; }
+  .pageExiting { animation: cd-out-reduced 200ms ease both; }
+}
+/* reduced motion: fade only, no movement/blur */
+@keyframes cd-out-reduced {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

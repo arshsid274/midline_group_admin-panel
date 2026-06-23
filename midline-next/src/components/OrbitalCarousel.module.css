@@ -227,17 +227,12 @@
   -webkit-overflow-scrolling: touch;
   background: linear-gradient(180deg, var(--cloud, #F0FAFF), var(--wash, #E0F4FC));
   color: #0963A8;
-  animation: oc-detail-in 620ms cubic-bezier(.76, 0, .24, 1) both;
+  /* cross-fades in over the square-wipe card, fades out back to it on close */
+  animation: oc-detail-in 420ms ease both;
 }
-.detail.detailClosing { animation: oc-detail-out 380ms cubic-bezier(.76, 0, .24, 1) both; }
-@keyframes oc-detail-in {
-  from { clip-path: inset(42% 42% round 999px); opacity: .4 }
-  to { clip-path: inset(0 0 round 0); opacity: 1 }
-}
-@keyframes oc-detail-out {
-  from { clip-path: inset(0 0 round 0); opacity: 1 }
-  to { clip-path: inset(45% 45% round 999px); opacity: 0 }
-}
+.detail.detailClosing { animation: oc-detail-out 340ms ease both; }
+@keyframes oc-detail-in { from { opacity: 0 } to { opacity: 1 } }
+@keyframes oc-detail-out { from { opacity: 1 } to { opacity: 0 } }
 
 .detailBack {
   position: fixed;

@@ -1,9 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { MIDLINE_SECTORS } from '@/lib/data'
-import { getSectorMedia } from '@/lib/companyContent'
-import CompanyCard from './CompanyCard'
 import styles from './OrbitalCarousel.module.css'
 
 const sectorSlug = (href?: string) => (href ? href.split('/').filter(Boolean).pop() ?? '' : '')
@@ -13,7 +12,7 @@ export interface OrbitalItem {
   title: string
   /** Tile fill — any CSS background (solid, gradient, or `url(...)`). */
   background?: string
-  /** Optional route; if set, selecting the item navigates there. */
+  /** Route opened on select (e.g. `/carousel/aviation`). */
   href?: string
 }
 
@@ -21,7 +20,7 @@ export interface OrbitalCarouselProps {
   items?: OrbitalItem[]
   /** Centre intro copy (word-by-word reveal). */
   intro?: string
-  /** Fired when an item is selected (after the square-wipe). */
+  /** Fired when an item is selected (just before navigating). */
   onSelect?: (item: OrbitalItem, index: number) => void
   className?: string
 }
@@ -49,23 +48,73 @@ export default function OrbitalCarousel({
   className = '',
 }: OrbitalCarouselProps) {
   const rootRef = useRef<HTMLElement>(null)
-  const detailOpenRef = useRef(false)
-  const [openSlug, setOpenSlug] = useState<string | null>(null)
-  const [closing, setClosing] = useState(false)
-
-  const closeDetail = () => {
-    setClosing(true)
-    window.setTimeout(() => {
-      detailOpenRef.current = false
-      document.body.style.overflow = ''
-      setOpenSlug(null)
-      setClosing(false)
-    }, 380)
-  }
+  const router = useRouter()
+  const navigatingRef = useRef(false)
 
   useEffect(() => {
     const root = rootRef.current
     if (!root) return
+
+    // clear any transition clone left over from navigating to a detail route
+    document.querySelectorAll(`.${styles.clone}`).forEach((n) => n.remove())
+    navigatingRef.current = false
+
+    // Restore the home scroll position when returning from a detail route.
+    // This page is very tall and its height is established asynchronously
+    // (GSAP-pinned opener + a 1000vh carousel), so the browser's own scroll
+    // restoration fires before the height exists and lands in the wrong place.
+    // We wait for the opener to signal its pinned timeline has refreshed (so the
+    // pin-spacer — and therefore the final page height — exists), then hold the
+    // saved position for a few frames to beat any late automatic restore.
+    // Without this gate the restore can land inside the half-built opener and
+    // leave its hero image stuck on screen.
+    try {
+      const saved = sessionStorage.getItem('oc-return-scroll')
+      if (saved !== null) {
+        sessionStorage.removeItem('oc-return-scroll')
+        const y = parseInt(saved, 10) || 0
+        if (y > 0) {
+          let frames = 0
+          let held = 0
+          const restore = () => {
+            frames += 1
+            const maxY = document.documentElement.scrollHeight - window.innerHeight
+            if (maxY >= y - 2) {
+              // `instant` bypasses the page's `scroll-behavior: smooth`; without
+              // it the restore ANIMATES from the top up through the pinned hero
+              // (looking like a stuck/duplicate Burlington image) and drifts.
+              window.scrollTo({ top: y, left: 0, behavior: 'instant' })
+              held += 1
+            }
+            if (held < 12 && frames < 150) {
+              requestAnimationFrame(restore)
+            } else {
+              // Tell the pinned opener the scroll has landed at its final spot,
+              // so it can ScrollTrigger.refresh() — the instant jump skipped the
+              // scroll events its pin needed to advance past its end, leaving the
+              // hero rendered at the wrong scroll position.
+              window.dispatchEvent(new Event('oc:restored'))
+            }
+          }
+          // Don't restore until the pinned opener reports its layout is final.
+          const w = window as typeof window & { __sahReady?: boolean }
+          let started = false
+          const begin = () => {
+            if (started) return
+            started = true
+            window.removeEventListener('sah:ready', begin)
+            requestAnimationFrame(restore)
+          }
+          if (w.__sahReady) begin()
+          else {
+            window.addEventListener('sah:ready', begin)
+            window.setTimeout(begin, 1500) // fallback if the opener never signals
+          }
+        }
+      }
+    } catch {
+      /* sessionStorage unavailable — skip restore */
+    }
 
     const q = <T extends Element>(s: string) => root.querySelector<T>(s)
     const qa = <T extends Element>(s: string) => Array.from(root.querySelectorAll<T>(s))
@@ -85,7 +134,6 @@ export default function OrbitalCarousel({
     const frameStep = 1 / 120
     const easeOut = (t: number) => 1 - Math.pow(1 - t, 4)
     const smootherStep = (t: number) => t * t * t * (t * (6 * t - 15) + 10)
-    const mobileQuery = window.matchMedia('(max-width: 760px)')
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     let targetRotation = 0
@@ -105,6 +153,10 @@ export default function OrbitalCarousel({
     const introStart = performance.now()
     let rafId = 0
     let destroyed = false
+    // when we mount mid-carousel (e.g. returning from a detail route) we snap to
+    // the scroll position instead of spinning/playing the intro from zero.
+    let startedScrolled = false
+    let lastProgress = -1
 
     wordEls.forEach((w, i) => w.style.setProperty('--word-index', String(i)))
 
@@ -141,10 +193,8 @@ export default function OrbitalCarousel({
       targetRotation =
         progress <= 0.2
           ? -((progress / 0.2) * Math.PI * 2)
-          : // map the scroll to indices 0 … count-1 (first … last sector) so the
-            // rotation STOPS on the final sector instead of looping back to the
-            // first. (count would over-rotate a full turn and bring item 0 round
-            // again.) The focused index is wrapped separately below.
+          : // map the scroll to indices 0 … count-1 so the rotation stops on the
+            // final sector instead of looping back to the first.
             -(Math.PI * 2) - Math.round(((progress - 0.2) / 0.8) * (count - 1)) * step
       targetTiltY = interpolate(progress, [0, 0.2, 1], [-0.6, 0, 0])
       targetTiltX = interpolate(progress, [0, 0.2, 1], [0.5236, 0, 0])
@@ -184,15 +234,26 @@ export default function OrbitalCarousel({
 
     const render = () => {
       if (destroyed) return
-      if (detailOpenRef.current) {
-        // hold the orbit frozen while a detail view is open
-        rafId = requestAnimationFrame(render)
-        return
-      }
       const now = performance.now()
       let dt = Math.min(Math.max(0, (now - lastTime) / 1000), 0.1)
       lastTime = now
       setTargets()
+
+      // A big single-frame jump in progress means the scroll was set
+      // programmatically — almost always the browser restoring the scroll
+      // position when returning from a detail route. Snap the springs to the new
+      // target so the orbit settles instantly instead of spinning to catch up.
+      // (This also catches the case where the restore lands a few frames after
+      // mount, which the one-shot mount snap can miss.)
+      if (lastProgress >= 0 && Math.abs(progress - lastProgress) > 0.1) {
+        rotationSpring = { value: targetRotation, velocity: 0 }
+        tiltYSpring = { value: targetTiltY, velocity: 0 }
+        tiltXSpring = { value: targetTiltX, velocity: 0 }
+        zoom = zoomTarget
+        focusSmooth = wrap(Math.round(wrap(-targetRotation / step)))
+      }
+      lastProgress = progress
+      if (progress > 0.01) startedScrolled = true
 
       while (dt > 0) {
         const chunk = Math.min(dt, frameStep)
@@ -204,7 +265,7 @@ export default function OrbitalCarousel({
       }
 
       const introElapsed = Math.min((now - introStart) / 3000, 1)
-      const introRotation = reduce ? 0 : Math.PI * (1 - easeOut(introElapsed))
+      const introRotation = reduce || startedScrolled ? 0 : Math.PI * (1 - easeOut(introElapsed))
       const rotation = rotationSpring.value + introRotation
       const tiltY = Math.max(-0.75, Math.min(0.75, tiltYSpring.value))
       const tiltX = Math.max(-0.75, Math.min(0.75, tiltXSpring.value))
@@ -231,7 +292,7 @@ export default function OrbitalCarousel({
         const u = 1.5 + 0.5 * zoom
         const curveScale = u - smootherStep(a) * (u - 1)
 
-        let angle = (index / count) * Math.PI * 2 + rotation + Math.PI
+        const angle = (index / count) * Math.PI * 2 + rotation + Math.PI
         let posX = Math.cos(angle)
         let posY = Math.sin(angle)
         let posZ = 0
@@ -256,11 +317,9 @@ export default function OrbitalCarousel({
         item.style.setProperty('--pos-x', posX.toString())
         item.style.setProperty('--pos-y', (-posY).toString())
         item.style.setProperty('--scale', (curveScale * depthScale * currentHover).toString())
-        // front-facing items render at full opacity (true colour); only the
-        // back of the orbit keeps a subtle depth fade.
+        // front-facing tiles render at full opacity; back of the orbit fades.
         const baseOpacity = Math.min(1, 0.55 + Math.max(0, posZ + 1) * 0.45)
-        // once settled on the final sector, fade every non-focused tile out so
-        // no stray circle peeks in after the last item.
+        // on the final sector, fade non-focused tiles so none peek in at the end.
         const endFade = Math.min(1, Math.max(0, (progress - 0.95) / 0.05))
         const itemOpacity = index === focused ? baseOpacity : baseOpacity * (1 - endFade)
         item.style.setProperty('--item-opacity', itemOpacity.toString())
@@ -312,14 +371,44 @@ export default function OrbitalCarousel({
       const leave = () => hoverIndex === index && (hoverIndex = -1)
       const click = (e: MouseEvent) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
-        if (detailOpenRef.current) return
+        if (navigatingRef.current) return
         const slug = sectorSlug(items[index].href)
         if (!slug || !MIDLINE_SECTORS[slug]) return
-        // freeze the orbit + lock scroll, then open the React detail panel
-        detailOpenRef.current = true
-        document.body.style.overflow = 'hidden'
+        navigatingRef.current = true
+        // remember where we were so we can restore it when the user comes back
+        try {
+          sessionStorage.setItem('oc-return-scroll', String(window.scrollY))
+        } catch {
+          /* ignore */
+        }
         onSelect?.(items[index], index)
-        setOpenSlug(slug)
+
+        // square-wipe lead-out: the tile image expands from its position to a
+        // fullscreen card, covering the page while we route to the detail page.
+        const visual = item.querySelector<HTMLElement>(`.${styles.visual}`)
+        const rect = item.getBoundingClientRect()
+        const clone = document.createElement('div')
+        clone.className = styles.clone
+        clone.style.left = `${rect.left}px`
+        clone.style.top = `${rect.top}px`
+        clone.style.width = `${rect.width}px`
+        clone.style.height = `${rect.height}px`
+        if (visual) {
+          const vs = getComputedStyle(visual)
+          clone.style.backgroundImage = vs.backgroundImage
+          clone.style.backgroundSize = 'cover'
+          clone.style.backgroundPosition = 'center'
+        }
+        document.body.appendChild(clone)
+        requestAnimationFrame(() => {
+          clone.style.left = '0px'
+          clone.style.top = '0px'
+          clone.style.width = '100vw'
+          clone.style.height = '100svh'
+          clone.style.borderRadius = '0px'
+        })
+
+        window.setTimeout(() => router.push(`/carousel/${slug}`), 600)
       }
       item.addEventListener('mouseenter', enter)
       item.addEventListener('mouseleave', leave)
@@ -331,13 +420,27 @@ export default function OrbitalCarousel({
       })
     })
 
+    // clear any leftover transition clone (e.g. on bfcache restore / back nav)
     const onPageShow = () => {
+      navigatingRef.current = false
       document.querySelectorAll(`.${styles.clone}`).forEach((n) => n.remove())
-      root.classList.remove(styles.faded)
     }
     window.addEventListener('pageshow', onPageShow)
 
     setTargets()
+    // snap the springs to the current scroll target so a remount mid-carousel
+    // (returning from a detail route) settles instantly instead of spinning up
+    // from zero. A fresh top-of-page load keeps progress ~0, so this is a no-op
+    // there and the intro still plays.
+    startedScrolled = progress > 0.01
+    if (startedScrolled) {
+      rotationSpring.value = targetRotation
+      tiltYSpring.value = targetTiltY
+      tiltXSpring.value = targetTiltX
+      zoom = zoomTarget
+      focusSmooth = wrap(Math.round(wrap(-targetRotation / step)))
+      focused = focusSmooth % count
+    }
     rafId = requestAnimationFrame(render)
 
     return () => {
@@ -347,16 +450,11 @@ export default function OrbitalCarousel({
       next?.removeEventListener('click', onNext)
       window.removeEventListener('pageshow', onPageShow)
       cleanups.forEach((fn) => fn())
-      detailOpenRef.current = false
-      document.body.style.overflow = ''
+      document.querySelectorAll(`.${styles.clone}`).forEach((n) => n.remove())
     }
-  }, [items, intro, onSelect])
-
-  const openSector = openSlug ? MIDLINE_SECTORS[openSlug] : null
-  const openMedia = openSlug ? getSectorMedia(openSlug) : null
+  }, [items, intro, onSelect, router])
 
   return (
-    <>
     <section ref={rootRef} className={`${styles.root} ${className}`}>
       <div className={styles.sticky}>
         <div className={styles.sphereWrap}>
@@ -398,36 +496,5 @@ export default function OrbitalCarousel({
         </div>
       </div>
     </section>
-
-    {openSlug && openSector && openMedia && (
-      <div
-        className={`${styles.detail} ${closing ? styles.detailClosing : ''}`}
-        role="dialog"
-        aria-modal="true"
-        aria-label={openSector.title.replace(/<[^>]*>/g, '')}
-      >
-        <button type="button" className={styles.detailBack} onClick={closeDetail}>
-          ← Back
-        </button>
-        <div className={styles.detailHero}>
-          <video
-            className={styles.detailVideo}
-            src={openMedia.video}
-            poster={openMedia.photo}
-            autoPlay
-            loop
-            muted
-            playsInline
-          />
-          <div className={styles.detailHeroTitle}>{openSector.title.replace(/<[^>]*>/g, '')}</div>
-        </div>
-        <div className={styles.detailCards}>
-          {openSector.companies.map((c) => (
-            <CompanyCard key={c.name} company={c} />
-          ))}
-        </div>
-      </div>
-    )}
-    </>
   )
 }

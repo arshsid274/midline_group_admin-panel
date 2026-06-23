@@ -6,16 +6,16 @@ import SectorCarousel from '@/components/SectorCarousel'
 import ScrollAssembleHero from '@/components/ScrollAssembleHero'
 import OrbitalCarousel from '@/components/OrbitalCarousel'
 
-// Same eight sectors the orbital ring uses — image, label and sector route.
+// Same eight sectors the orbital ring uses — image, label and carousel route.
 const SECTOR_ITEMS = [
-  { title: 'Aviation',     background: 'url(/assets/sectors/aviation.png)',     href: '/sectors/aviation' },
-  { title: 'Construction', background: 'url(/assets/sectors/construction.png)', href: '/sectors/construction' },
-  { title: 'Food Industry',background: 'url(/assets/sectors/food.png)',         href: '/sectors/food' },
-  { title: 'Oil & Gas',    background: 'url(/assets/sectors/oilgas.png)',       href: '/sectors/oilgas' },
-  { title: 'Perfumes',     background: 'url(/assets/sectors/perfumes.png)',     href: '/sectors/perfumes' },
-  { title: 'Furniture',    background: 'url(/assets/sectors/furniture.png)',    href: '/sectors/furniture' },
-  { title: 'Auto Parts',   background: 'url(/assets/sectors/spareparts.png)',   href: '/sectors/spareparts' },
-  { title: 'Pharma',       background: 'url(/assets/sectors/pharma.png)',       href: '/sectors/pharma' },
+  { title: 'Aviation',     background: 'url(/assets/sectors/aviation.png)',     href: '/carousel/aviation' },
+  { title: 'Construction', background: 'url(/assets/sectors/construction.png)', href: '/carousel/construction' },
+  { title: 'Food Industry',background: 'url(/assets/sectors/food.png)',         href: '/carousel/food' },
+  { title: 'Oil & Gas',    background: 'url(/assets/sectors/oilgas.png)',       href: '/carousel/oilgas' },
+  { title: 'Perfumes',     background: 'url(/assets/sectors/perfumes.png)',     href: '/carousel/perfumes' },
+  { title: 'Furniture',    background: 'url(/assets/sectors/furniture.png)',    href: '/carousel/furniture' },
+  { title: 'Auto Parts',   background: 'url(/assets/sectors/spareparts.png)',   href: '/carousel/spareparts' },
+  { title: 'Pharma',       background: 'url(/assets/sectors/pharma.png)',       href: '/carousel/pharma' },
 ]
 
 export const metadata: Metadata = {

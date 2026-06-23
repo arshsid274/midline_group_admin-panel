@@ -55,7 +55,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const manifest = await readManifest()
   return (
-    <html lang="en" suppressHydrationWarning className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable}`}>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable}`}>
       <head>
         {/* Microsoft Clarity — analytics + session recording. Loaded after
             interactive so it never blocks first paint. Project ID: wi1t835k0n. */}
