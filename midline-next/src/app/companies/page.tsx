@@ -3,6 +3,19 @@ import { MIDLINE_SECTORS } from '@/lib/data'
 import SectorCard from '@/components/SectorCard'
 import TreeSection from '@/components/TreeSection'
 import RevealOnScroll from '@/components/RevealOnScroll'
+import HoverImageList from '@/_harvested/HoverImageList/HoverImageList'
+
+// Sector index for the harvested hover-reveal list (image follows the cursor).
+const SECTOR_INDEX = [
+  { label: 'Aviation',      meta: 'UAE',         image: '/assets/sectors/aviation.png',     href: '/carousel/aviation' },
+  { label: 'Oil & Gas',     meta: 'UAE',         image: '/assets/sectors/oilgas.png',       href: '/carousel/oilgas' },
+  { label: 'Food Industry', meta: 'UAE · Libya', image: '/assets/sectors/food.png',         href: '/carousel/food' },
+  { label: 'Construction',  meta: 'UAE',         image: '/assets/sectors/construction.png', href: '/carousel/construction' },
+  { label: 'Pharma',        meta: 'UAE · Libya', image: '/assets/sectors/pharma.png',       href: '/carousel/pharma' },
+  { label: 'Auto Parts',    meta: 'UAE',         image: '/assets/sectors/spareparts.png',   href: '/carousel/spareparts' },
+  { label: 'Perfumes',      meta: 'UAE',         image: '/assets/sectors/perfumes.png',     href: '/carousel/perfumes' },
+  { label: 'Furniture',     meta: 'UAE',         image: '/assets/sectors/furniture.png',    href: '/carousel/furniture' },
+]
 
 export const metadata: Metadata = {
   title: 'Companies',
@@ -22,6 +35,14 @@ export default function CompaniesPage() {
           This page brings together the group structure, all sector categories, and every company profile in
           one place without relying on a single long homepage.
         </p>
+      </section>
+
+      <section className="page-section section-shell">
+        <RevealOnScroll className="section-label">Explore by sector</RevealOnScroll>
+        <RevealOnScroll className="section-title">
+          Eight industries, <em>one group</em>
+        </RevealOnScroll>
+        <HoverImageList items={SECTOR_INDEX} />
       </section>
 
       <section className="structure-section">

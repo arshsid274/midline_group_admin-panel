@@ -55,6 +55,40 @@
   --r-lg: 16px;
   --r-xl: 24px;
   --r-full: 9999px;
+
+  /* ─── design-system-midline.md (additive token layer) ─────────────── */
+  /* premium / legacy accents — from safronhome (gold) + ssyenc (stone) */
+  --gold: #C9A227;
+  --gold-soft: #E8D8A8;
+  --stone: #A99E8F;
+  /* dark-section palette — from verkos (#05050F) / terminal (#052424) */
+  --dark-bg: #04263F;
+  --on-dark: rgba(255, 255, 255, .86);
+  --on-dark-muted: rgba(255, 255, 255, .60);
+  /* motion — most-shipped easing curves across the 9 references */
+  --ease-expo: cubic-bezier(.19, 1, .22, 1);      /* hero / scene moves */
+  --ease-soft: cubic-bezier(.39, .575, .565, 1);  /* gentle, most common */
+  --ease-std: cubic-bezier(.4, 0, .2, 1);         /* material standard */
+  --ease-emphasis: cubic-bezier(.625, .05, 0, 1); /* on-screen morphs */
+  /* fluid type scale */
+  --fs-display: clamp(48px, 9vw, 128px);
+  --fs-h1: clamp(34px, 6vw, 84px);
+  --fs-h2: clamp(28px, 4vw, 56px);
+  --fs-h3: clamp(22px, 2.6vw, 34px);
+  --fs-body: clamp(15px, 1.5vw, 19px);
+  --fs-eyebrow: 11px;
+  --tracking-eyebrow: .24em;
+  --lh-tight: 1.04;
+  --lh-body: 1.7;
+  /* layout / 12-col grid (from springs) */
+  --container: 1200px;
+  --container-wide: 1320px;
+  --grid-cols: 12;
+  --grid-gap: clamp(16px, 2vw, 32px);
+  --section-pad: clamp(64px, 9vw, 140px);
+  /* hairlines + navy-tinted card elevation */
+  --hairline: 1px solid rgba(9, 99, 168, .16);
+  --shadow-card: 0 16px 50px rgba(9, 99, 168, .14);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
@@ -1030,14 +1064,23 @@ nav a:hover, nav a.active { color: white }
 }
 .home-band__inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; text-align: center }
 .home-band__eyebrow {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: .25em;
+  font-size: var(--fs-eyebrow, 11px);
+  letter-spacing: var(--tracking-eyebrow, .24em);
   text-transform: uppercase;
-  color: var(--cloud, #F0FAFF);
-  opacity: .85;
-  margin-bottom: 14px;
+  /* premium gold eyebrow on dark — safronhome / ssyenc pattern */
+  color: var(--gold-soft, #E8D8A8);
+  margin-bottom: 16px;
+}
+.home-band__eyebrow::before {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: var(--gold, #C9A227);
+  opacity: .8;
 }
 .home-band__title {
   margin: 0;

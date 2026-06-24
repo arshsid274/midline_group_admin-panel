@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import PreviewCard from '@/components/PreviewCard'
 import RevealOnScroll from '@/components/RevealOnScroll'
+import FaqAccordion from '@/_harvested/FaqAccordion/FaqAccordion'
 
 export const metadata: Metadata = {
   title: 'FAQ',
@@ -27,38 +27,40 @@ export default function FaqPage() {
         <RevealOnScroll className="section-title">
           What people <em>ask us most</em>
         </RevealOnScroll>
-        <div className="preview-grid">
-          <PreviewCard
-            eyebrow="About"
-            title="What is Midline Investment?"
-            body="A multi-sector investment group headquartered in Dubai, UAE, with operating companies across construction, energy, aviation, trading, perfumery, and petroleum services."
-          />
-          <PreviewCard
-            eyebrow="Industries"
-            title="Which industries does Midline operate in?"
-            body="Construction & contracting, food & beverage, perfumes & beauty, import & export, industry & trade, aviation services, and oil & petroleum services."
-          />
-          <PreviewCard
-            eyebrow="Location"
-            title="Where is Midline Investment based?"
-            body="Our head office is in Burlington Tower, Business Bay, Dubai, with operations and a network spanning several international markets."
-          />
-          <PreviewCard
-            eyebrow="Companies"
-            title="What companies are part of the group?"
-            body="Midline Aviation, HighTrend Energy, HighTrend Trading, Ard Al Teeb Perfume, ARC (auto parts), and ARCO Oil & Gas, among others."
-          />
-          <PreviewCard
-            eyebrow="Partnership"
-            title="How can I partner with or invest alongside Midline?"
-            body="Reach out through our Contact page and our team will connect you with the right person."
-          />
-          <PreviewCard
-            eyebrow="Contact"
-            title="How do I contact Midline Investment?"
-            body="Email info@midline-investment.com or call +971 4 548 8762, Monday–Saturday, 9:00 AM–6:00 PM (GST)."
-          />
-        </div>
+        <FaqAccordion
+          items={[
+            {
+              eyebrow: 'About',
+              q: 'What is Midline Investment?',
+              a: 'A multi-sector investment group headquartered in Dubai, UAE, with operating companies across construction, energy, aviation, trading, perfumery, and petroleum services.',
+            },
+            {
+              eyebrow: 'Industries',
+              q: 'Which industries does Midline operate in?',
+              a: 'Construction & contracting, food & beverage, perfumes & beauty, import & export, industry & trade, aviation services, and oil & petroleum services.',
+            },
+            {
+              eyebrow: 'Location',
+              q: 'Where is Midline Investment based?',
+              a: 'Our head office is in Burlington Tower, Business Bay, Dubai, with operations and a network spanning several international markets.',
+            },
+            {
+              eyebrow: 'Companies',
+              q: 'What companies are part of the group?',
+              a: 'Midline Aviation, HighTrend Energy, HighTrend Trading, Ard Al Teeb Perfume, ARC (auto parts), and ARCO Oil & Gas, among others.',
+            },
+            {
+              eyebrow: 'Partnership',
+              q: 'How can I partner with or invest alongside Midline?',
+              a: 'Reach out through our Contact page and our team will connect you with the right person.',
+            },
+            {
+              eyebrow: 'Contact',
+              q: 'How do I contact Midline Investment?',
+              a: 'Email info@midline-investment.com or call +971 4 548 8762, Monday–Saturday, 9:00 AM–6:00 PM (GST).',
+            },
+          ]}
+        />
       </section>
     </>
   )

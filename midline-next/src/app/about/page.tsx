@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import PreviewCard from '@/components/PreviewCard'
 import RevealOnScroll from '@/components/RevealOnScroll'
+import Timeline from '@/_harvested/Timeline/Timeline'
 
 export const metadata: Metadata = {
   title: 'About',
@@ -72,6 +73,37 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="page-section section-shell">
+        <RevealOnScroll className="section-label">Group at a Glance</RevealOnScroll>
+        <RevealOnScroll className="section-title">
+          One group, <em>many enterprises</em>
+        </RevealOnScroll>
+        <Timeline
+          items={[
+            {
+              marker: 'Headquarters',
+              title: 'Burlington Tower — Business Bay, Dubai',
+              body: 'Our group base for strategy, finance, and regional operations across the UAE and beyond.',
+            },
+            {
+              marker: 'Sectors',
+              title: 'Eight industries under one disciplined group',
+              body: 'Aviation, oil & gas, food, construction, perfumery, auto parts, pharmaceuticals, and furniture.',
+            },
+            {
+              marker: 'Footprint',
+              title: 'Nine strategic markets',
+              body: 'Operations and a network spanning the Middle East, Europe, Asia, and the Americas.',
+            },
+            {
+              marker: 'Portfolio',
+              title: '34 companies and growing',
+              body: 'A diversified portfolio of operating companies under shared governance and long-term ownership.',
+            },
+          ]}
+        />
       </section>
 
       <section className="page-section section-shell">

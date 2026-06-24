@@ -7,6 +7,9 @@ import OrbitalRing from '@/components/OrbitalRing'
 import ScrollAssembleHero from '@/components/ScrollAssembleHero'
 import OrbitalCarousel from '@/components/OrbitalCarousel'
 import HeroStats from '@/components/HeroStats'
+import Marquee from '@/_harvested/Marquee/Marquee'
+import Magnetic from '@/_harvested/Magnetic/Magnetic'
+import StickyFeature from '@/_harvested/StickyFeature/StickyFeature'
 import { GLOBAL_PRESENCE } from '@/lib/data'
 
 // Same eight sectors the orbital ring uses — image, label and carousel route.
@@ -100,18 +103,13 @@ export default function HomePage() {
         <RevealOnScroll className="section-title">
           A portfolio of <em>market leaders</em>
         </RevealOnScroll>
-        <div className="company-strip">
-          {FLAGSHIP_COMPANIES.map((company) => (
-            <Link key={company.name} href={company.href} className="company-chip">
-              <span className="company-chip__sector">{company.sector}</span>
-              <span className="company-chip__name">{company.name}</span>
-            </Link>
-          ))}
-        </div>
+        <Marquee items={FLAGSHIP_COMPANIES.map((c) => c.name)} durationSec={48} />
         <div style={{ marginTop: 28 }}>
-          <Link href="/companies" className="btn-primary">
-            View all companies →
-          </Link>
+          <Magnetic>
+            <Link href="/companies" className="btn-primary">
+              View all companies →
+            </Link>
+          </Magnetic>
         </div>
       </section>
 
@@ -146,35 +144,29 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── §H OUR APPROACH ── */}
+      {/* ── §H OUR APPROACH (harvested StickyFeature) ── */}
       <section className="page-section section-shell">
-        <RevealOnScroll className="section-label">Our Approach</RevealOnScroll>
-        <RevealOnScroll className="section-title">
-          Active owners, <em>not passive capital</em>
-        </RevealOnScroll>
-        <RevealOnScroll className="section-body">
-          When we invest in or build a company, we bring three things: the capital to grow, modernize,
-          and seize opportunity; hands-on operational guidance through proven management discipline and
-          modern systems; and the strength of the group — shared services, cross-company opportunities,
-          and a network that opens doors a standalone business couldn&apos;t reach.
-        </RevealOnScroll>
-        <div className="preview-grid">
-          <PreviewCard
-            eyebrow="01 — Select"
-            title="Conviction over hype"
-            body="We invest where we have genuine sector understanding — not where the noise is loudest."
-          />
-          <PreviewCard
-            eyebrow="02 — Strengthen"
-            title="Foundations first"
-            body="Governance, systems, talent, and quality standards come before chasing scale."
-          />
-          <PreviewCard
-            eyebrow="03 — Compound"
-            title="Built for the long term"
-            body="We reinvest, refine, and let well-run businesses lead their markets over years, not quarters."
-          />
-        </div>
+        <StickyFeature
+          eyebrow="Our Approach"
+          heading="Active owners, not passive capital"
+          panels={[
+            {
+              step: '01',
+              title: 'Select with conviction',
+              body: 'We invest where we have genuine sector understanding — not where the noise is loudest.',
+            },
+            {
+              step: '02',
+              title: 'Strengthen the foundation',
+              body: 'Governance, systems, talent, and quality standards come before chasing scale.',
+            },
+            {
+              step: '03',
+              title: 'Compound over time',
+              body: 'We reinvest, refine, and let well-run businesses lead their markets over years, not quarters.',
+            },
+          ]}
+        />
       </section>
 
       {/* ── §I SUSTAINABILITY (ESG) ── */}
@@ -266,7 +258,9 @@ export default function HomePage() {
             working across industries with room to learn and advance.
           </p>
           <div className="home-band__actions">
-            <Link href="/careers" className="btn-primary">View careers</Link>
+            <Magnetic>
+              <Link href="/careers" className="btn-primary">View careers</Link>
+            </Magnetic>
           </div>
         </div>
       </section>
@@ -280,8 +274,12 @@ export default function HomePage() {
             team will get back to you promptly.
           </p>
           <div className="home-band__actions">
-            <Link href="/contact" className="btn-primary">Get a quote</Link>
-            <Link href="/companies" className="btn-ghost">Our companies →</Link>
+            <Magnetic>
+              <Link href="/contact" className="btn-primary">Get a quote</Link>
+            </Magnetic>
+            <Magnetic>
+              <Link href="/companies" className="btn-ghost">Our companies →</Link>
+            </Magnetic>
           </div>
         </div>
       </section>
