@@ -1010,6 +1010,89 @@ nav a:hover, nav a.active { color: white }
 .compact-section { padding-top: 0 }
 .page-block { margin-bottom: 100px }
 .section-shell { padding-top: 30px }
+
+/* ── Home full-bleed bands (purpose / CTA / careers) ── */
+.home-band {
+  position: relative;
+  padding: clamp(72px, 11vw, 150px) clamp(24px, 6vw, 80px);
+  background: linear-gradient(135deg, #053F6E 0%, #0963A8 58%, #0A4E86 100%);
+  color: #fff;
+  overflow: hidden;
+}
+.home-band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 80% at 82% 28%, rgba(80, 207, 254, .20) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 70% at 12% 80%, rgba(224, 244, 252, .10) 0%, transparent 65%);
+}
+.home-band__inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; text-align: center }
+.home-band__eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--cloud, #F0FAFF);
+  opacity: .85;
+  margin-bottom: 14px;
+}
+.home-band__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(30px, 5vw, 62px);
+  line-height: 1.08;
+}
+.home-band__copy {
+  margin: 20px auto 0;
+  max-width: 64ch;
+  font-family: var(--font-body);
+  font-size: clamp(15px, 1.5vw, 19px);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, .82);
+}
+.home-band__actions { margin-top: 34px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap }
+.home-band--careers {
+  background:
+    linear-gradient(rgba(5, 28, 46, .62), rgba(5, 28, 46, .74)),
+    url(/assets/burlington.jpeg) center / cover no-repeat;
+}
+
+/* ── Home company teaser strip (horizontal scroll) ── */
+.company-strip {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 8px 4px 22px;
+  margin-top: 40px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.company-strip::-webkit-scrollbar { height: 6px }
+.company-strip::-webkit-scrollbar-thumb { background: rgba(9, 99, 168, .22); border-radius: 999px }
+.company-chip {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 26px;
+  border-radius: 18px;
+  text-decoration: none;
+  background: rgba(255, 255, 255, .80);
+  border: 1px solid rgba(9, 99, 168, .16);
+  color: #0963A8;
+  transition: transform .25s var(--ease-out, ease), box-shadow .25s ease, background .25s ease;
+}
+.company-chip:hover { transform: translateY(-3px); background: #fff; box-shadow: 0 16px 50px rgba(9, 99, 168, .16) }
+.company-chip:active { transform: scale(.98) }
+.company-chip__sector { font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #2FB8EE }
+.company-chip__name { font-family: var(--font-display); font-size: 22px; line-height: 1.15 }
 .section-label {
   font-family: var(--font-mono);
   font-size: 10px;

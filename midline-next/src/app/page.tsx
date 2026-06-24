@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import PreviewCard from '@/components/PreviewCard'
 import PresenceCard from '@/components/PresenceCard'
 import RevealOnScroll from '@/components/RevealOnScroll'
 import OrbitalRing from '@/components/OrbitalRing'
 import ScrollAssembleHero from '@/components/ScrollAssembleHero'
 import OrbitalCarousel from '@/components/OrbitalCarousel'
+import HeroStats from '@/components/HeroStats'
 import { GLOBAL_PRESENCE } from '@/lib/data'
 
 // Same eight sectors the orbital ring uses — image, label and carousel route.
@@ -19,6 +21,18 @@ const SECTOR_ITEMS = [
   { title: 'Pharma',       background: 'url(/assets/sectors/pharma.png)',       href: '/carousel/pharma' },
 ]
 
+// Flagship operating company per sector — the home "Our Companies" teaser strip.
+const FLAGSHIP_COMPANIES = [
+  { name: 'Midline Aviation',        sector: 'Aviation',      href: '/carousel/aviation' },
+  { name: 'ARCO Oil & Gas',          sector: 'Oil & Gas',     href: '/carousel/oilgas' },
+  { name: 'Ard Al Teeb',             sector: 'Perfumes',      href: '/carousel/perfumes' },
+  { name: 'ARC Auto Spare Parts',    sector: 'Auto Parts',    href: '/carousel/spareparts' },
+  { name: 'Midline Trend Building',  sector: 'Construction',  href: '/carousel/construction' },
+  { name: 'Acacus Juice & Milk',     sector: 'Food Industry', href: '/carousel/food' },
+  { name: 'Trivix Pharma',           sector: 'Pharma',        href: '/carousel/pharma' },
+  { name: 'Al Sanidan Furniture',    sector: 'Furniture',     href: '/carousel/furniture' },
+]
+
 export const metadata: Metadata = {
   title: 'Midline Investment — Multi-Sector Holding Group, Dubai UAE',
   description:
@@ -28,22 +42,45 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      {/* ── SCROLL-ASSEMBLE OPENER (now also grows the Burlington image to fullscreen) ── */}
+      {/* ── §A SCROLL-ASSEMBLE OPENER ── */}
       <ScrollAssembleHero />
 
-      {/* ── ORBITAL CAROUSEL (sector ring) ── */}
+      {/* ── §B PURPOSE BAND ── */}
+      <section className="home-band">
+        <div className="home-band__inner">
+          <span className="home-band__eyebrow">The Group</span>
+          <h2 className="home-band__title">
+            Disciplined capital. Operational depth. Long-term thinking.
+          </h2>
+          <p className="home-band__copy">
+            Midline Investment is a multi-sector investment group built around a simple conviction:
+            that disciplined capital, operational expertise, and long-term thinking can turn good
+            businesses into category leaders. We own and grow companies across construction, energy,
+            aviation, trading, perfumery, and petroleum services — backing each with the resources,
+            governance, and patience it needs to compound value over time.
+          </p>
+        </div>
+      </section>
+
+      {/* ── §C AT A GLANCE (stats) ── */}
+      <section className="page-section section-shell">
+        <RevealOnScroll className="section-label">At a Glance</RevealOnScroll>
+        <RevealOnScroll className="section-title">
+          A group built to <em>compound value</em>
+        </RevealOnScroll>
+        <HeroStats />
+      </section>
+
+      {/* ── §D ORBITAL CAROUSEL (sector ring) ── */}
       <OrbitalCarousel
         intro="Eight sectors. One disciplined investment group."
         items={SECTOR_ITEMS}
       />
 
-      {/* ── ORBITAL RING ── */}
+      {/* ── §D ORBITAL RING ── */}
       <OrbitalRing />
 
-      {/* ── SECTOR CAROUSEL ── (component kept; intentionally not rendered here) */}
-      {/* <SectorCarousel /> */}
-
-      {/* ── OUR SECTORS (narrative) ── */}
+      {/* ── §E OUR SECTORS (narrative) ── */}
       <section className="page-section section-shell">
         <RevealOnScroll className="section-label">Our Sectors</RevealOnScroll>
         <RevealOnScroll className="section-title">
@@ -57,7 +94,28 @@ export default function HomePage() {
         </RevealOnScroll>
       </section>
 
-      {/* ── WHY MIDLINE ── */}
+      {/* ── §F OUR COMPANIES (teaser strip) ── */}
+      <section className="page-section section-shell">
+        <RevealOnScroll className="section-label">Our Companies</RevealOnScroll>
+        <RevealOnScroll className="section-title">
+          A portfolio of <em>market leaders</em>
+        </RevealOnScroll>
+        <div className="company-strip">
+          {FLAGSHIP_COMPANIES.map((company) => (
+            <Link key={company.name} href={company.href} className="company-chip">
+              <span className="company-chip__sector">{company.sector}</span>
+              <span className="company-chip__name">{company.name}</span>
+            </Link>
+          ))}
+        </div>
+        <div style={{ marginTop: 28 }}>
+          <Link href="/companies" className="btn-primary">
+            View all companies →
+          </Link>
+        </div>
+      </section>
+
+      {/* ── §G WHY MIDLINE ── */}
       <section className="page-section section-shell">
         <RevealOnScroll className="section-label">Why Midline</RevealOnScroll>
         <RevealOnScroll className="section-title">
@@ -88,7 +146,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── OUR APPROACH ── */}
+      {/* ── §H OUR APPROACH ── */}
       <section className="page-section section-shell">
         <RevealOnScroll className="section-label">Our Approach</RevealOnScroll>
         <RevealOnScroll className="section-title">
@@ -119,7 +177,37 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── GLOBAL PRESENCE ── */}
+      {/* ── §I SUSTAINABILITY (ESG) ── */}
+      <section className="page-section section-shell">
+        <RevealOnScroll className="section-label">Sustainability</RevealOnScroll>
+        <RevealOnScroll className="section-title">
+          Responsible <em>by design</em>
+        </RevealOnScroll>
+        <RevealOnScroll className="section-body">
+          We believe investment should leave markets, communities, and the environment better than it
+          found them. Sustainability isn&apos;t a separate initiative at Midline — it&apos;s part of how
+          we evaluate, build, and operate every business.
+        </RevealOnScroll>
+        <div className="preview-grid">
+          <PreviewCard
+            eyebrow="Environmental"
+            title="Cleaner, efficient operations"
+            body="We support more efficient operations across our energy, industrial, and logistics businesses, and factor environmental impact into how we grow."
+          />
+          <PreviewCard
+            eyebrow="Social"
+            title="People and communities"
+            body="We invest in our people, support the communities we operate in, and uphold safe, fair working conditions across the group."
+          />
+          <PreviewCard
+            eyebrow="Governance"
+            title="Transparency and ethics"
+            body="We hold ourselves to high standards of transparency, accountability, and ethics at every level of the group."
+          />
+        </div>
+      </section>
+
+      {/* ── §J GLOBAL PRESENCE ── */}
       <section className="presence-section page-block">
         <RevealOnScroll className="section-label">Global Presence</RevealOnScroll>
         <RevealOnScroll className="section-title">
@@ -139,6 +227,62 @@ export default function HomePage() {
               isHQ={location.isHQ}
             />
           ))}
+        </div>
+      </section>
+
+      {/* ── §K INSIGHTS ── */}
+      <section className="page-section section-shell">
+        <RevealOnScroll className="section-label">Insights</RevealOnScroll>
+        <RevealOnScroll className="section-title">
+          News from <em>across the group</em>
+        </RevealOnScroll>
+        <div className="preview-grid">
+          <PreviewCard
+            eyebrow="Sector perspective"
+            title="Why diversified ownership wins through cycles"
+            body="How operating across essential and high-growth sectors builds resilience that single-market businesses can't match."
+          />
+          <PreviewCard
+            eyebrow="Company news"
+            title="Building capability across the portfolio"
+            body="A look at how group-level governance and shared services help each Midline company perform at its best."
+          />
+          <PreviewCard
+            eyebrow="Featured"
+            title="From one name, many enterprises"
+            body="The thinking behind Midline's long-term, active-ownership model — and where the group is heading next."
+          />
+        </div>
+      </section>
+
+      {/* ── §L CAREERS ── */}
+      <section className="home-band home-band--careers">
+        <div className="home-band__inner">
+          <span className="home-band__eyebrow">Careers</span>
+          <h2 className="home-band__title">Build your future with Midline</h2>
+          <p className="home-band__copy">
+            We grow by attracting people who take ownership, uphold standards, and think long-term —
+            across aviation, energy, trade, construction, and perfumery. A career at Midline means
+            working across industries with room to learn and advance.
+          </p>
+          <div className="home-band__actions">
+            <Link href="/careers" className="btn-primary">View careers</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── §M CLOSING CTA ── */}
+      <section className="home-band">
+        <div className="home-band__inner">
+          <h2 className="home-band__title">Let&apos;s build something lasting.</h2>
+          <p className="home-band__copy">
+            Whether you&apos;re a potential partner, client, supplier, or investor — reach out and our
+            team will get back to you promptly.
+          </p>
+          <div className="home-band__actions">
+            <Link href="/contact" className="btn-primary">Get a quote</Link>
+            <Link href="/companies" className="btn-ghost">Our companies →</Link>
+          </div>
         </div>
       </section>
     </>
