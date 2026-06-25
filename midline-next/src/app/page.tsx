@@ -3,12 +3,10 @@ import Link from 'next/link'
 import PreviewCard from '@/components/PreviewCard'
 import PresenceCard from '@/components/PresenceCard'
 import RevealOnScroll from '@/components/RevealOnScroll'
-import OrbitalRing from '@/components/OrbitalRing'
 import ScrollAssembleHero from '@/components/ScrollAssembleHero'
 import OrbitalCarousel from '@/components/OrbitalCarousel'
 import HeroStats from '@/components/HeroStats'
 import LayingTheFoundation from '@/components/laying-the-foundation/LayingTheFoundation'
-import Marquee from '@/_harvested/Marquee/Marquee'
 import Magnetic from '@/_harvested/Magnetic/Magnetic'
 import StickyFeature from '@/_harvested/StickyFeature/StickyFeature'
 import { GLOBAL_PRESENCE } from '@/lib/data'
@@ -23,18 +21,6 @@ const SECTOR_ITEMS = [
   { title: 'Furniture',    background: 'url(/assets/sectors/furniture.png)',    href: '/carousel/furniture' },
   { title: 'Auto Parts',   background: 'url(/assets/sectors/spareparts.png)',   href: '/carousel/spareparts' },
   { title: 'Pharma',       background: 'url(/assets/sectors/pharma.png)',       href: '/carousel/pharma' },
-]
-
-// Flagship operating company per sector — the home "Our Companies" teaser strip.
-const FLAGSHIP_COMPANIES = [
-  { name: 'Midline Aviation',        sector: 'Aviation',      href: '/carousel/aviation' },
-  { name: 'ARCO Oil & Gas',          sector: 'Oil & Gas',     href: '/carousel/oilgas' },
-  { name: 'Ard Al Teeb',             sector: 'Perfumes',      href: '/carousel/perfumes' },
-  { name: 'ARC Auto Spare Parts',    sector: 'Auto Parts',    href: '/carousel/spareparts' },
-  { name: 'Midline Trend Building',  sector: 'Construction',  href: '/carousel/construction' },
-  { name: 'Acacus Juice & Milk',     sector: 'Food Industry', href: '/carousel/food' },
-  { name: 'Trivix Pharma',           sector: 'Pharma',        href: '/carousel/pharma' },
-  { name: 'Al Sanidan Furniture',    sector: 'Furniture',     href: '/carousel/furniture' },
 ]
 
 export const metadata: Metadata = {
@@ -81,39 +67,6 @@ export default function HomePage() {
         intro="One portfolio.|Infinite reach."
         items={SECTOR_ITEMS}
       />
-
-      {/* ── §D ORBITAL RING ── */}
-      <OrbitalRing />
-
-      {/* ── §E OUR SECTORS (narrative) ── */}
-      <section className="page-section section-shell">
-        <RevealOnScroll className="section-label">Our Sectors</RevealOnScroll>
-        <RevealOnScroll className="section-title">
-          We don&apos;t just follow industries — <em>we partner with them</em>
-        </RevealOnScroll>
-        <RevealOnScroll className="section-body">
-          We invest where real economic life happens: where people build, move, trade, and create.
-          To us, a sector isn&apos;t an abstract market on a chart — it&apos;s a living ecosystem of
-          suppliers, operators, customers, and communities. We treat each one with the depth of
-          understanding and long-term commitment it deserves.
-        </RevealOnScroll>
-      </section>
-
-      {/* ── §F OUR COMPANIES (teaser strip) ── */}
-      <section className="page-section section-shell">
-        <RevealOnScroll className="section-label">Our Companies</RevealOnScroll>
-        <RevealOnScroll className="section-title">
-          A portfolio of <em>market leaders</em>
-        </RevealOnScroll>
-        <Marquee items={FLAGSHIP_COMPANIES.map((c) => c.name)} durationSec={48} />
-        <div style={{ marginTop: 28 }}>
-          <Magnetic>
-            <Link href="/companies" className="btn-primary">
-              View all companies →
-            </Link>
-          </Magnetic>
-        </div>
-      </section>
 
       {/* ── §G WHY MIDLINE (LayingTheFoundation — scroll-animated section) ── */}
       <LayingTheFoundation
