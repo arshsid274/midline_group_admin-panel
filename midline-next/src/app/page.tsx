@@ -7,6 +7,7 @@ import OrbitalRing from '@/components/OrbitalRing'
 import ScrollAssembleHero from '@/components/ScrollAssembleHero'
 import OrbitalCarousel from '@/components/OrbitalCarousel'
 import HeroStats from '@/components/HeroStats'
+import LayingTheFoundation from '@/components/laying-the-foundation/LayingTheFoundation'
 import Marquee from '@/_harvested/Marquee/Marquee'
 import Magnetic from '@/_harvested/Magnetic/Magnetic'
 import StickyFeature from '@/_harvested/StickyFeature/StickyFeature'
@@ -76,7 +77,8 @@ export default function HomePage() {
 
       {/* ── §D ORBITAL CAROUSEL (sector ring) ── */}
       <OrbitalCarousel
-        intro="Eight sectors. One disciplined investment group."
+        eyebrow="34 Companies · 8 Sectors"
+        intro="One portfolio.|Infinite reach."
         items={SECTOR_ITEMS}
       />
 
@@ -113,36 +115,30 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── §G WHY MIDLINE ── */}
-      <section className="page-section section-shell">
-        <RevealOnScroll className="section-label">Why Midline</RevealOnScroll>
-        <RevealOnScroll className="section-title">
-          Built for stewardship, <em>not short-term noise</em>
-        </RevealOnScroll>
-        <RevealOnScroll className="section-body">
-          We envision a world where investment is not only profitable, but profoundly responsible.
-          Our purpose goes beyond financial return — we drive the future of global investment through
-          bold, well-governed initiatives that embrace sustainability, innovation, and operational
-          excellence. We don&apos;t just build companies. We build futures.
-        </RevealOnScroll>
-        <div className="preview-grid">
-          <PreviewCard
-            eyebrow="Diversification"
-            title="Multi-sector resilience"
-            body="From aviation to pharmaceuticals, Midline balances its portfolio across essential and high-growth sectors."
-          />
-          <PreviewCard
-            eyebrow="Operations"
-            title="Hands-on ownership"
-            body="Capital is paired with operational oversight, market understanding, and execution discipline."
-          />
-          <PreviewCard
-            eyebrow="Outlook"
-            title="Long-term value creation"
-            body="Midline focuses on sustainable growth, trusted partnerships, and durable business legacies."
-          />
-        </div>
-      </section>
+      {/* ── §G WHY MIDLINE (LayingTheFoundation — scroll-animated section) ── */}
+      <LayingTheFoundation
+        heading="Built for stewardship, not short-term noise"
+        steps={[
+          {
+            icon: '🌐',
+            tag: 'Diversification',
+            title: 'Multi-sector resilience',
+            body: 'From aviation to pharmaceuticals, Midline balances its portfolio across essential and high-growth sectors.',
+          },
+          {
+            icon: '⚙️',
+            tag: 'Operations',
+            title: 'Hands-on ownership',
+            body: 'Capital is paired with operational oversight, market understanding, and execution discipline.',
+          },
+          {
+            icon: '📈',
+            tag: 'Outlook',
+            title: 'Long-term value creation',
+            body: 'Midline focuses on sustainable growth, trusted partnerships, and durable business legacies.',
+          },
+        ]}
+      />
 
       {/* ── §H OUR APPROACH (harvested StickyFeature) ── */}
       <section className="page-section section-shell">

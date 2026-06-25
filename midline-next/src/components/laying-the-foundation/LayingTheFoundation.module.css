@@ -1,0 +1,170 @@
+/* LayingTheFoundation.module.css
+   Scoped port of the original "Laying the Foundation for the Right Match" section.
+   Class names are module-scoped; JS targets elements via data-* attributes so the
+   two never collide. Brand literals kept from the original (#fff / #232323). */
+
+.section {
+  box-sizing: border-box;
+  position: relative;      /* scope the ribbon layer + stacking to this section */
+  padding-top: 10rem;      /* original top spacing above the heading */
+  padding-bottom: 0;
+  margin-bottom: -35rem;   /* original: pulls the next section up so it meets the cards tightly */
+}
+.section *, .section *::before, .section *::after { box-sizing: border-box; }
+
+.paddingGlobal { position: relative; z-index: 1; padding-left: 2.5rem; padding-right: 2.5rem; }
+.containerLarge { width: 100%; max-width: 75rem; margin-left: auto; margin-right: auto; }
+
+.heading {
+  letter-spacing: -0.02em;
+  font-size: 6rem;
+  font-weight: 600;
+  line-height: 108%;
+  margin: 0;
+  /* SAFEGUARD: force the text visible no matter what. `!important` overrides any
+     stray inline `opacity:0`/`visibility:hidden` a JS lib (GSAP/SplitText) might
+     leave behind, and an explicit color guarantees it isn't background-on-background.
+     The reveal animates transform only, so this never blocks the animation. */
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: var(--ink, #0a1722);
+}
+.maxWidthLarge { width: 100%; max-width: 48rem; }
+
+/* Reveal — added by JS on scroll-into-view. Animates TRANSFORM ONLY (no opacity),
+   so the heading text is always visible; it just slides up. */
+.headingReveal { animation: lf-heading-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes lf-heading-in {
+  from { transform: translateY(28px); }
+  to { transform: translateY(0); }
+}
+
+.track {
+  height: 250vh;       /* original runway length — the full rise + pass-through */
+  margin-top: -30rem;  /* original: pulls the cards' runway up under the heading (tighter) */
+}
+
+.sticky {
+  grid-column-gap: 1.5rem;
+  grid-row-gap: 1.5rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-columns: 1fr;
+  place-items: center;
+  height: 100vh;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  display: grid;
+  position: sticky;
+  top: 0;
+}
+
+.box {
+  grid-column-gap: 1.5rem;
+  grid-row-gap: 1.5rem;
+  background-color: #fff;
+  border-radius: 1.5rem;
+  flex-flow: column;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 21.25rem;
+  padding: 2rem;
+  display: flex;
+  position: relative;
+}
+.iconWrapper { justify-content: space-between; align-items: center; display: flex; }
+.icon { font-size: 3rem; line-height: 103%; }
+.stepTag {
+  color: #232323;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-family: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.cardTitle { letter-spacing: -0.04em; font-size: 2rem; line-height: 110%; margin: 0; }
+.cardBody { letter-spacing: -0.01em; font-size: 1rem; line-height: 150%; margin: 0; }
+
+.whiteBg { z-index: -1; background-color: #fff; border-radius: 1.5rem; position: absolute; inset: 0; }
+.gradientWrap {
+  z-index: -2;
+  pointer-events: none;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  inset: 0;
+}
+.gradient { width: 130%; min-width: 130%; max-width: none; height: 130%; }
+
+/* ribbon "line" — section-scoped layer that stays in view while you scroll the
+   section (sticky), painted BEHIND the card content (z-index 0 < .paddingGlobal 1).
+   Scoped to the section so it doesn't sit behind the rest of the page. */
+.lottieAssets {
+  position: absolute;        /* spans the whole 250vh section, out of flow */
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: 0;                /* behind .paddingGlobal (z-index 1) */
+  pointer-events: none;
+}
+.ribbon {
+  position: sticky;          /* the line stays in the viewport while scrolling the section */
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  margin: 0 auto;
+}
+.ribbon svg { display: block; width: 100% !important; height: 100% !important; }
+.isDesk { display: block; }  /* desk JSON 1440×900 (landscape) */
+.isMob  { display: none; }   /* mob  JSON 375×812  (portrait)  */
+
+/* Anti-FOUC: cards start where GSAP's timeline starts them (y:50rem, off-screen
+   below), so the very first paint matches — no flash at their natural spot before
+   the effect runs. GSAP overrides this inline once it initializes. Reduced-motion
+   users skip this (and the JS timelines) and get the cards in place. */
+@media (prefers-reduced-motion: no-preference) {
+  .box { transform: translateY(50rem); }
+}
+
+/* ── tablet / mobile ─────────────────────────────────────────────── */
+@media (max-width: 991px) {
+  .cardTitle { font-size: 1.5rem; line-height: 130%; }
+  .section { margin-bottom: -15rem; }  /* original mobile overlap (less than desktop) */
+  .track { flex-flow: column; margin-top: 0; display: flex; }
+  .sticky {
+    grid-template-columns: 1fr;
+    align-self: center;
+    max-width: 27rem;
+    height: auto;
+    padding-left: 0;
+    padding-right: 0;
+    top: 50vh;
+    transform: translate(0, -50%);
+  }
+  .box { min-height: auto; }
+  .icon { font-size: 2.5rem; }
+  /* heading in normal flow (NOT sticky) — sticky top:0.75rem hid it behind the
+     fixed site nav. Scrolls in/reveals like the original. */
+  .section .heading {
+    position: relative;
+    z-index: 3;
+    font-size: 2.5rem;
+    line-height: 1.1;
+  }
+}
+@media (max-width: 767px) {
+  .paddingGlobal { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .cardTitle { font-size: 1.5rem; }
+  .track { margin-top: 0; }
+  .sticky { grid-template-columns: 1fr; height: auto; top: 50vh; transform: translate(0, -50%); }
+  .box { min-height: auto; }
+}
+@media (max-width: 479px) {
+  .section { padding-top: 3rem; margin-bottom: -25rem; }
+  .section .heading { font-size: 1.5rem; }
+  .gradient { width: 130%; min-width: 130%; height: 130%; }
+  .lottieAssets { flex-flow: column; }
+  .isMob { display: block; left: 0; right: 0; }
+  .isDesk { display: none; }
+}

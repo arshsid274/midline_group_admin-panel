@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { MIDLINE_SECTORS } from '@/lib/data'
-import SectorCard from '@/components/SectorCard'
 import TreeSection from '@/components/TreeSection'
 import RevealOnScroll from '@/components/RevealOnScroll'
 import HoverImageList from '@/_harvested/HoverImageList/HoverImageList'
+import SectorShowcase from '@/_harvested/SectorShowcase/SectorShowcase'
 
 // Sector index for the harvested hover-reveal list (image follows the cursor).
 const SECTOR_INDEX = [
@@ -66,11 +66,20 @@ export default function CompaniesPage() {
           Each sector has its own dedicated page, giving visitors a clearer path into the businesses,
           services, and companies that sit inside every Midline division.
         </RevealOnScroll>
-        <div className="sectors-grid">
-          {Object.entries(MIDLINE_SECTORS).map(([key, sector]) => (
-            <SectorCard key={key} sectorKey={key} sector={sector} mode="full" />
-          ))}
-        </div>
+        <SectorShowcase
+          items={Object.entries(MIDLINE_SECTORS).map(([key, sector], i) => {
+            const name = sector.title.replace(/<[^>]*>/g, '')
+            return {
+              href: `/carousel/${key}`,
+              number: String(i + 1).padStart(2, '0'),
+              name,
+              thumbnailSrc: `/assets/sectors/${key}.png`,
+              thumbnailAlt: name,
+              description: sector.blurb,
+              meta: `${sector.companies.length} ${sector.companies.length === 1 ? 'company' : 'companies'}`,
+            }
+          })}
+        />
       </section>
     </>
   )

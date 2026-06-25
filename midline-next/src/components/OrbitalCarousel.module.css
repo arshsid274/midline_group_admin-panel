@@ -107,18 +107,37 @@
 .intro {
   position: absolute;
   inset: 0;
-  z-index: 2;
-  width: min(30ch, calc(100vw - 40px));
-  height: max-content;
-  margin: auto;
+  z-index: 20;                /* above the sphere so the opener heading reads clean */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  font-size: clamp(12px, 1.12vw, 16px);
-  line-height: 1.25;
-  font-weight: 500;
+  padding-inline: 20px;
   pointer-events: none;
 }
-.intro span { display: inline-block; overflow: hidden; padding-block: .15em; margin-block: -.15em; }
+.eyebrowRow { margin-bottom: clamp(14px, 2.4vh, 30px); }
+.eyebrowWord {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(10px, 1vw, 12px);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--sky, #2FB8EE);
+}
+.titleRow {
+  font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
+  font-weight: 500;
+  /* sized to sit inside the orbit's clear centre zone, so it never overlaps the
+     circles (the italic line is the widest — kept clear of the ring). Fully
+     fluid (vw) + capped; see the mobile override below. */
+  font-size: clamp(18px, 3.6vw, 56px);
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--navy, #0963A8);
+}
+.intro span { display: inline-block; overflow: hidden; padding-block: .12em; margin-block: -.12em; }
 .intro i { display: inline-block; font-style: normal; transform: translateY(115%); transition: transform 600ms var(--ease-out); }
+.intro i.accentWord { color: var(--bright, #50CFFE); font-style: italic; }
 
 .overlay {
   position: absolute;
@@ -300,14 +319,30 @@
   }
 }
 
+/* tablet / narrow desktop: shrink the intro so the eyebrow + title stay inside
+   the (tighter) orbit ring and don't run into the side circles. */
+@media (max-width: 1024px) {
+  .titleRow { font-size: clamp(16px, 4.2vw, 36px); }
+  .eyebrowWord { font-size: clamp(9px, 1.3vw, 11px); letter-spacing: .16em; }
+  .eyebrowRow { margin-bottom: 12px; }
+}
+
 @media (max-width: 760px) {
   .root {
-    --sphere-size: clamp(120px, 25vw, 300px);
+    /* phones have spare viewport — grow the tiles and widen the orbit so the
+       intro circles read bigger and sit further apart (tilt/oval unchanged). */
+    --sphere-size: clamp(140px, 34vw, 210px);
     --sphere-extent: min(400vw, 100svh);
-    --orbit-radius: clamp(150px, 42vw, 230px);
+    --orbit-radius: clamp(200px, 58vw, 320px);
   }
   .titles { top: 50%; bottom: auto; transform: translateY(-50%); }
   .titles h2 { font-size: clamp(26px, 9.5vw, 36px); }
+  /* phones: the intro orbit is much tighter — shrink the heading to fit its
+     clear centre, and let lines wrap if a phone is unusually narrow. */
+  .titleRow { font-size: clamp(16px, 5.2vw, 27px); line-height: 1.05; white-space: nowrap; }
+  /* keep the eyebrow narrow so it clears the left/right circles */
+  .eyebrowRow { margin-bottom: 10px; }
+  .eyebrowWord { font-size: 9px; letter-spacing: .06em; }
 }
 
 @media (max-width: 420px) {

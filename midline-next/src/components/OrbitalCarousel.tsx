@@ -18,8 +18,11 @@ export interface OrbitalItem {
 
 export interface OrbitalCarouselProps {
   items?: OrbitalItem[]
-  /** Centre intro copy (word-by-word reveal). */
+  /** Centre intro title (word-by-word reveal). Use "|" to break into two lines;
+   *  the second line renders in the sky-italic accent. */
   intro?: string
+  /** Mono eyebrow above the intro title (e.g. "34 Companies · 8 Sectors"). */
+  eyebrow?: string
   /** Fired when an item is selected (just before navigating). */
   onSelect?: (item: OrbitalItem, index: number) => void
   className?: string
@@ -44,6 +47,7 @@ const ARROW_NEXT =
 export default function OrbitalCarousel({
   items = PLACEHOLDER_ITEMS,
   intro = 'Your headline goes here — replace this placeholder copy with your own.',
+  eyebrow,
   onSelect,
   className = '',
 }: OrbitalCarouselProps) {
@@ -467,13 +471,29 @@ export default function OrbitalCarousel({
           </div>
         </div>
 
-        <h1 className={styles.intro} aria-label={intro}>
-          {intro.split(' ').map((word, i) => (
-            <span key={i}>
-              <i>{word}&nbsp;</i>
-            </span>
+        <div
+          className={styles.intro}
+          role="heading"
+          aria-level={2}
+          aria-label={intro.replace(/\|/g, ' ')}
+        >
+          {eyebrow && (
+            <div className={styles.eyebrowRow}>
+              <span>
+                <i className={styles.eyebrowWord}>{eyebrow}</i>
+              </span>
+            </div>
+          )}
+          {intro.split('|').map((line, li) => (
+            <div key={li} className={styles.titleRow}>
+              {line.trim().split(' ').map((word, wi) => (
+                <span key={wi}>
+                  <i className={li > 0 ? styles.accentWord : undefined}>{word}&nbsp;</i>
+                </span>
+              ))}
+            </div>
           ))}
-        </h1>
+        </div>
 
         <div className={styles.overlay}>
           <button type="button" className={`${styles.arrow} ${styles.prev}`} aria-label="Previous">
