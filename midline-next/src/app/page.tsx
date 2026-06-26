@@ -8,7 +8,7 @@ import OrbitalCarousel from '@/components/OrbitalCarousel'
 import HeroStats from '@/components/HeroStats'
 import LayingTheFoundation from '@/components/laying-the-foundation/LayingTheFoundation'
 import Magnetic from '@/_harvested/Magnetic/Magnetic'
-import StickyFeature from '@/_harvested/StickyFeature/StickyFeature'
+import SoseiKeyBenefits from '@/components/sosei-key-benefits/SoseiKeyBenefits'
 import { GLOBAL_PRESENCE } from '@/lib/data'
 
 // Same eight sectors the orbital ring uses — image, label and carousel route.
@@ -93,30 +93,8 @@ export default function HomePage() {
         ]}
       />
 
-      {/* ── §H OUR APPROACH (harvested StickyFeature) ── */}
-      <section className="page-section section-shell">
-        <StickyFeature
-          eyebrow="Our Approach"
-          heading="Active owners, not passive capital"
-          panels={[
-            {
-              step: '01',
-              title: 'Select with conviction',
-              body: 'We invest where we have genuine sector understanding — not where the noise is loudest.',
-            },
-            {
-              step: '02',
-              title: 'Strengthen the foundation',
-              body: 'Governance, systems, talent, and quality standards come before chasing scale.',
-            },
-            {
-              step: '03',
-              title: 'Compound over time',
-              body: 'We reinvest, refine, and let well-run businesses lead their markets over years, not quarters.',
-            },
-          ]}
-        />
-      </section>
+      {/* ── §H OUR APPROACH (SoseiKeyBenefits — sticky clip-wipe image section) ── */}
+      <SoseiKeyBenefits />
 
       {/* ── §I SUSTAINABILITY (ESG) ── */}
       <section className="page-section section-shell">
