@@ -22,22 +22,22 @@ export interface SoseiKeyBenefitsProps {
    four slots point at the same source image. */
 const sector = (file: string) => ({ pc: file, pc2x: file, sp: file, sp2x: file })
 const ADV: Record<string, { pc: string; pc2x: string; sp: string; sp2x: string }> = {
-  '01': sector('/assets/sectors/aviation.png'),
-  '02': sector('/assets/sectors/oilgas.png'),
-  '03': sector('/assets/sectors/construction.png'),
-  '04': sector('/assets/sectors/pharma.png'),
-  '05': sector('/assets/sectors/food.png'),
+  '01': sector('/assets/companies/midline-aviation/photo2.jpg'),
+  '02': sector('/uploads/sector/acacus-juice-and-milk-factory/photo/acacus-juice-and-milk-factory-1-1777224615881.jpg'),
+  '03': sector('/uploads/sector/al-sarh-engineering-consultant/photo/al-sarh-engineering-consultant-2-1777247334934.jpg'),
+  '04': sector('/uploads/sector/majestic-elite-properties/photo/majestic-elite-properties-1-1777204588294.webp'),
+  '05': sector('/uploads/sector/maraina-al-khadra-food/photo/maraina-al-khadra-food-1-1777372489714.jpg'),
 }
 const CURRENT = ['01', '02', '03', '04', '05']
 const NEXT = ['02', '03', '04', '05']
 const AFTER_NEXT = ['03', '04', '05']
 
 const STEPS = [
-  { n: '01', canvas: '/assets/sectors/aviation.png', title: 'A diversified portfolio built for resilience across cycles', body: 'Midline operates across eight industries — from aviation and oil & gas to pharmaceuticals and food — so no single market defines our performance. This breadth spreads risk, balances essential and high-growth sectors, and keeps the group steady through changing economic conditions.' },
-  { n: '02', canvas: '/assets/sectors/oilgas.png', title: 'Hands-on ownership that pairs capital with operational expertise', body: 'We do not simply invest and step back. Every company benefits from active operational oversight, deep market understanding, and execution discipline — strengthening governance, systems, and talent so businesses run better under our ownership.' },
-  { n: '03', canvas: '/assets/sectors/construction.png', title: 'Disciplined capital allocation, deployed only where we have conviction', body: 'We invest where we have genuine sector understanding, not where the hype is loudest. By strengthening the foundation before chasing scale, Midline directs capital toward durable fundamentals and expands into new markets only when the timing is right.' },
-  { n: '04', canvas: '/assets/sectors/pharma.png', title: 'Long-term value creation over a patient, multi-cycle horizon', body: 'Midline compounds value by reinvesting, refining, and giving well-run businesses the time to do what they do best. Our focus on sustainable growth and trusted partnerships builds durable business legacies rather than short-term gains.' },
-  { n: '05', canvas: '/assets/sectors/food.png', title: 'Responsible, transparent operations across the entire group', body: 'Sustainability, compliance, and ethical conduct are built into how each company runs. We hold ourselves to high standards of transparency and accountability — leaving markets, communities, and the environment better than we found them.' },
+  { n: '01', canvas: '/assets/companies/midline-aviation/photo2.jpg', title: 'A diversified portfolio built for resilience across cycles', body: 'Midline operates across eight industries — from aviation and oil & gas to pharmaceuticals and food — so no single market defines our performance. This breadth spreads risk, balances essential and high-growth sectors, and keeps the group steady through changing economic conditions.' },
+  { n: '02', canvas: '/uploads/sector/acacus-juice-and-milk-factory/photo/acacus-juice-and-milk-factory-1-1777224615881.jpg', title: 'Hands-on ownership that pairs capital with operational expertise', body: 'We do not simply invest and step back. Every company benefits from active operational oversight, deep market understanding, and execution discipline — strengthening governance, systems, and talent so businesses run better under our ownership.' },
+  { n: '03', canvas: '/uploads/sector/al-sarh-engineering-consultant/photo/al-sarh-engineering-consultant-2-1777247334934.jpg', title: 'Disciplined capital allocation, deployed only where we have conviction', body: 'We invest where we have genuine sector understanding, not where the hype is loudest. By strengthening the foundation before chasing scale, Midline directs capital toward durable fundamentals and expands into new markets only when the timing is right.' },
+  { n: '04', canvas: '/uploads/sector/majestic-elite-properties/photo/majestic-elite-properties-1-1777204588294.webp', title: 'Long-term value creation over a patient, multi-cycle horizon', body: 'Midline compounds value by reinvesting, refining, and giving well-run businesses the time to do what they do best. Our focus on sustainable growth and trusted partnerships builds durable business legacies rather than short-term gains.' },
+  { n: '05', canvas: '/uploads/sector/maraina-al-khadra-food/photo/maraina-al-khadra-food-1-1777372489714.jpg', title: 'Responsible, transparent operations across the entire group', body: 'Sustainability, compliance, and ethical conduct are built into how each company runs. We hold ourselves to high standards of transparency and accountability — leaving markets, communities, and the environment better than we found them.' },
 ]
 
 const easeInOutPow2 = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2)
