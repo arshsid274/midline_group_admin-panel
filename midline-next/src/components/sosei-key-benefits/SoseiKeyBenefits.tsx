@@ -17,23 +17,27 @@ export interface SoseiKeyBenefitsProps {
   className?: string
 }
 
+/* Midline sector photos (mapped to each Key Benefit). Absolute /assets paths are
+   passed through unchanged by `src()` below — no per-variant retina set, so all
+   four slots point at the same source image. */
+const sector = (file: string) => ({ pc: file, pc2x: file, sp: file, sp2x: file })
 const ADV: Record<string, { pc: string; pc2x: string; sp: string; sp2x: string }> = {
-  '01': { pc: 'i_sosei-advantage_01.OZ4hFF1P_ZBeJvF.webp', pc2x: 'i_sosei-advantage_01@2x.CTFLbGP6_ZR7Abf.webp', sp: 'i_sosei-advantage_01.f3tK6AiP_L5LuJ.webp', sp2x: 'i_sosei-advantage_01@2x.CsyjZ9yn_OuNC7.webp' },
-  '02': { pc: 'i_sosei-advantage_02.bqUKDpcV_ZOUrG2.webp', pc2x: 'i_sosei-advantage_02@2x.3ZXeDOkO_Z2qSeaq.webp', sp: 'i_sosei-advantage_02.BuBmjhex_1uAkJK.webp', sp2x: 'i_sosei-advantage_02@2x.DusyePOk_ZinC8h.webp' },
-  '03': { pc: 'i_sosei-advantage_03.CRv-txMy_ZY20Xt.webp', pc2x: 'i_sosei-advantage_03@2x.BzP15H6J_ZtJvW3.webp', sp: 'i_sosei-advantage_03.BdyHHiVx_29MPfR.webp', sp2x: 'i_sosei-advantage_03@2x.8hnbWWNI_jW2aN.webp' },
-  '04': { pc: 'i_sosei-advantage_04.tX6Q28Qe_1kXcsI.webp', pc2x: 'i_sosei-advantage_04@2x.RUFbVmRZ_XtWcB.webp', sp: 'i_sosei-advantage_04.BpkRzU3E_Z1ogBjK.webp', sp2x: 'i_sosei-advantage_04@2x.BccNpE-B_Z1T753j.webp' },
-  '05': { pc: 'i_sosei-advantage_05.CtOizdW1_19Qyoz.webp', pc2x: 'i_sosei-advantage_05@2x.CO3tKxfu_2lYtng.webp', sp: 'i_sosei-advantage_05.DMNVVER0_ZhiSHO.webp', sp2x: 'i_sosei-advantage_05@2x.BZlawwwY_12lb49.webp' },
+  '01': sector('/assets/sectors/aviation.png'),
+  '02': sector('/assets/sectors/oilgas.png'),
+  '03': sector('/assets/sectors/construction.png'),
+  '04': sector('/assets/sectors/pharma.png'),
+  '05': sector('/assets/sectors/food.png'),
 }
 const CURRENT = ['01', '02', '03', '04', '05']
 const NEXT = ['02', '03', '04', '05']
 const AFTER_NEXT = ['03', '04', '05']
 
 const STEPS = [
-  { n: '01', canvas: 'i_sosei-advantage_01.jpg', title: 'Construction completed in a short period of time without interrupting factory operations', body: 'Since the work is only done on the roof surface, it does not affect indoor operations and can be done in a short period of time. We will plan the work according to your factory environment and conditions. In addition, our overwhelming construction capabilities allow us to complete the work in a short period of time, leading to shorter construction periods and lower costs.' },
-  { n: '02', canvas: 'i_sosei-advantage_02.jpg', title: 'Prepare for frequent natural disasters such as earthquakes, torrential rains, and typhoons', body: 'Climate change due to global warming is expected to continue, and the environment surrounding buildings is becoming increasingly harsh. The lightweight, seamless, waterproof and tough coating helps prevent slates from cracking and scattering due to strong winds, prevents leaks due to heavy rain, and reduces the risk of roofing and ceiling materials falling off into the building.' },
-  { n: '03', canvas: 'i_sosei-advantage_03.jpg', title: 'The heat insulation effect improves the working environment and energy conservation while providing comfort in both summer and winter.', body: 'The insulating effect of SOSEI foam is far superior to that of heat-shielding paint, and significantly reduces the heat impact from the roof surface. It is particularly effective for buildings that do not have insulation installed in the attic. In addition, by reducing heat penetration from the roof, energy savings can be expected through improved air conditioning efficiency.' },
-  { n: '04', canvas: 'i_sosei-advantage_04.jpg', title: 'Solar panels can also be installed. There is also a chance to sell the electricity.', body: 'Even if there is no open space on the ground, there is plenty of open space on the roof. Even on roofs where it was previously difficult to install solar panels due to load-bearing and strength issues, the lightweight and strong coating of the SOSEI method may make it possible to install solar panels. In addition, the insulation effect of the SOSEI method makes it possible to save and create energy.' },
-  { n: '05', canvas: 'i_sosei-advantage_05.jpg', title: 'This construction is friendly to workers and the environment, preventing falls and scattering of asbestos.', body: "Conventional repair methods raise concerns about asbestos scattering during the cleaning process. In addition, much of the work involves work on the slate surface, exposing workers to danger. With the SOSEI method, the simultaneous application of SOSEI Foam and SOSEI Coat seals in asbestos without the need for high-pressure cleaning, while ensuring the safety of workers' feet during construction." },
+  { n: '01', canvas: '/assets/sectors/aviation.png', title: 'A diversified portfolio built for resilience across cycles', body: 'Midline operates across eight industries — from aviation and oil & gas to pharmaceuticals and food — so no single market defines our performance. This breadth spreads risk, balances essential and high-growth sectors, and keeps the group steady through changing economic conditions.' },
+  { n: '02', canvas: '/assets/sectors/oilgas.png', title: 'Hands-on ownership that pairs capital with operational expertise', body: 'We do not simply invest and step back. Every company benefits from active operational oversight, deep market understanding, and execution discipline — strengthening governance, systems, and talent so businesses run better under our ownership.' },
+  { n: '03', canvas: '/assets/sectors/construction.png', title: 'Disciplined capital allocation, deployed only where we have conviction', body: 'We invest where we have genuine sector understanding, not where the hype is loudest. By strengthening the foundation before chasing scale, Midline directs capital toward durable fundamentals and expands into new markets only when the timing is right.' },
+  { n: '04', canvas: '/assets/sectors/pharma.png', title: 'Long-term value creation over a patient, multi-cycle horizon', body: 'Midline compounds value by reinvesting, refining, and giving well-run businesses the time to do what they do best. Our focus on sustainable growth and trusted partnerships builds durable business legacies rather than short-term gains.' },
+  { n: '05', canvas: '/assets/sectors/food.png', title: 'Responsible, transparent operations across the entire group', body: 'Sustainability, compliance, and ethical conduct are built into how each company runs. We hold ourselves to high standards of transparency and accountability — leaving markets, communities, and the environment better than we found them.' },
 ]
 
 const easeInOutPow2 = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2)
@@ -41,7 +45,7 @@ const clamp = (v: number, a: number, b: number) => (v < a ? a : v > b ? b : v)
 
 export default function SoseiKeyBenefits({ assetBase = '/sosei', className }: SoseiKeyBenefitsProps) {
   const rootRef = useRef<HTMLElement>(null)
-  const src = (f: string) => `${assetBase}/${f}`
+  const src = (f: string) => (f.startsWith('/') ? f : `${assetBase}/${f}`)
 
   useEffect(() => {
     const root = rootRef.current

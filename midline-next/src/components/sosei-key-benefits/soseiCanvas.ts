@@ -108,7 +108,7 @@ function makeCanvas(el: HTMLElement, assetBase: string, sp: boolean): CanvasInst
   const sizes: THREE.Vector2[] = []
   Promise.all(
     src.map((s, i) => new Promise<THREE.Texture>((res, rej) => {
-      const t = loader.load(`${assetBase}/canvas-image/${dir}/${s}`, (tex) => {
+      const t = loader.load(s.startsWith('/') ? s : `${assetBase}/canvas-image/${dir}/${s}`, (tex) => {
         sizes[i] = new THREE.Vector2(tex.image.width, tex.image.height)
         tex.generateMipmaps = false
         tex.minFilter = THREE.LinearFilter

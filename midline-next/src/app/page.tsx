@@ -96,35 +96,32 @@ export default function HomePage() {
       {/* ── §H OUR APPROACH (SoseiKeyBenefits — sticky clip-wipe image section) ── */}
       <SoseiKeyBenefits />
 
-      {/* ── §I SUSTAINABILITY (ESG) ── */}
-      <section className="page-section section-shell">
-        <RevealOnScroll className="section-label">Sustainability</RevealOnScroll>
-        <RevealOnScroll className="section-title">
-          Responsible <em>by design</em>
-        </RevealOnScroll>
-        <RevealOnScroll className="section-body">
-          We believe investment should leave markets, communities, and the environment better than it
-          found them. Sustainability isn&apos;t a separate initiative at Midline — it&apos;s part of how
-          we evaluate, build, and operate every business.
-        </RevealOnScroll>
-        <div className="preview-grid">
-          <PreviewCard
-            eyebrow="Environmental"
-            title="Cleaner, efficient operations"
-            body="We support more efficient operations across our energy, industrial, and logistics businesses, and factor environmental impact into how we grow."
-          />
-          <PreviewCard
-            eyebrow="Social"
-            title="People and communities"
-            body="We invest in our people, support the communities we operate in, and uphold safe, fair working conditions across the group."
-          />
-          <PreviewCard
-            eyebrow="Governance"
-            title="Transparency and ethics"
-            body="We hold ourselves to high standards of transparency, accountability, and ethics at every level of the group."
-          />
-        </div>
-      </section>
+      {/* ── §H2 SUSTAINABILITY — REVERSED ribbon (draws right→left, cards rise in reverse) ── */}
+      <LayingTheFoundation
+        reverse
+        heading="Responsible by design"
+        lead="We believe investment should leave markets, communities, and the environment better than it found them. Sustainability isn't a separate initiative at Midline — it's part of how we evaluate, build, and operate every business."
+        steps={[
+          {
+            icon: '🌱',
+            tag: 'Environmental',
+            title: 'Cleaner, efficient operations',
+            body: 'We support more efficient operations across our energy, industrial, and logistics businesses, and factor environmental impact into how we grow.',
+          },
+          {
+            icon: '🤝',
+            tag: 'Social',
+            title: 'People and communities',
+            body: 'We invest in our people, support the communities we operate in, and uphold safe, fair working conditions across the group.',
+          },
+          {
+            icon: '⚖️',
+            tag: 'Governance',
+            title: 'Transparency and ethics',
+            body: 'We hold ourselves to high standards of transparency, accountability, and ethics at every level of the group.',
+          },
+        ]}
+      />
 
       {/* ── §J GLOBAL PRESENCE ── */}
       <section className="presence-section page-block">

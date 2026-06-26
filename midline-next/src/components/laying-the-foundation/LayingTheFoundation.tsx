@@ -29,6 +29,8 @@ export interface FoundationStep {
 
 export interface LayingTheFoundationProps {
   heading?: string
+  /** Optional lead paragraph shown under the heading (e.g. a section intro). */
+  lead?: string
   steps?: FoundationStep[]
   /** Public path holding the ribbon JSONs (copy ./assets there). */
   assetBase?: string
@@ -39,6 +41,12 @@ export interface LayingTheFoundationProps {
    */
   lineColors?: string[]
   className?: string
+  /**
+   * Mirror the whole motion: the ribbon draws right → left (CSS scaleX flip) and
+   * the cards rise in reverse order (rightmost first), with the steps mapped in
+   * reverse. Same scroll-scrubbed trigger as the default L→R flow.
+   */
+  reverse?: boolean
 }
 
 /** Per-card initial tilt (deg) — un-tilted to 0 as the cards settle. */
@@ -136,12 +144,19 @@ const DEFAULT_STEPS: FoundationStep[] = [
 
 export default function LayingTheFoundation({
   heading = 'Laying the Foundation for the Right Match',
+  lead,
   steps = DEFAULT_STEPS,
   assetBase = '/laying-the-foundation',
   lineColors = DEFAULT_LINE_COLORS,
   className,
+  reverse = false,
 }: LayingTheFoundationProps) {
   const rootRef = useRef<HTMLElement>(null)
+
+  /** Stagger origin — `'end'` makes the rightmost card rise first (reversed flow). */
+  const staggerFrom: 'start' | 'end' = reverse ? 'end' : 'start'
+  /** Cards mapped in reverse when the flow is reversed. */
+  const orderedSteps = reverse ? [...steps].reverse() : steps
 
   useEffect(() => {
     const root = rootRef.current
@@ -195,8 +210,8 @@ export default function LayingTheFoundation({
           defaults: { ease: 'none' },
           scrollTrigger: { trigger: track, start: 'top top', end: 'bottom bottom', scrub: 0.8, invalidateOnRefresh: true },
         })
-        tl.fromTo(cards, { y: '50rem' }, { y: '0rem', duration: 0.72, stagger: { amount: 0.25 }, ease: 'power2.out' }, 0)
-        tl.to(cards, { y: '-50rem', duration: 0.72, stagger: { amount: 0.25 }, ease: 'power1.inOut' }, 0.82)
+        tl.fromTo(cards, { y: '50rem' }, { y: '0rem', duration: 0.72, stagger: { amount: 0.25, from: staggerFrom }, ease: 'power2.out' }, 0)
+        tl.to(cards, { y: '-50rem', duration: 0.72, stagger: { amount: 0.25, from: staggerFrom }, ease: 'power1.inOut' }, 0.82)
       })
 
       /* Cards — MOBILE/TABLET: rise-in & un-tilt, no pass-through. */
@@ -206,7 +221,7 @@ export default function LayingTheFoundation({
           defaults: { ease: 'none' },
           scrollTrigger: { trigger: track, start: 'top 50%', end: 'bottom bottom', scrub: 0.8, invalidateOnRefresh: true },
         })
-        tl.fromTo(cards, { y: '50rem' }, { y: '0rem', duration: 0.72, stagger: { amount: 0.1 }, ease: 'power2.out' }, 0)
+        tl.fromTo(cards, { y: '50rem' }, { y: '0rem', duration: 0.72, stagger: { amount: 0.1, from: staggerFrom }, ease: 'power2.out' }, 0)
         cards.forEach((c, i) => tl.fromTo(c, { rotation: tilt(i) }, { rotation: 0, duration: 0.72 }, 0))
       })
     }, rootRef)
@@ -312,12 +327,13 @@ export default function LayingTheFoundation({
       ribbonCleanup?.()
       ctx.revert()
     }
-  }, [])
+  }, [reverse])
 
   return (
     <section ref={rootRef} className={`${styles.section}${className ? ` ${className}` : ''}`}>
-      {/* ribbon "line" layer (fixed, behind the cards) */}
-      <div className={styles.lottieAssets} aria-hidden="true">
+      {/* ribbon "line" layer (fixed, behind the cards). When reversed, the ribbon
+          is mirrored horizontally so it appears to draw from the right → left. */}
+      <div className={`${styles.lottieAssets}${reverse ? ` ${styles.ribbonMirrored}` : ''}`} aria-hidden="true">
         <div className={`${styles.ribbon} ${styles.isDesk}`} data-ribbon="desk" data-src={`${assetBase}/process-ribbon-desk.json`} />
         <div className={`${styles.ribbon} ${styles.isMob}`} data-ribbon="mob" data-src={`${assetBase}/process-ribbon-mob.json`} />
       </div>
@@ -327,10 +343,11 @@ export default function LayingTheFoundation({
           <h2 className={`${styles.heading} ${styles.maxWidthLarge}`} data-reveal>
             {heading}
           </h2>
+          {lead ? <p className={`${styles.lead} ${styles.maxWidthLarge}`}>{lead}</p> : null}
 
           <div className={styles.track} data-track>
             <div className={styles.sticky}>
-              {steps.map((step, i) => (
+              {orderedSteps.map((step, i) => (
                 <article key={i} className={styles.box} data-card data-tilt={TILTS[i] ?? 0}>
                   <div className={styles.iconWrapper}>
                     <div className={styles.icon}>{step.icon}</div>

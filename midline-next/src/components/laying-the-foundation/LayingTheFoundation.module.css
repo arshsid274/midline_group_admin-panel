@@ -31,6 +31,20 @@
 }
 .maxWidthLarge { width: 100%; max-width: 48rem; }
 
+/* Optional lead paragraph under the heading (section intro). */
+.lead {
+  margin: 1.5rem 0 0;
+  font-size: 1.25rem;
+  line-height: 160%;
+  letter-spacing: -0.01em;
+  color: var(--ink-muted, #44525e);
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 991px) {
+  .lead { font-size: 1.0625rem; margin-top: 1rem; }
+}
+
 /* Reveal — added by JS on scroll-into-view. Animates TRANSFORM ONLY (no opacity),
    so the heading text is always visible; it just slides up. */
 .headingReveal { animation: lf-heading-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
@@ -116,6 +130,11 @@
   margin: 0 auto;
 }
 .ribbon svg { display: block; width: 100% !important; height: 100% !important; }
+
+/* Reversed flow — mirror the ribbon so its draw runs from the right → left.
+   Applied to the sticky .ribbon itself (not the absolute wrapper) so the flip
+   never alters the wrapper's containing block / sticky behaviour. */
+.ribbonMirrored .ribbon { transform: scaleX(-1); }
 .isDesk { display: block; }  /* desk JSON 1440×900 (landscape) */
 .isMob  { display: none; }   /* mob  JSON 375×812  (portrait)  */
 
